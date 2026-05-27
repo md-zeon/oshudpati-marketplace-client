@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "../../../components/ui/button";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import Link from "next/link";
