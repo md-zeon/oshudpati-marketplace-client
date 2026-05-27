@@ -1,7 +1,16 @@
-import React from "react";
+"use client";
+
+import NavbarHeader from "./NavbarHeader";
 
 const Navbar = () => {
-  return <div>Navbar</div>;
+  return (
+    <div>
+      {/* Navbar header */}
+      <NavbarHeader />
+      {/* Navbar */}
+      {/* Navbar Links */}
+    </div>
+  );
 };
 
 export default Navbar;

@@ -6,7 +6,9 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <header>
+        {/* Site Announcement */}
         <SiteAnnouncement />
+        {/* Navbar */}
         <Navbar />
       </header>
       <main>{children}</main>
