@@ -4,7 +4,7 @@ import { NavbarSearch } from "./NavbarSearch";
 const NavbarContent = () => {
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur">
-      <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4 md:px-6">
+      <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4">
         {/* Logo */}
         <div className="flex items-center gap-1 cursor-pointer shrink-0">
           <span className="text-4xl font-black tracking-tight">Oshudpati</span>
