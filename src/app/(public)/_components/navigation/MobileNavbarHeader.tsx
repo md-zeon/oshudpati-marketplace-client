@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -178,11 +180,9 @@ const MobileNavbarHeader = () => {
         </Drawer>
 
         {/* Center Logo */}
-        <div>
-          <Link href="/" className="text-xl font-black tracking-tight">
-            Oshudpati
-          </Link>
-        </div>
+        <Link href="/" className="text-xl font-black inline-block">
+          Oshudpati
+        </Link>
 
         {/* Right Cart */}
         <Button variant="ghost" size="icon" className="relative cursor-pointer">
