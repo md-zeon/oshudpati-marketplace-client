@@ -12,7 +12,8 @@ import {
 
 const NavbarHeader = () => {
   return (
-    <nav className="text-xs flex flex-col gap-3 px-4 py-2 md:flex-row md:items-center md:justify-between text-black">
+    // hidden on mobile, visible on large screens and above
+    <nav className="hidden text-xs lg:flex justify-between gap-3 px-4 py-2 text-black">
       {/* Header Left */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
         {/* Contact Information */}
@@ -48,7 +49,7 @@ const NavbarHeader = () => {
           <SelectTrigger className="w-auto border-0 cursor-pointer outline-none">
             <SelectValue placeholder="English" />
           </SelectTrigger>
-          <SelectContent className="w-auto min-w-0 top-9">
+          <SelectContent className="w-auto min-w-0 top-9 bg-background">
             <SelectGroup>
               <SelectItem value="en">English</SelectItem>
               <SelectItem value="bn" disabled className="cursor-not-allowed">
@@ -62,7 +63,7 @@ const NavbarHeader = () => {
           <SelectTrigger className="w-auto border-0 cursor-pointer">
             <SelectValue placeholder="BDT" />
           </SelectTrigger>
-          <SelectContent className="w-auto min-w-0 top-9">
+          <SelectContent className="w-auto min-w-0 top-9 bg-background">
             <SelectGroup>
               <SelectItem value="bdt">BDT</SelectItem>
               <SelectItem value="usd" disabled className="cursor-not-allowed">

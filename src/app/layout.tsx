@@ -55,7 +55,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${fredoka.variable} h-full antialiased`}
       suppressHydrationWarning={true}
     >
-      <body>{children}</body>
+      <body className="max-w-360 mx-auto">{children}</body>
     </html>
   );
 }

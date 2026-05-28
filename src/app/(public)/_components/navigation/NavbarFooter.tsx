@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const NavbarFooter = () => {
   return (
-    <nav className="font-medium flex items-center justify-between gap-6 px-4 py-2">
+    <nav className="hidden font-medium lg:flex items-center justify-between gap-6 px-4 py-2">
       <div className="flex items-center gap-6">
         <Link href="/">Home</Link>
         <Link href="/categories">Categories</Link>
