@@ -22,6 +22,7 @@ import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import SocialAuth from "../../_components/SocialAuth";
+import { useRouter } from "next/navigation";
 
 const SignInSchema = z.object({
   email: z.email("Invalid email address"),
@@ -29,6 +30,7 @@ const SignInSchema = z.object({
 });
 
 export function SignInForm({ ...props }: React.ComponentProps<"div">) {
+  const router = useRouter();
   const form = useForm({
     defaultValues: {
       email: "",
@@ -50,6 +52,7 @@ export function SignInForm({ ...props }: React.ComponentProps<"div">) {
         toast.success("Signed in successfully!", {
           id: toastId,
         });
+        router.push("/");
       } catch {
         toast.error("An unexpected error occurred. Please try again.", {
           id: toastId,
