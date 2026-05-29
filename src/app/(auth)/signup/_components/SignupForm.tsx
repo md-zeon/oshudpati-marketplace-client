@@ -235,7 +235,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 form="signup-form"
                 type="submit"
                 variant="outline"
-                className="w-full py-5"
+                className="w-full py-5 cursor-pointer"
               >
                 Sign Up
               </Button>
