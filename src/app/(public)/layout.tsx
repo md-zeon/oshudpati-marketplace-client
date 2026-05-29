@@ -5,6 +5,7 @@ import React from "react";
 import NavbarFooter from "./_components/navigation/NavbarFooter";
 import MobileNavbarHeader from "./_components/navigation/MobileNavbarHeader";
 import MobileNavbarFooter from "./_components/navigation/MobileNavbarFooter";
+import { AppBreadcrumb } from "@/components/shared/AppBreadcrumb";
 
 const PublicLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -21,7 +22,10 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => {
       <MobileNavbarHeader />
 
       {/* Main Content */}
-      <main>{children}</main>
+      <main className="w-full max-w-360 mx-auto p-4">
+        <AppBreadcrumb />
+        {children}
+      </main>
       <footer>Public Footer</footer>
       <MobileNavbarFooter />
     </>
