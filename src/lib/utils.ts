@@ -1,4 +1,4 @@
-import { ParsedShopFilters, SearchParams } from "@/types";
+import { Medicine, ParsedShopFilters, SearchParams } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -46,4 +46,34 @@ export function parseShopFilters(params: SearchParams): ParsedShopFilters {
     maxPrice,
     priceValidationError,
   };
+}
+
+export function getPrimaryImage(medicine: Medicine): string {
+  return (
+    medicine.images?.find((img) => img.isPrimary)?.imageUrl ||
+    medicine.images?.[0]?.imageUrl ||
+    "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=500"
+  );
+}
+
+export function getPrices(medicine: Medicine) {
+  const regularPrice = Number(medicine.price ?? 0);
+  const salePrice = medicine.discountPrice
+    ? Number(medicine.discountPrice)
+    : null;
+
+  return { regularPrice, salePrice };
+}
+
+export function getDiscountPercentage(
+  regularPrice: number,
+  salePrice: number | null,
+) {
+  if (!salePrice || regularPrice <= 0) return null;
+
+  return Math.round(((regularPrice - salePrice) / regularPrice) * 100);
+}
+
+export function getRating(medicine: Medicine) {
+  return Math.round(medicine.averageRating || 0);
 }
