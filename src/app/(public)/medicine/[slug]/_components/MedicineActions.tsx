@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Medicine } from "@/types";
+import { toast } from "sonner";
+import { addToCart } from "@/actions/cart.action";
 
 interface MedicineActionsProps {
   medicine: Medicine;
@@ -24,9 +26,13 @@ export function MedicineActions({ medicine }: MedicineActionsProps) {
     }
   };
 
-  const handleAddToCart = () => {
-    // Integrate your cart context/state manager here
-    console.log(`Added ${quantity} of ${medicine.name} to cart.`);
+  const handleAddToCart = async () => {
+    const res = await addToCart(medicine.id, quantity);
+    if (res.success) {
+      toast.success(`Added ${quantity} of ${medicine.name} to cart!`);
+    } else {
+      toast.error("Failed to add item to cart. Please try again.");
+    }
   };
 
   return (

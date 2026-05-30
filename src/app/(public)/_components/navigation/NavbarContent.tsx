@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   LayoutGrid,
   MapPin,
-  ShoppingCart,
   Truck,
   User,
   UserCog,
@@ -21,9 +20,15 @@ import {
 } from "@/components/ui/hover-card";
 import { Button } from "@/components/ui/button";
 import Signout from "@/app/(auth)/_components/Signout";
+import { CartService } from "@/services/cart.service";
+import Cart from "@/components/shared/cart/Cart";
 
 const NavbarContent = async () => {
-  const session = await userService.getSession();
+  const sessionPromise = userService.getSession();
+  const cartPromise = CartService.getCartItems({ cache: "no-store" });
+
+  const [session, cart] = await Promise.all([sessionPromise, cartPromise]);
+
   const user = session.success ? session.data.user : null;
   const role = user ? user.role : null;
 
@@ -310,17 +315,7 @@ const NavbarContent = async () => {
           )}
 
           {/* Cart */}
-          <div className="flex items-center gap-1 cursor-pointer">
-            <div className="rounded-full border-2 p-1">
-              <ShoppingCart className="text-slate-600 inline-block" size={24} />
-            </div>
-            <div className="font-medium leading-tight">
-              <p className="text-sm leading-tight font-medium text-slate-600 hover:text-blue-600 cursor-pointer">
-                Cart
-              </p>
-              <span className="text-base leading-tight">0 items</span>
-            </div>
-          </div>
+          <Cart cart={cart.success ? cart.data : []} />
         </div>
       </div>
     </nav>

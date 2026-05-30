@@ -7,7 +7,7 @@ import { X } from "lucide-react";
 import Link from "next/link";
 
 const promoBannerData = {
-  message: "🎉 Free shipping on orders over 250TK!",
+  message: "🎉 Free shipping on orders over 300TK!",
   link: "/shop",
   linkText: "Shop Now",
   backgroundColor: "bg-primary",
