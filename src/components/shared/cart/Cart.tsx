@@ -12,42 +12,39 @@ import {
 } from "@/components/ui/hover-card";
 import { removeFromCart } from "@/actions/cart.action";
 import { toast } from "sonner";
-
-type CartItem = {
-  id: string;
-  userId: string;
-  medicineId: string;
-  quantity: number;
-  medicine: {
-    id: string;
-    name: string;
-    genericName: string;
-    slug: string;
-    price: string;
-    discountPrice: string;
-    stockQuantity: number;
-    images: {
-      id: string;
-      medicineId: string;
-      imageUrl: string;
-      altText: string;
-      isPrimary: boolean;
-      createdAt: string;
-    }[];
-  };
-};
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { getLocalCart, saveLocalCart } from "@/lib/local-cart";
+import { CartItem } from "@/types";
 
 interface CartProps {
   cart: CartItem[];
+  isLoggedIn?: boolean;
 }
 
 const FREE_SHIPPING_THRESHOLD = 300;
 
-const Cart = ({ cart = [] }: CartProps) => {
-  const isCartEmpty = cart.length === 0;
+const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
+  const [runtimeCart, setRuntimeCart] = useState<CartItem[]>(cart);
+
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+
+  useEffect(() => {
+    // Sync local state based on auth status
+    const syncCart = () => setRuntimeCart(isLoggedIn ? cart : getLocalCart());
+
+    syncCart();
+    window.addEventListener("local-cart-updated", syncCart);
+    return () => window.removeEventListener("local-cart-updated", syncCart);
+  }, [cart, isLoggedIn]);
+
+  const isCartEmpty = runtimeCart.length === 0;
 
   // Calculate total price based on item quantity and individual pricing structure
-  const subtotal = cart.reduce((acc, item) => {
+  const subtotal = runtimeCart.reduce((acc, item) => {
     const activePrice = parseFloat(
       item.medicine.discountPrice || item.medicine.price || "0",
     );
@@ -63,15 +60,43 @@ const Cart = ({ cart = [] }: CartProps) => {
     (subtotal / FREE_SHIPPING_THRESHOLD) * 100,
   );
 
-  const handleRemoveItemFromCart = async (itemId: string) => {
-    const res = await removeFromCart(itemId);
-    if (res.success) {
-      toast.success("Item removed from cart.");
+  const handleRemoveItemFromCart = async (
+    itemId: string,
+    medicineId: string,
+  ) => {
+    if (isLoggedIn) {
+      const res = await removeFromCart(itemId);
+      if (res.success) {
+        toast.success("Item removed from cart.");
+      } else {
+        toast.error("Failed to remove item from cart. Please try again.");
+      }
     } else {
-      toast.error("Failed to remove item from cart. Please try again.");
+      // For guest users, remove item from local cart
+      const updatedCart = runtimeCart.filter(
+        (item) => item.medicineId !== medicineId,
+      );
+      saveLocalCart(updatedCart);
+      setRuntimeCart(updatedCart);
+
+      toast.success("Item removed from guest cart.");
     }
   };
 
+  // Prevent server-side rendering mismatches for guest carts
+  if (!mounted) {
+    return (
+      <div className="flex items-center gap-1 opacity-50 select-none py-1">
+        <div className="rounded-full border-2 p-1 border-slate-200">
+          <ShoppingCart className="text-slate-600" size={24} />
+        </div>
+        <div className="font-medium leading-tight">
+          <p className="text-sm font-medium text-slate-600">Cart Total</p>
+          <span className="text-base font-bold text-slate-900">৳ 0.00</span>
+        </div>
+      </div>
+    );
+  }
   return (
     <HoverCard openDelay={100} closeDelay={200}>
       {/* HOVER TRIGGER: Main Header Cart Target */}
@@ -133,7 +158,7 @@ const Cart = ({ cart = [] }: CartProps) => {
           <>
             {/* Scrollable Medicine Items List */}
             <div className="flex flex-col gap-3.5 max-h-70 overflow-y-auto pr-1 scrollbar-thin">
-              {cart.map((item) => {
+              {runtimeCart.map((item) => {
                 const primaryImage =
                   item.medicine.images?.find((img) => img.isPrimary)
                     ?.imageUrl || item.medicine.images?.[0]?.imageUrl;
@@ -149,7 +174,9 @@ const Cart = ({ cart = [] }: CartProps) => {
                   >
                     {/* Delete Item Interaction */}
                     <Button
-                      onClick={() => handleRemoveItemFromCart(item.id)}
+                      onClick={() =>
+                        handleRemoveItemFromCart(item.id, item.medicineId)
+                      }
                       className="mt-1 w-fit h-fit p-0.5 rounded-full bg-rose-50 text-rose-500 hover:text-rose-500 transition-colors cursor-pointer"
                     >
                       <X className="w-3.5 h-3.5" />

@@ -10,6 +10,7 @@ import {
   getDiscountPercentage,
   getRating,
 } from "@/lib/utils";
+import ProductCardAddToCart from "./ProductCardAddToCart";
 
 interface ProductCardProps {
   medicine: Medicine;
@@ -144,15 +145,7 @@ export function ProductCard({ medicine, viewMode }: ProductCardProps) {
           </div>
 
           {/* Add to cart */}
-          <Button
-            className={isList ? "w-full" : ""}
-            variant="outline"
-            size="lg"
-            aria-label={`Add ${medicine.name} to cart`}
-          >
-            <ShoppingBag className="w-4 h-4" />
-            Add to cart
-          </Button>
+          <ProductCardAddToCart medicine={medicine} isList={isList} />
         </div>
       </div>
     </div>

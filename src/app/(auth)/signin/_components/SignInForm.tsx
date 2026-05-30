@@ -23,6 +23,8 @@ import { toast } from "sonner";
 import * as z from "zod";
 import SocialAuth from "../../_components/SocialAuth";
 import { useRouter } from "next/navigation";
+import { clearLocalCart, getLocalCart } from "@/lib/local-cart";
+import { syncGuestCartWithDatabase } from "@/actions/cart.action";
 
 const SignInSchema = z.object({
   email: z.email("Invalid email address"),
@@ -49,9 +51,37 @@ export function SignInForm({ ...props }: React.ComponentProps<"div">) {
           });
           return;
         }
+
         toast.success("Signed in successfully!", {
           id: toastId,
         });
+
+        // Cart sync
+        const guestCart = getLocalCart();
+
+        if (guestCart.length > 0) {
+          toast.loading("Syncing your temporary cart items...", {
+            id: toastId,
+          });
+
+          const syncRes = await syncGuestCartWithDatabase(guestCart);
+          console.log("Cart sync result:", syncRes);
+          if (syncRes.success) {
+            clearLocalCart();
+            toast.success("Cart synchronized successfully!", {
+              id: toastId,
+            });
+          } else {
+            console.error("Cart synchronization failed:", syncRes.message);
+            toast.error(
+              "Sign in succeeded, but temporary items could not sync.",
+              {
+                id: toastId,
+              },
+            );
+          }
+        }
+
         router.push("/");
       } catch {
         toast.error("An unexpected error occurred. Please try again.", {

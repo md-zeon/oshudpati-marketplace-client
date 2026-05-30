@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Medicine } from "@/types";
 import { toast } from "sonner";
 import { addToCart } from "@/actions/cart.action";
+import { getLocalCart, saveLocalCart } from "@/lib/local-cart";
 
 interface MedicineActionsProps {
   medicine: Medicine;
@@ -28,10 +29,47 @@ export function MedicineActions({ medicine }: MedicineActionsProps) {
 
   const handleAddToCart = async () => {
     const res = await addToCart(medicine.id, quantity);
-    if (res.success) {
-      toast.success(`Added ${quantity} of ${medicine.name} to cart!`);
-    } else {
-      toast.error("Failed to add item to cart. Please try again.");
+    if (res.success && res.mode === "database") {
+      toast.success(
+        `Added ${quantity} ${quantity === 1 ? "unit" : "units"} of ${medicine.name} to cart!`,
+      );
+      return;
+    }
+
+    if (res.mode === "guest") {
+      const currentCart = getLocalCart();
+      const existingItemIndex = currentCart.findIndex(
+        (item) => item.medicineId === medicine.id,
+      );
+
+      // If item already exists in cart, update quantity (ensuring it doesn't exceed stock), otherwise add new item
+      if (existingItemIndex > -1) {
+        currentCart[existingItemIndex].quantity = Math.min(
+          currentCart[existingItemIndex].quantity + quantity,
+          medicine.stockQuantity,
+        );
+      } else {
+        currentCart.push({
+          id: medicine.id, // Using medicine ID directly as item index layout fallback
+          userId: "guest",
+          medicineId: medicine.id,
+          quantity,
+          medicine: {
+            id: medicine.id,
+            name: medicine.name,
+            genericName: medicine.genericName,
+            slug: medicine.slug,
+            price: medicine.price.toString(),
+            discountPrice: medicine.discountPrice?.toString() || "",
+            stockQuantity: medicine.stockQuantity,
+            images: medicine.images || [],
+          },
+        });
+      }
+      saveLocalCart(currentCart);
+      toast.success(
+        `Added ${quantity} ${quantity === 1 ? "unit" : "units"} of ${medicine.name} to guest cart!`,
+      );
     }
   };
 

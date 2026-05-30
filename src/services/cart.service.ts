@@ -80,4 +80,22 @@ export const CartService = {
       console.log("Error removing item from cart:", error);
     }
   },
+  mergeGuestCart: async (items: { medicineId: string; quantity: number }[]) => {
+    try {
+      const cookieStore = await cookies();
+      const res = await fetch(`${API_URL}/cart/merge`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookieStore.toString(),
+        },
+        body: JSON.stringify({ items }),
+      });
+      const data = await res.json();
+
+      return data;
+    } catch (error) {
+      console.log("Error merging guest cart:", error);
+    }
+  },
 };

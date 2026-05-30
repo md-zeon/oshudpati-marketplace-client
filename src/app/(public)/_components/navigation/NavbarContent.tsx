@@ -315,7 +315,10 @@ const NavbarContent = async () => {
           )}
 
           {/* Cart */}
-          <Cart cart={cart.success ? cart.data : []} />
+          <Cart
+            cart={cart.success ? cart.data : []}
+            isLoggedIn={session.success}
+          />
         </div>
       </div>
     </nav>

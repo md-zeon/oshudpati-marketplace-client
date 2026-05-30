@@ -8,3 +8,5 @@ export type {
   ShopSidebarProps,
   ProductGridProps,
 } from "./shop.type";
+
+export type { CartItem } from "./cart.type";
