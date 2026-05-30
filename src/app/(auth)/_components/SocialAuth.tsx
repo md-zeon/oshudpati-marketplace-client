@@ -1,15 +1,18 @@
 "use client";
+import { syncGuestCartWithDatabase } from "@/actions/cart.action";
 import { Button } from "@/components/ui/button";
 import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
+import { clearLocalCart, getLocalCart } from "@/lib/local-cart";
 import Image from "next/image";
+import { toast } from "sonner";
 
 const SocialAuth = () => {
   const handleGoogleLogin = async () => {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: env.NEXT_PUBLIC_FRONTEND_URL,
+        callbackURL: `${env.NEXT_PUBLIC_FRONTEND_URL}/auth-callback`,
       });
     } catch (error) {
       console.error("Google login failed:", error);
@@ -20,7 +23,7 @@ const SocialAuth = () => {
     try {
       await authClient.signIn.social({
         provider: "github",
-        callbackURL: env.NEXT_PUBLIC_FRONTEND_URL,
+        callbackURL: `${env.NEXT_PUBLIC_FRONTEND_URL}/auth-callback`,
       });
     } catch (error) {
       console.error("GitHub login failed:", error);

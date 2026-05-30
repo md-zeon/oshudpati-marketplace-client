@@ -56,33 +56,7 @@ export function SignInForm({ ...props }: React.ComponentProps<"div">) {
           id: toastId,
         });
 
-        // Cart sync
-        const guestCart = getLocalCart();
-
-        if (guestCart.length > 0) {
-          toast.loading("Syncing your temporary cart items...", {
-            id: toastId,
-          });
-
-          const syncRes = await syncGuestCartWithDatabase(guestCart);
-          console.log("Cart sync result:", syncRes);
-          if (syncRes.success) {
-            clearLocalCart();
-            toast.success("Cart synchronized successfully!", {
-              id: toastId,
-            });
-          } else {
-            console.error("Cart synchronization failed:", syncRes.message);
-            toast.error(
-              "Sign in succeeded, but temporary items could not sync.",
-              {
-                id: toastId,
-              },
-            );
-          }
-        }
-
-        router.push("/");
+        router.push("/auth-callback");
       } catch {
         toast.error("An unexpected error occurred. Please try again.", {
           id: toastId,

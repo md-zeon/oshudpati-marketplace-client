@@ -7,6 +7,10 @@ export async function proxy(req: NextRequest) {
   let isAuthenticated = false;
   let userRole = Roles.CUSTOMER;
 
+  if (pathname === "/auth-callback") {
+    return NextResponse.next();
+  }
+
   const session = await userService.getSession();
 
   console.log("Session:", session);
@@ -24,7 +28,10 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/signin", req.url));
   }
 
-  if ((isAuthenticated && pathname === "/signin") || pathname === "/signup") {
+  if (
+    (isAuthenticated && pathname === "/signin") ||
+    (isAuthenticated && pathname === "/signup")
+  ) {
     // Redirect to the appropriate dashboard based on user role
     if (userRole === Roles.ADMIN) {
       return NextResponse.redirect(new URL("/admin/dashboard", req.url));
@@ -58,5 +65,10 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*", "/seller/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/admin/:path*",
+    "/seller/:path*",
+    "/auth-callback",
+  ],
 };
