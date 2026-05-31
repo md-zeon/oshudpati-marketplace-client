@@ -7,6 +7,7 @@ interface ServiceOptions {
 }
 
 const API_URL = env.API_URL;
+
 export const CartService = {
   addItemToCart: async (itemId: string, quantity: number) => {
     try {
@@ -96,6 +97,23 @@ export const CartService = {
       return data;
     } catch (error) {
       console.log("Error merging guest cart:", error);
+    }
+  },
+  updateCartItem: async (itemId: string, quantity: number) => {
+    try {
+      const cookieStore = await cookies();
+      const res = await fetch(`${API_URL}/cart/${itemId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookieStore.toString(),
+        },
+        body: JSON.stringify({ quantity }),
+      });
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.log("Error updating cart item:", error);
     }
   },
 };
