@@ -1,8 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Medicine } from "@/types";
-import { MessageSquare } from "lucide-react";
+import { Medicine, Review } from "@/types";
+import { ReviewList } from "./ReviewList";
+import { ReviewFormWrapper } from "./ReviewFormWrapper";
 
-const AdditionalInfoTabs = ({ medicine }: { medicine: Medicine | null }) => {
+interface AdditionalInfoTabsProps {
+  medicine: Medicine;
+}
+
+const AdditionalInfoTabs = async ({ medicine }: AdditionalInfoTabsProps) => {
   if (!medicine) {
     return (
       <div className="min-h-[30vh] flex items-center justify-center text-center p-4">
@@ -11,6 +16,18 @@ const AdditionalInfoTabs = ({ medicine }: { medicine: Medicine | null }) => {
         </p>
       </div>
     );
+  }
+
+  // Fetch reviews on the server
+  let reviews: Review[] = [];
+  try {
+    const { ReviewService } = await import("@/services/review.service");
+    const res = await ReviewService.getMedicineReviews(medicine.id);
+    if (res?.success) {
+      reviews = (res.data as Review[]) || [];
+    }
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
   }
 
   return (
@@ -60,6 +77,7 @@ const AdditionalInfoTabs = ({ medicine }: { medicine: Medicine | null }) => {
           </div>
         </div>
       </TabsContent>
+
       {/* 2. Additional Info Tab */}
       <TabsContent
         value="Additional Information"
@@ -109,17 +127,15 @@ const AdditionalInfoTabs = ({ medicine }: { medicine: Medicine | null }) => {
 
       {/* 3. Reviews Tab */}
       <TabsContent value="Reviews" className="mt-0 px-2 outline-none">
-        <div className="py-10 text-center">
-          <div className="flex justify-center mb-4">
-            <MessageSquare className="w-12 h-12 text-slate-200" />
-          </div>
-          <h3 className="text-lg font-bold text-slate-900">No reviews yet</h3>
-          <p className="text-slate-500 text-sm mb-6">
-            Be the first to review &quot;{medicine.name}&quot;
-          </p>
-          <button className="bg-slate-900 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors">
-            Write a Review
-          </button>
+        <div className="py-6 space-y-8">
+          <ReviewList reviews={reviews} />
+
+          <ReviewFormWrapper
+            medicineId={medicine.id}
+            medicineName={medicine.name}
+            totalReviews={reviews.length}
+            reviews={reviews}
+          />
         </div>
       </TabsContent>
     </Tabs>

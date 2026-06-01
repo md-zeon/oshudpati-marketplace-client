@@ -22,3 +22,10 @@ export type {
   OrderItemSnapshot,
   SellerSnapshot,
 } from "./order.type";
+
+export type {
+  Review,
+  CreateReviewPayload,
+  UpdateReviewPayload,
+  ReviewMeta,
+} from "./review.type";
