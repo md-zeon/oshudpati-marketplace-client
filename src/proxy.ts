@@ -13,16 +13,12 @@ export async function proxy(req: NextRequest) {
 
   const session = await userService.getSession();
 
-  console.log("Session:", session);
-
   if (session.success) {
     isAuthenticated = true;
     userRole = session.data.user.role;
   } else {
     console.error("Failed to fetch session:", session);
   }
-
-  console.log("Authentication status:", { isAuthenticated, userRole });
 
   if (!isAuthenticated) {
     return NextResponse.redirect(new URL("/signin", req.url));

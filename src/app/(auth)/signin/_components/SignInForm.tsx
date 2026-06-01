@@ -23,15 +23,16 @@ import { toast } from "sonner";
 import * as z from "zod";
 import SocialAuth from "../../_components/SocialAuth";
 import { useRouter } from "next/navigation";
-import { clearLocalCart, getLocalCart } from "@/lib/local-cart";
-import { syncGuestCartWithDatabase } from "@/actions/cart.action";
 
 const SignInSchema = z.object({
   email: z.email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-export function SignInForm({ ...props }: React.ComponentProps<"div">) {
+export function SignInForm({
+  redirect,
+  ...props
+}: { redirect?: string } & React.ComponentProps<"div">) {
   const router = useRouter();
   const form = useForm({
     defaultValues: {
@@ -46,9 +47,23 @@ export function SignInForm({ ...props }: React.ComponentProps<"div">) {
       try {
         const { data, error } = await authClient.signIn.email(value);
         if (error) {
-          toast.error(error.message, {
-            id: toastId,
-          });
+          console.error("Sign-in error:", error);
+          console.error("data:", data);
+          if (error.status === 403) {
+            toast.error(
+              "Your email is not verified. Please verify your email before signing in.",
+              { id: toastId },
+            );
+            router.push(
+              "/verify-email?email=" +
+                encodeURIComponent(value.email) +
+                (redirect ? `&redirect=${encodeURIComponent(redirect)}` : ""),
+            );
+          } else {
+            toast.error(error.message, {
+              id: toastId,
+            });
+          }
           return;
         }
 
@@ -56,7 +71,13 @@ export function SignInForm({ ...props }: React.ComponentProps<"div">) {
           id: toastId,
         });
 
-        router.push("/auth-callback");
+        if (redirect) {
+          router.push(
+            "/auth-callback?redirect=" + encodeURIComponent(redirect || "/"),
+          );
+        } else {
+          router.push("/auth-callback");
+        }
       } catch {
         toast.error("An unexpected error occurred. Please try again.", {
           id: toastId,
@@ -147,7 +168,16 @@ export function SignInForm({ ...props }: React.ComponentProps<"div">) {
               </Button>
               <SocialAuth />
               <FieldDescription className="text-center">
-                Don&apos;t have an account? <Link href="/signup">Sign up</Link>
+                Don&apos;t have an account?{" "}
+                <Link
+                  href={
+                    redirect
+                      ? `/signup?redirect=${encodeURIComponent(redirect)}`
+                      : "/signup"
+                  }
+                >
+                  Sign up
+                </Link>
               </FieldDescription>
             </Field>
           </FieldGroup>

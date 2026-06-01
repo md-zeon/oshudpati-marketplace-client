@@ -26,6 +26,8 @@ import { Roles } from "@/constants/roles";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ShoppingBag, Store } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
+import { env } from "@/env";
 
 const SignupSchema = z.object({
   name: z.string().min(3, "Name is required"),
@@ -36,7 +38,11 @@ const SignupSchema = z.object({
   }),
 });
 
-export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+export function SignupForm({
+  redirect,
+  ...props
+}: React.ComponentProps<typeof Card> & { redirect?: string }) {
+  const router = useRouter();
   const form = useForm({
     defaultValues: {
       name: "",
@@ -51,7 +57,12 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       const toastId = toast.loading("Creating your account...");
 
       try {
-        const { data, error } = await authClient.signUp.email(value);
+        const { data, error } = await authClient.signUp.email({
+          ...value,
+          callbackURL:
+            `${env.NEXT_PUBLIC_FRONTEND_URL}/email-verified` +
+            (redirect ? `?redirect=${encodeURIComponent(redirect)}` : ""),
+        });
         console.log("Signup response:", { data, error });
         if (error) {
           toast.error(error.message, {
@@ -64,6 +75,10 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
           {
             id: toastId,
           },
+        );
+        router.push(
+          "/verify-email" +
+            (redirect ? `?redirect=${encodeURIComponent(redirect)}` : ""),
         );
       } catch {
         toast.error("An unexpected error occurred. Please try again.", {

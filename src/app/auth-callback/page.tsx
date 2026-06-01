@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { syncGuestCartWithDatabase } from "@/actions/cart.action";
 import { clearLocalCart, getLocalCart } from "@/lib/local-cart";
 import { authClient } from "@/lib/auth-client";
@@ -8,6 +8,8 @@ import { toast } from "sonner";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect") || "/";
   const { data: session, isPending } = authClient.useSession();
   const syncStarted = useRef(false);
   const [message, setMessage] = useState("Finalizing your sign-in...");
@@ -51,12 +53,13 @@ export default function AuthCallbackPage() {
         }
       }
 
-      // Finally, redirect home
-      router.push("/");
+      // Finally, redirect the user to the intended page
+      setMessage("Redirecting you to your destination...");
+      router.push(redirect);
     };
 
     syncCart();
-  }, [session, isPending, router]);
+  }, [session, isPending, router, redirect]);
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-4">
