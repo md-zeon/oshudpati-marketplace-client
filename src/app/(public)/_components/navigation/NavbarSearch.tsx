@@ -1,228 +1,142 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Search, Pill, Activity, ShoppingBag } from "lucide-react";
-import {
-  Command,
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "@/components/ui/command";
-import { Kbd } from "@/components/ui/kbd";
-
-export const NavbarSearch = () => {
-  const [open, setOpen] = useState(false);
-
-  //   Keyboard shortcut listener (Ctrl+K or Cmd+K to open search)
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((open) => !open);
-      }
-    };
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
-
-  return (
-    <Command>
-      {/* Trigger Button - Mimics an input field */}
-      <div
-        onClick={() => setOpen(true)}
-        className="relative w-full max-w-md md:max-w-xl lg:max-w-2xl cursor-pointer"
-      >
-        <div className="flex items-center w-full h-11 px-4 rounded-full border text-slate-500 hover:border-blue-400  transition-all shadow-sm">
-          <Search className="mr-2 h-4 w-4 text-slate-400 shrink-0" />
-          <span className="text-sm flex-1 text-left">
-            Search medicines, generics, health products...
-          </span>
-          <Kbd className="pointer-events-none hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-            <span className="text-xs">⌘</span>K
-          </Kbd>
-        </div>
-      </div>
-
-      {/* shadcn Command Dialog Menu */}
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type medicine name or generic" />
-        <CommandList className="max-h-100">
-          <CommandEmpty>No results found for your search.</CommandEmpty>
-
-          {/* Section 1: Top/Frequent Medicines */}
-          <CommandGroup heading="Popular Medicines">
-            <CommandItem className="cursor-pointer flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Pill className="h-4 w-4 text-blue-500" />
-                <span>
-                  Napa Extend{" "}
-                  <span className="text-xs text-slate-400">(665 mg)</span>
-                </span>
-              </div>
-              <span className="text-xs font-semibold text-slate-500">
-                Beximco
-              </span>
-            </CommandItem>
-            <CommandItem className="cursor-pointer flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Pill className="h-4 w-4 text-blue-500" />
-                <span>
-                  Sergel <span className="text-xs text-slate-400">(20 mg)</span>
-                </span>
-              </div>
-              <span className="text-xs font-semibold text-slate-500">
-                Healthcare
-              </span>
-            </CommandItem>
-          </CommandGroup>
-
-          <CommandSeparator />
-
-          {/* Section 2: Generics Search */}
-          <CommandGroup heading="Search by Generics">
-            <CommandItem className="cursor-pointer flex items-center gap-2">
-              <Activity className="h-4 w-4 text-emerald-500" />
-              <span>Paracetamol</span>
-            </CommandItem>
-            <CommandItem className="cursor-pointer flex items-center gap-2">
-              <Activity className="h-4 w-4 text-emerald-500" />
-              <span>Esomeprazole</span>
-            </CommandItem>
-          </CommandGroup>
-
-          <CommandSeparator />
-
-          {/* Section 3: Healthcare Marketplace Categories */}
-          <CommandGroup heading="OTC & Health Categories">
-            <CommandItem className="cursor-pointer flex items-center gap-2">
-              <ShoppingBag className="h-4 w-4 text-purple-500" />
-              <span>Baby Care Products</span>
-            </CommandItem>
-            <CommandItem className="cursor-pointer flex items-center gap-2">
-              <ShoppingBag className="h-4 w-4 text-purple-500" />
-              <span>Multivitamins & Supplements</span>
-            </CommandItem>
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
-    </Command>
-  );
-};
-
-/*
-Will make better that both up and down code one will be used in mobile and another one in desktop. Because in mobile we can not show dropdown as it is in desktop. We have to show it in full screen modal. So we can use shadcn command dialog for that. And in desktop we can show dropdown as it is. So we can use both code and show them based on screen size. We can use media query for that. We can use tailwind's responsive classes for that. For example, we can use hidden md:block for desktop and block md:hidden for mobile. So we can show dropdown in desktop and command dialog in mobile. This way we can provide better user experience for both mobile and desktop users.
-
-"use client";
-
-import React, { useState, useRef, useEffect } from "react";
-import { Search, Pill, Activity, X } from "lucide-react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
+import { Search, Pill, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Medicine } from "@/types";
 import { Input } from "@/components/ui/input";
 
-export const NavbarSearch = () => {
+interface NavbarSearchProps {
+  medicines: Medicine[];
+}
+
+export const NavbarSearch = ({ medicines = [] }: NavbarSearchProps) => {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const searchRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // // Close dropdown when clicking outside
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     if (
-  //       searchRef.current &&
-  //       !searchRef.current.contains(event.target as Node)
-  //     ) {
-  //       setIsOpen(false);
-  //     }
-  //   };
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => document.removeEventListener("mousedown", handleClickOutside);
-  // }, []);
+  // Instant desktop client-side filter
+  const filteredResults = useMemo(() => {
+    if (!query.trim()) return [];
+    return medicines
+      .filter((med) => {
+        const target =
+          `${med.name} ${med.genericName} ${med.manufacturerName}`.toLowerCase();
+        return target.includes(query.toLowerCase());
+      })
+      .slice(0, 6); // Keep it compact for desktop dropdown layout
+  }, [query, medicines]);
 
-  // const handleSearchSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   if (!query.trim()) return;
-  //   // Redirect to your dedicated search results page
-  //   window.location.href = `/search?q=${encodeURIComponent(query)}`;
-  // };
+  // Click outside listener to dismiss search dropdown
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  const handleSelect = (slug: string) => {
+    setIsOpen(false);
+    setQuery("");
+    router.push(`/medicine/${slug}`);
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (query.trim()) {
+      setIsOpen(false);
+      router.push(`/shop?search=${encodeURIComponent(query.trim())}`);
+    }
+  };
 
   return (
-    <div ref={searchRef} className="relative w-full max-w-xl mx-auto">
-      <form
-        // onSubmit={handleSearchSubmit}
-        className="relative flex items-center"
-      >
+    <div ref={containerRef} className="w-full max-w-xl relative mx-auto">
+      <form onSubmit={handleFormSubmit} className="relative flex items-center">
         <Input
           type="text"
-          placeholder="Search medicines, generics, health products..."
+          placeholder="Search medicines, generics, manufacturers..."
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
-            setIsOpen(e.target.value.length > 0);
+            setIsOpen(true);
           }}
-          onFocus={() => {
-            if (query.length > 0) setIsOpen(true);
-          }}
-          className="w-full h-11 pl-11 pr-10 rounded-full border border-slate-200 bg-slate-50 focus-visible:bg-white focus-visible:ring-blue-500 text-sm transition-all"
+          onFocus={() => setIsOpen(true)}
+          className="w-full h-11 pl-11 pr-10 rounded-full border border-slate-200 bg-slate-50 focus-visible:bg-white text-sm focus-visible:ring-1 focus-visible:ring-primary"
         />
         <Search className="absolute left-4 h-4 w-4 text-slate-400 pointer-events-none" />
-
         {query && (
           <button
             type="button"
-            onClick={() => {
-              setQuery("");
-              setIsOpen(false);
-            }}
-            className="absolute right-4 p-0.5 rounded-full hover:bg-slate-200 text-slate-400"
+            onClick={() => setQuery("")}
+            className="absolute right-4 text-slate-400 hover:text-slate-600 transition-colors"
           >
-            <X className="h-3 w-3" />
+            <X className="h-4 w-4" />
           </button>
         )}
       </form>
 
-      {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-100 rounded-2xl shadow-xl z-50 max-h-[380px] overflow-y-auto overflow-x-hidden p-2">
-          <div className="p-2 text-[11px] font-bold tracking-wider text-slate-400 uppercase">
-            Suggested Medicines
-          </div>
-          <div className="space-y-0.5">
-            <button className="w-full text-left px-3 py-2 rounded-lg text-sm flex items-center justify-between hover:bg-slate-50 transition-colors">
-              <div className="flex items-center gap-2.5">
-                <Pill className="h-4 w-4 text-blue-500" />
-                <span className="font-medium text-slate-700">
-                  Napa Extend (665mg)
-                </span>
+      {/* AUTOCOMPLETE SUGGESTIONS POPUP */}
+      {isOpen && query.trim().length > 0 && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white border rounded-2xl shadow-xl z-50 max-h-95 overflow-y-auto p-2 animate-in fade-in-50 slide-in-from-top-1 duration-150">
+          {filteredResults.length === 0 ? (
+            <div className="text-center py-6 text-sm text-muted-foreground">
+              No matching medicines found.
+            </div>
+          ) : (
+            <>
+              <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                Suggested Products
               </div>
-              <span className="text-xs font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
-                Beximco
-              </span>
-            </button>
-          </div>
+              <div className="space-y-0.5">
+                {filteredResults.map((medicine) => (
+                  <button
+                    key={medicine.id}
+                    onClick={() => handleSelect(medicine.slug)}
+                    className="w-full text-left px-3 py-2.5 rounded-xl text-sm flex items-center justify-between hover:bg-slate-50 transition-colors group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                        <Pill className="h-4 w-4 text-primary" />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-bold text-slate-800 group-hover:text-primary transition-colors">
+                          {medicine.name}
+                        </span>
+                        <span className="text-xs text-muted-foreground font-normal italic">
+                          {medicine.genericName} • {medicine.strength}
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 bg-slate-100 px-2 py-1 rounded-md group-hover:bg-white group-hover:border transition-all">
+                      {medicine.manufacturerName}
+                    </span>
+                  </button>
+                ))}
+              </div>
 
-          <div className="my-1.5 border-t border-slate-100" />
-
-          <div className="p-2 text-[11px] font-bold tracking-wider text-slate-400 uppercase">
-            Generics / Alternates
-          </div>
-          <div className="space-y-0.5">
-            <button className="w-full text-left px-3 py-2 rounded-lg text-sm flex items-center gap-2.5 hover:bg-slate-50 text-slate-700 transition-colors">
-              <Activity className="h-4 w-4 text-emerald-500" />
-              <span>Paracetamol</span>
-            </button>
-          </div>
-
-          <div className="mt-2 p-2 bg-slate-50 rounded-xl text-center text-xs text-slate-400">
-            Press <kbd className="font-sans font-semibold">Enter ↵</kbd> to view
-            all matching items
-          </div>
+              {/* See All Redirect Link */}
+              <div className="border-t mt-2 pt-2 px-1">
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    router.push(`/shop?search=${encodeURIComponent(query)}`);
+                  }}
+                  className="w-full text-center text-xs text-primary font-bold bg-primary/5 hover:bg-primary/10 rounded-xl py-2 transition-colors"
+                >
+                  See all results for &quot;{query}&quot;
+                </button>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
   );
 };
-
-
-*/

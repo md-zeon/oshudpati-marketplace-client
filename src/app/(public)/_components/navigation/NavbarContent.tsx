@@ -22,8 +22,9 @@ import { Button } from "@/components/ui/button";
 import Signout from "@/app/(auth)/_components/Signout";
 import { CartService } from "@/services/cart.service";
 import Cart from "@/components/shared/cart/Cart";
+import { Medicine } from "@/types";
 
-const NavbarContent = async () => {
+const NavbarContent = async ({ medicines = [] }: { medicines: Medicine[] }) => {
   const sessionPromise = userService.getSession();
   const cartPromise = CartService.getCartItems({ cache: "no-store" });
 
@@ -45,7 +46,7 @@ const NavbarContent = async () => {
 
         {/* Search Area  */}
         <div className="flex-1 max-w-xl mx-2 md:mx-8">
-          <NavbarSearch />
+          <NavbarSearch medicines={medicines} />
         </div>
 
         {/* Navigation */}

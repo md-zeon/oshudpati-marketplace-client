@@ -11,17 +11,27 @@ import Link from "next/link";
 import NavbarContent from "./(public)/_components/navigation/NavbarContent";
 import MobileNavbarHeader from "./(public)/_components/navigation/MobileNavbarHeader";
 import MobileNavbarFooter from "./(public)/_components/navigation/MobileNavbarFooter";
+import { Medicine } from "@/types";
+import { MedicineService } from "@/services/medicine.service";
 
 export const metadata = {
   title: "Page Not Found",
   description: "The page you are looking for does not exist.",
 };
 
-const NotFoundPage = () => {
+const NotFoundPage = async () => {
+  const medicineResponse = await MedicineService.getMedicines(
+    { limit: 100 },
+    { revalidate: 60 },
+  );
+
+  const initialMedicines: Medicine[] = medicineResponse?.success
+    ? medicineResponse.data
+    : [];
   return (
     <>
       {/* Navbar Desktop */}
-      <NavbarContent />
+      <NavbarContent medicines={initialMedicines} />
       {/* Mobile Navbar */}
       <MobileNavbarHeader />
       <div className="relative min-h-screen w-full items-center justify-center overflow-hidden">
@@ -47,7 +57,7 @@ const NotFoundPage = () => {
           </EmptyContent>
         </Empty>
       </div>
-      <MobileNavbarFooter />
+      <MobileNavbarFooter medicines={initialMedicines} />
     </>
   );
 };

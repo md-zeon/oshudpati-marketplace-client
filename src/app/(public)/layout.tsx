@@ -6,8 +6,19 @@ import NavbarFooter from "./_components/navigation/NavbarFooter";
 import MobileNavbarHeader from "./_components/navigation/MobileNavbarHeader";
 import MobileNavbarFooter from "./_components/navigation/MobileNavbarFooter";
 import { AppBreadcrumb } from "@/components/shared/AppBreadcrumb";
+import { MedicineService } from "@/services/medicine.service";
+import { Medicine } from "@/types";
 
-const PublicLayout = ({ children }: { children: React.ReactNode }) => {
+const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
+  const medicineResponse = await MedicineService.getMedicines(
+    { limit: 100 },
+    { revalidate: 60 },
+  );
+
+  const initialMedicines: Medicine[] = medicineResponse?.success
+    ? medicineResponse.data
+    : [];
+
   return (
     <>
       {/* ================= DESKTOP ================= */}
@@ -15,7 +26,7 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => {
         <SiteAnnouncement />
         <NavbarHeader />
       </header>
-      <NavbarContent />
+      <NavbarContent medicines={initialMedicines} />
       <NavbarFooter />
 
       {/* ================= MOBILE ================= */}
@@ -27,7 +38,7 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => {
         {children}
       </main>
       <footer>Public Footer</footer>
-      <MobileNavbarFooter />
+      <MobileNavbarFooter medicines={initialMedicines} />
     </>
   );
 };
