@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/hover-card";
 import { removeFromCart } from "@/actions/cart.action";
 import { toast } from "sonner";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { getLocalCart, saveLocalCart } from "@/lib/local-cart";
 import { CartItem } from "@/types";
 import { env } from "@/env";
@@ -26,12 +26,8 @@ const FREE_SHIPPING_THRESHOLD = env.NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD;
 
 const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
   const [runtimeCart, setRuntimeCart] = useState<CartItem[]>(cart);
-
-  const mounted = useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false,
-  );
+  // mark mounted based on whether window is available to avoid setting state in effect
+  const [mounted] = useState<boolean>(typeof window !== "undefined");
 
   useEffect(() => {
     // Sync local state based on auth status

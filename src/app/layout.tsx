@@ -56,7 +56,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${fredoka.variable} h-full antialiased`}
       suppressHydrationWarning={true}
     >
-      <body className="max-w-360 mx-auto">
+      <body className="max-w-360 mx-auto" suppressHydrationWarning={true}>
         {children}
         <Toaster richColors />
       </body>
