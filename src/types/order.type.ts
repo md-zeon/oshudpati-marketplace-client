@@ -39,7 +39,13 @@ export interface VendorOrder {
   id: string;
   orderId: string;
   sellerId: string;
-  orderStatus: "PLACED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | string;
+  orderStatus:
+    | "PLACED"
+    | "PROCESSING"
+    | "SHIPPED"
+    | "DELIVERED"
+    | "CANCELLED"
+    | string;
   vendorSubtotal: string;
   createdAt: string;
   updatedAt: string;

@@ -15,3 +15,9 @@ export const submitOrderAction = async (payload: CreateOrderPayload) => {
 
   return res;
 };
+
+export const getOrderByOrderNumber = async (orderNumber: string) => {
+  const res = await OrderService.getOrderByOrderNumber(orderNumber);
+
+  return res;
+};

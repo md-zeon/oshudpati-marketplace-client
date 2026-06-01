@@ -51,7 +51,7 @@ const NavbarContent = async () => {
         {/* Navigation */}
         <div className="flex items-center gap-2 md:gap-4 shrink-0">
           {/* Track Your Order */}
-          <div className="flex items-center gap-1 cursor-pointer">
+          <Link href="/order-tracking" className="flex items-center gap-1">
             <Truck className="text-slate-600 inline-block" size={36} />
             <div className="font-medium leading-tight">
               <p className="text-sm leading-tight font-medium text-slate-600 hover:text-blue-600 cursor-pointer">
@@ -59,7 +59,7 @@ const NavbarContent = async () => {
               </p>
               <span className="text-base leading-tight">Your Order</span>
             </div>
-          </div>
+          </Link>
 
           {/* Account */}
           {user ? (
