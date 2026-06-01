@@ -15,13 +15,14 @@ import { toast } from "sonner";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { getLocalCart, saveLocalCart } from "@/lib/local-cart";
 import { CartItem } from "@/types";
+import { env } from "@/env";
 
 interface CartProps {
   cart: CartItem[];
   isLoggedIn?: boolean;
 }
 
-const FREE_SHIPPING_THRESHOLD = 300;
+const FREE_SHIPPING_THRESHOLD = env.NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD;
 
 const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
   const [runtimeCart, setRuntimeCart] = useState<CartItem[]>(cart);

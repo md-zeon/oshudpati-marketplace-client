@@ -7,10 +7,14 @@ export const env = createEnv({
     FRONTEND_URL: z.url(),
     API_URL: z.url(),
     AUTH_URL: z.url(),
+    FREE_SHIPPING_THRESHOLD: z.number().positive(),
+    FLAT_SHIPPING_CHARGE: z.number().positive(),
   },
   client: {
     NEXT_PUBLIC_BACKEND_URL: z.url(),
     NEXT_PUBLIC_FRONTEND_URL: z.url(),
+    NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD: z.number().positive(),
+    NEXT_PUBLIC_FLAT_SHIPPING_CHARGE: z.number().positive(),
   },
 
   runtimeEnv: {
@@ -18,7 +22,14 @@ export const env = createEnv({
     FRONTEND_URL: process.env.FRONTEND_URL,
     API_URL: process.env.API_URL,
     AUTH_URL: process.env.AUTH_URL,
+    FREE_SHIPPING_THRESHOLD: process.env.FREE_SHIPPING_THRESHOLD,
+    FLAT_SHIPPING_CHARGE: process.env.FLAT_SHIPPING_CHARGE,
+
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
     NEXT_PUBLIC_FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL,
+    NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD:
+      process.env.NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD,
+    NEXT_PUBLIC_FLAT_SHIPPING_CHARGE:
+      process.env.NEXT_PUBLIC_FLAT_SHIPPING_CHARGE,
   },
 });

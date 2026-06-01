@@ -45,6 +45,24 @@ export const removeFromCart = async (itemId: string) => {
   };
 };
 
+export const getCartItems = async (options?: { cache?: RequestCache }) => {
+  const res = await CartService.getCartItems(options);
+  if (res.success) {
+    return {
+      success: true,
+      mode: "database",
+      data: res.data,
+      message: res.message,
+    };
+  }
+  return {
+    success: false,
+    mode: "guest",
+    data: [],
+    message: res.message || "You are not logged in. Showing local cart items.",
+  };
+};
+
 export const syncGuestCartWithDatabase = async (guestItems: CartItem[]) => {
   try {
     if (!guestItems || guestItems.length === 0) return { success: true };

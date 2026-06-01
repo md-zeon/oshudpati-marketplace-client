@@ -5,63 +5,35 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { getLocalCart, saveLocalCart, clearLocalCart } from "@/lib/local-cart";
+import { getLocalCart, saveLocalCart } from "@/lib/local-cart";
 import { CartItem } from "@/types";
 import { addToCart, removeFromCart } from "@/actions/cart.action";
-import {
-  ChevronRight,
-  ShoppingBag,
-  Minus,
-  Plus,
-  X,
-  ShoppingCart,
-} from "lucide-react";
+import { ShoppingBag, Minus, Plus, X } from "lucide-react";
+import { env } from "@/env";
+import EmptyCart from "./EmptyCart";
 
-const FREE_SHIPPING_THRESHOLD = 300;
-const FLAT_SHIPPING_CHARGE = 50;
+const FREE_SHIPPING_THRESHOLD = env.NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD;
+const FLAT_SHIPPING_CHARGE = env.NEXT_PUBLIC_FLAT_SHIPPING_CHARGE;
 
 interface FullCartProps {
   initialCart: CartItem[];
   isLoggedIn?: boolean;
 }
 
-function EmptyCart() {
-  return (
-    <div className="flex flex-col items-center justify-center text-center py-12">
-      <div className="relative w-40 h-40 mb-6 flex items-center justify-center select-none">
-        <ShoppingCart className="w-20 h-20 text-slate-300" />
-        <span className="absolute top-3 right-3 text-5xl text-amber-400 font-black font-serif bottom-16 animate-pulse">
-          ?
-        </span>
-      </div>
-
-      <div className="w-full max-w-4xl border border-gray-200 bg-white py-4 px-6 rounded text-center mb-8">
-        <p className="text-sm text-gray-700 font-medium tracking-wide">
-          Your cart is currently empty.
-        </p>
-      </div>
-
-      <Button
-        asChild
-        className="bg-[#121824] hover:bg-[#1f293d] text-white text-xs font-bold px-7 py-5 tracking-wide rounded-lg transition-colors duration-150"
-      >
-        <Link href="/shop">Return to shop</Link>
-      </Button>
-    </div>
-  );
-}
-
 export default function FullCart({
   initialCart = [],
   isLoggedIn = false,
 }: FullCartProps) {
-  const [cart, setCart] = useState<CartItem[]>(initialCart || []);
+  console.log("Initial cart items:", initialCart);
+
+  const [cart, setCart] = useState<CartItem[]>(initialCart ?? []);
 
   useEffect(() => {
     const onLocalCart = () =>
       setCart(isLoggedIn ? initialCart : getLocalCart());
     onLocalCart();
     window.addEventListener("local-cart-updated", onLocalCart);
+
     return () => window.removeEventListener("local-cart-updated", onLocalCart);
   }, [initialCart, isLoggedIn]);
 
@@ -70,19 +42,22 @@ export default function FullCart({
     const price = parseFloat(
       item.medicine.discountPrice || item.medicine.price || "0",
     );
+
     return acc + price * item.quantity;
   }, 0);
 
-  // Absolute Dynamic Flag Adjustments
   const isShippingFree = subtotal >= FREE_SHIPPING_THRESHOLD;
+
   const shippingCost =
     cart.length === 0 || isShippingFree ? 0 : FLAT_SHIPPING_CHARGE;
+
   const grandTotal = subtotal + shippingCost;
 
   const remainingForFreeShipping = Math.max(
     0,
     FREE_SHIPPING_THRESHOLD - subtotal,
   );
+
   const progressPercentage = Math.min(
     100,
     (subtotal / FREE_SHIPPING_THRESHOLD) * 100,
@@ -94,18 +69,22 @@ export default function FullCart({
     if (isLoggedIn) {
       try {
         const res = await addToCart(item.medicineId, newQty - item.quantity);
+
         if (res.success) {
           setCart((prev) =>
             prev.map((it) =>
               it.id === item.id ? { ...it, quantity: newQty } : it,
             ),
           );
+
           toast.success("Quantity updated");
         } else {
           toast.error(res.message || "Failed to update quantity");
         }
       } catch (e) {
-        toast.error("Server error updating quantity");
+        toast.error(
+          e instanceof Error ? e.message : "Server error updating quantity",
+        );
       }
     } else {
       const updated = cart.map((it) =>
@@ -113,31 +92,34 @@ export default function FullCart({
       );
       saveLocalCart(updated);
       setCart(updated);
-      toast.success("Quantity updated (guest)");
+
+      toast.success("Quantity updated");
     }
   };
 
   const handleRemove = async (item: CartItem) => {
     if (isLoggedIn) {
       const res = await removeFromCart(item.id);
+
       if (res.success) {
         setCart((prev) => prev.filter((it) => it.id !== item.id));
-        toast.success("Item removed");
+        toast.success("Item removed from cart");
       } else {
         toast.error(res.message || "Failed to remove item");
       }
     } else {
       const updated = cart.filter((it) => it.medicineId !== item.medicineId);
+
       saveLocalCart(updated);
       setCart(updated);
-      toast.success("Item removed from guest cart");
+      toast.success("Item removed from cart");
     }
   };
 
   if (!cart || cart.length === 0) return <EmptyCart />;
 
   return (
-    <div className="text-slate-900 selection:bg-blue-100">
+    <div className="text-slate-900 selection:bg-blue-100 mt-5">
       <div className="flex flex-col lg:flex-row gap-8 items-start">
         <div className="flex-1 w-full">
           {/* Realtime Actionable Shipping Progress Banner */}
@@ -224,7 +206,7 @@ export default function FullCart({
                         {item.medicine.name}
                       </Link>
                       <span className="text-xs text-slate-400 font-medium block mt-0.5 truncate">
-                        {item.medicine.genericName || "Pharmaceutical Option"}
+                        {item.medicine.genericName || "Not Provided"}
                       </span>
                     </div>
                   </div>
@@ -247,7 +229,7 @@ export default function FullCart({
                       >
                         <Minus className="w-3.5 h-3.5" />
                       </button>
-                      <span className="px-2 font-bold text-sm text-slate-800 min-w-[28px] text-center select-none">
+                      <span className="px-2 font-bold text-sm text-slate-800 min-w-7 text-center select-none">
                         {item.quantity}
                       </span>
                       <button
@@ -316,7 +298,7 @@ export default function FullCart({
               {/* Shipping Location will be dynamically updated in the future from address model */}
               <div className="text-xs text-slate-400 mt-1">
                 Shipping to{" "}
-                <span className="font-bold text-slate-700">Dhaka, BD.</span>
+                <span className="font-bold text-slate-700">Dhaka, BD</span>
               </div>
             </div>
           </div>
