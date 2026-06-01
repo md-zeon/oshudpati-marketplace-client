@@ -36,11 +36,11 @@ export default function AuthCallbackPage() {
         try {
           const syncRes = await syncGuestCartWithDatabase(guestCart);
 
-          if (syncRes.success) {
+          if (syncRes?.success) {
             clearLocalCart();
             toast.success("Cart synchronized successfully!", { id: toastId });
           } else {
-            console.error("Cart synchronization failed:", syncRes.message);
+            console.error("Cart synchronization failed:", syncRes?.message);
             toast.error("Signed in, but temporary items could not sync.", {
               id: toastId,
             });

@@ -6,6 +6,7 @@ import ShopHeader from "./_components/ShopHeader";
 import ShopSidebar from "./_components/ShopSidebar";
 import ProductGrid from "./_components/ProductGrid";
 import { parseShopFilters } from "@/lib/utils";
+import { Suspense } from "react";
 
 interface ShopPageProps {
   searchParams: Promise<SearchParams>;
@@ -83,7 +84,11 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         <main className="flex-1">
           <ProductGrid medicines={medicines} viewMode={filters.viewMode} />
 
-          {meta && <PaginationControls meta={meta} />}
+          {meta && (
+            <Suspense fallback={null}>
+              <PaginationControls meta={meta} />
+            </Suspense>
+          )}
         </main>
       </div>
     </div>

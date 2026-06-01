@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation";
 
 export function AppBreadcrumb() {
   const pathname = usePathname();
-  const segments = pathname.split("/").filter(Boolean);
+  const segments = pathname?.split("/").filter(Boolean) ?? [];
 
   //   Don't render breadcrumb on the home page
   if (segments.length === 0) {

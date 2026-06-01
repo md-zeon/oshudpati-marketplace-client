@@ -6,7 +6,7 @@ import { updateTag } from "next/cache";
 
 export const addToCart = async (itemId: string, quantity: number) => {
   const res = await CartService.addItemToCart(itemId, quantity);
-  if (res.success) {
+  if (res?.success) {
     updateTag("cart");
     return {
       success: true,
@@ -26,7 +26,7 @@ export const addToCart = async (itemId: string, quantity: number) => {
 
 export const removeFromCart = async (itemId: string) => {
   const res = await CartService.removeItemFromCart(itemId);
-  if (res.success) {
+  if (res?.success) {
     updateTag("cart");
     return {
       success: true,
@@ -41,13 +41,13 @@ export const removeFromCart = async (itemId: string) => {
     mode: "guest",
     data: null,
     message:
-      res.message || "You are not logged in. Item removed from local cart.",
+      res?.message || "You are not logged in. Item removed from local cart.",
   };
 };
 
 export const getCartItems = async (options?: { cache?: RequestCache }) => {
   const res = await CartService.getCartItems(options);
-  if (res.success) {
+  if (res?.success) {
     return {
       success: true,
       mode: "database",

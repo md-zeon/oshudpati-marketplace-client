@@ -29,7 +29,7 @@ interface PageProps {
 export default async function OrderReceivedPage({ params }: PageProps) {
   // Authenticate user session
   const sessionRes = await userService.getSession();
-  if (!sessionRes.success || !sessionRes.data?.user) {
+  if (!sessionRes?.success || !sessionRes?.data?.user) {
     redirect("/signin?redirect=/checkout");
   }
 
@@ -41,7 +41,7 @@ export default async function OrderReceivedPage({ params }: PageProps) {
   const orderRes = await OrderService.getOrderByOrderNumber(orderNumber);
 
   console.log("Fetched order details for order number:", orderNumber, orderRes);
-  if (!orderRes.success) {
+  if (!orderRes?.success) {
     return (
       <>
         <div className="flex flex-col items-center text-center py-20">
@@ -67,11 +67,11 @@ export default async function OrderReceivedPage({ params }: PageProps) {
     );
   }
 
-  const order: OrderReceivedPayload = orderRes.data;
-  const address: ShippingAddressSnapshot = order.shippingAddressSnapshot;
+  const order: OrderReceivedPayload = orderRes?.data;
+  const address: ShippingAddressSnapshot = order?.shippingAddressSnapshot;
 
   // Flatten the items across all vendors to display them cleanly
-  const allItems = order.vendorOrders.flatMap((vo: VendorOrder) =>
+  const allItems = order?.vendorOrders.flatMap((vo: VendorOrder) =>
     vo.orderItems.map((item: OrderItemSnapshot) => ({
       ...item,
       sellerName: vo.seller?.name || "Independent Pharmacy",
@@ -79,9 +79,9 @@ export default async function OrderReceivedPage({ params }: PageProps) {
   );
 
   // Type-cast values safely from API strings
-  const subtotal = Number(order.subtotalAmount || 0);
-  const deliveryFee = Number(order.deliveryFee || 0);
-  const totalAmount = Number(order.totalAmount || 0);
+  const subtotal = Number(order?.subtotalAmount || 0);
+  const deliveryFee = Number(order?.deliveryFee || 0);
+  const totalAmount = Number(order?.totalAmount || 0);
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-12 text-slate-900">
@@ -91,7 +91,7 @@ export default async function OrderReceivedPage({ params }: PageProps) {
           <CheckCircle2 className="w-12 h-12 text-emerald-600" />
         </div>
         <p className="text-xs font-black uppercase tracking-widest text-emerald-600 mb-1">
-          {order.paymentStatus === "PENDING"
+          {order?.paymentStatus === "PENDING"
             ? "Order Placed Successfully"
             : "Payment Confirmed"}
         </p>
@@ -136,12 +136,12 @@ export default async function OrderReceivedPage({ params }: PageProps) {
           </p>
           <p
             className={`text-xs font-black uppercase mt-1 inline-block px-2 py-0.5 rounded ${
-              order.paymentStatus === "PENDING"
+              order?.paymentStatus === "PENDING"
                 ? "bg-amber-50 text-amber-700"
                 : "bg-emerald-50 text-emerald-700"
             }`}
           >
-            {order.paymentStatus}
+            {order?.paymentStatus}
           </p>
         </div>
       </div>
@@ -152,11 +152,11 @@ export default async function OrderReceivedPage({ params }: PageProps) {
           <CardHeader className="bg-slate-50/60 border-b border-slate-100 p-4">
             <CardTitle className="text-xs font-black tracking-wider text-slate-700 uppercase flex items-center gap-2">
               <ShoppingBag className="w-3.5 h-3.5 text-blue-600" /> Items
-              Summary Bundle ({allItems.length})
+              Summary Bundle ({allItems?.length})
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 divide-y divide-slate-100">
-            {allItems.map((item) => (
+            {allItems?.map((item) => (
               <div
                 key={item.id}
                 className="py-4 flex items-center justify-between gap-4 text-xs first:pt-0 last:pb-0"

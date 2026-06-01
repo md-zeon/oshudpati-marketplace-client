@@ -18,7 +18,7 @@ const MedicineDetails = async ({ params }: Props) => {
     revalidate: 60,
   });
 
-  const medicine: Medicine | null = res?.success ? res.data : null;
+  const medicine: Medicine | null = res?.success ? res?.data : null;
 
   if (!medicine) {
     return (

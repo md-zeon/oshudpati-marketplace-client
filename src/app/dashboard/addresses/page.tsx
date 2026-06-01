@@ -102,21 +102,21 @@ export default function AddressesPage() {
     try {
       if (editingAddress) {
         const res = await updateAddress(editingAddress.id, formData);
-        if (res.success) {
+        if (res?.success) {
           toast.success("Address updated successfully!");
           fetchAddresses();
           setIsOpen(false);
         } else {
-          toast.error(res.message || "Failed to update address.");
+          toast.error(res?.message || "Failed to update address.");
         }
       } else {
         const res = await createAddress(formData);
-        if (res.success) {
+        if (res?.success) {
           toast.success("New address added successfully!");
           fetchAddresses();
           setIsOpen(false);
         } else {
-          toast.error(res.message || "Failed to add address.");
+          toast.error(res?.message || "Failed to add address.");
         }
       }
     } catch (error) {
@@ -131,11 +131,11 @@ export default function AddressesPage() {
     if (!confirm("Are you sure you want to delete this address?")) return;
     try {
       const res = await deleteAddress(id);
-      if (res.success) {
+      if (res?.success) {
         toast.success("Address deleted.");
         setAddresses((prev) => prev.filter((addr) => addr.id !== id));
       } else {
-        toast.error(res.message || "Failed to delete.");
+        toast.error(res?.message || "Failed to delete.");
       }
     } catch (err) {
       toast.error("Error deleting address.");
@@ -146,7 +146,7 @@ export default function AddressesPage() {
   const handleSetDefault = async (id: string) => {
     try {
       const res = await setDefaultAddress(id);
-      if (res.success) {
+      if (res?.success) {
         toast.success("Default address updated.");
         setAddresses((prev) =>
           prev.map((addr) => ({

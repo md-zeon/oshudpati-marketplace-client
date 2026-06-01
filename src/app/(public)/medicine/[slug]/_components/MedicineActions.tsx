@@ -29,14 +29,14 @@ export function MedicineActions({ medicine }: MedicineActionsProps) {
 
   const handleAddToCart = async () => {
     const res = await addToCart(medicine.id, quantity);
-    if (res.success && res.mode === "database") {
+    if (res?.success && res.mode === "database") {
       toast.success(
         `Added ${quantity} ${quantity === 1 ? "unit" : "units"} of ${medicine.name} to cart!`,
       );
       return;
     }
 
-    if (res.mode === "guest") {
+    if (res?.mode === "guest") {
       const currentCart = getLocalCart();
       const existingItemIndex = currentCart.findIndex(
         (item) => item.medicineId === medicine.id,

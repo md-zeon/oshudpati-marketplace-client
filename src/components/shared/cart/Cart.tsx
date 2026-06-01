@@ -67,7 +67,7 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
   ) => {
     if (isLoggedIn) {
       const res = await removeFromCart(itemId);
-      if (res.success) {
+      if (res?.success) {
         toast.success("Item removed from cart.");
       } else {
         toast.error("Failed to remove item from cart. Please try again.");

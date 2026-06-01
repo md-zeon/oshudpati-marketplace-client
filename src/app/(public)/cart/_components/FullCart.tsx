@@ -70,7 +70,7 @@ export default function FullCart({
       try {
         const res = await addToCart(item.medicineId, newQty - item.quantity);
 
-        if (res.success) {
+        if (res?.success) {
           setCart((prev) =>
             prev.map((it) =>
               it.id === item.id ? { ...it, quantity: newQty } : it,
@@ -79,7 +79,7 @@ export default function FullCart({
 
           toast.success("Quantity updated");
         } else {
-          toast.error(res.message || "Failed to update quantity");
+          toast.error(res?.message || "Failed to update quantity");
         }
       } catch (e) {
         toast.error(
@@ -101,11 +101,11 @@ export default function FullCart({
     if (isLoggedIn) {
       const res = await removeFromCart(item.id);
 
-      if (res.success) {
+      if (res?.success) {
         setCart((prev) => prev.filter((it) => it.id !== item.id));
         toast.success("Item removed from cart");
       } else {
-        toast.error(res.message || "Failed to remove item");
+        toast.error(res?.message || "Failed to remove item");
       }
     } else {
       const updated = cart.filter((it) => it.medicineId !== item.medicineId);
@@ -143,7 +143,7 @@ export default function FullCart({
                   <>
                     Add{" "}
                     <span className="font-bold text-black">
-                      ৳{remainingForFreeShipping.toFixed(2)}
+                      ৳{remainingForFreeShipping?.toFixed(2)}
                     </span>{" "}
                     more to qualify for free shipping!
                   </>

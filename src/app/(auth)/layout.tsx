@@ -7,7 +7,7 @@ import { Roles } from "@/constants/roles";
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await userService.getSession();
-  if (session.success) {
+  if (session?.success) {
     // Redirect to the appropriate dashboard based on user role
     if (session.data.user?.role === Roles.ADMIN) {
       return redirect("/admin/dashboard");

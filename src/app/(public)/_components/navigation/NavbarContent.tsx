@@ -30,8 +30,8 @@ const NavbarContent = async ({ medicines = [] }: { medicines: Medicine[] }) => {
 
   const [session, cart] = await Promise.all([sessionPromise, cartPromise]);
 
-  const user = session.success ? session.data.user : null;
-  const role = user ? user.role : null;
+  const user = session?.success ? session?.data?.user : null;
+  const role = user ? user?.role : null;
 
   return (
     // Desktop Navigation
@@ -317,8 +317,8 @@ const NavbarContent = async ({ medicines = [] }: { medicines: Medicine[] }) => {
 
           {/* Cart */}
           <Cart
-            cart={cart.success ? cart.data : []}
-            isLoggedIn={session.success}
+            cart={cart.success ? cart?.data : []}
+            isLoggedIn={session?.success}
           />
         </div>
       </div>
