@@ -1,11 +1,9 @@
 "use client";
-import { syncGuestCartWithDatabase } from "@/actions/cart.action";
+
 import { Button } from "@/components/ui/button";
 import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
-import { clearLocalCart, getLocalCart } from "@/lib/local-cart";
 import Image from "next/image";
-import { toast } from "sonner";
 
 const SocialAuth = () => {
   const handleGoogleLogin = async () => {

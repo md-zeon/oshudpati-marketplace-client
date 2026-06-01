@@ -32,6 +32,11 @@ export const CartService = {
       return data;
     } catch (error) {
       console.log("Error adding item to cart:", error);
+      return {
+        success: false,
+        data: null,
+        message: "Failed to add item to cart",
+      };
     }
   },
   getCartItems: async (options?: ServiceOptions) => {
@@ -62,6 +67,11 @@ export const CartService = {
       return data;
     } catch (error) {
       console.log("Error fetching cart items:", error);
+      return {
+        success: false,
+        data: null,
+        message: "Failed to fetch cart items",
+      };
     }
   },
   removeItemFromCart: async (itemId: string) => {
@@ -79,6 +89,11 @@ export const CartService = {
       return data;
     } catch (error) {
       console.log("Error removing item from cart:", error);
+      return {
+        success: false,
+        data: null,
+        message: "Failed to remove item from cart",
+      };
     }
   },
   mergeGuestCart: async (items: { medicineId: string; quantity: number }[]) => {
@@ -97,6 +112,11 @@ export const CartService = {
       return data;
     } catch (error) {
       console.log("Error merging guest cart:", error);
+      return {
+        success: false,
+        data: null,
+        message: "Failed to merge guest cart",
+      };
     }
   },
   updateCartItem: async (itemId: string, quantity: number) => {
@@ -114,6 +134,11 @@ export const CartService = {
       return data;
     } catch (error) {
       console.log("Error updating cart item:", error);
+      return {
+        success: false,
+        data: null,
+        message: "Failed to update cart item",
+      };
     }
   },
 };

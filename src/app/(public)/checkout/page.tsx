@@ -17,6 +17,8 @@ import { SubmitButton } from "./_components/SubmitButton";
 const FREE_SHIPPING_THRESHOLD = env.FREE_SHIPPING_THRESHOLD || 300;
 const FLAT_SHIPPING_CHARGE = env.FLAT_SHIPPING_CHARGE || 60;
 
+export const dynamic = "force-dynamic";
+
 export default async function CheckoutPage() {
   const sessionRes = await userService.getSession();
 

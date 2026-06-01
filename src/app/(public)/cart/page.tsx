@@ -8,7 +8,7 @@ const CartPage = async () => {
 
   const [cart, session] = await Promise.all([cartPromise, sessionPromise]);
 
-  const items = cart.success ? cart?.data : null;
+  const items = cart?.success ? cart?.data : null;
 
   const isLoggedIn = Boolean(session?.data?.user || session?.success);
 
