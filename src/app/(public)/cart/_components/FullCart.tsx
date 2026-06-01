@@ -24,8 +24,6 @@ export default function FullCart({
   initialCart = [],
   isLoggedIn = false,
 }: FullCartProps) {
-  console.log("Initial cart items:", initialCart);
-
   const [cart, setCart] = useState<CartItem[]>(initialCart ?? []);
 
   useEffect(() => {

@@ -82,7 +82,6 @@ export function CheckoutForm({
       };
 
       const result = await submitOrderAction(orderPayload);
-      console.log("Order submission result:", result);
 
       if (result?.success) {
         toast.success("Order processed successfully!");

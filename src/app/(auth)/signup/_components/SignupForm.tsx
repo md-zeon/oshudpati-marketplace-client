@@ -63,7 +63,6 @@ export function SignupForm({
             `${env.NEXT_PUBLIC_FRONTEND_URL}/email-verified` +
             (redirect ? `?redirect=${encodeURIComponent(redirect)}` : ""),
         });
-        console.log("Signup response:", { data, error });
         if (error) {
           toast.error(error.message, {
             id: toastId,

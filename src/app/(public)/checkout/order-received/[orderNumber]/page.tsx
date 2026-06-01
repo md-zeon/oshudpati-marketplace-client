@@ -35,12 +35,9 @@ export default async function OrderReceivedPage({ params }: PageProps) {
 
   const { orderNumber } = await params;
 
-  console.log("Order Received page accessed with order number:", orderNumber);
-
   // Fetch order details using the order number from the URL
   const orderRes = await OrderService.getOrderByOrderNumber(orderNumber);
 
-  console.log("Fetched order details for order number:", orderNumber, orderRes);
   if (!orderRes?.success) {
     return (
       <>

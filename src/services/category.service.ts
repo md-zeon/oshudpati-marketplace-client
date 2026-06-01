@@ -11,8 +11,6 @@ export const CategoryService = {
     try {
       const url = new URL(`${API_URL}/categories`);
 
-      console.log("Fetching categories from URL:", url.toString());
-
       const config: RequestInit = {};
 
       if (options?.cache) {

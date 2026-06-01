@@ -34,7 +34,6 @@ export default function PaginationControls({
   const searchParams = useSearchParams();
 
   const { page, totalPages, hasNext, hasPrevious, limit, total } = meta;
-  console.log("Pagination Meta:", meta);
 
   if (totalPages <= 1) return null;
 

@@ -37,12 +37,9 @@ export const OrderService = {
 
       config.next = { ...config.next, tags: ["orders"] };
 
-      console.log("Submitting checkout order to URL:", url.toString());
-
       const res = await fetch(url.toString(), config);
       const data = await res.json();
 
-      console.log("Order submission response:", data);
       return data;
     } catch (error) {
       console.error("Error submitting checkout instance mapping:", error);
@@ -71,12 +68,9 @@ export const OrderService = {
 
       config.next = { ...config.next, tags: ["orders"] };
 
-      console.log("Fetching order by ID from URL:", url.toString());
-
       const res = await fetch(url.toString(), config);
       const data = await res.json();
 
-      console.log("Order fetch response:", data);
       return data;
     } catch (error) {
       console.error("Error fetching order by ID:", error);
@@ -108,12 +102,9 @@ export const OrderService = {
 
       config.next = { ...config.next, tags: ["orders"] };
 
-      console.log("Fetching order by order number from URL:", url.toString());
-
       const res = await fetch(url.toString(), config);
       const data = await res.json();
 
-      console.log("Order fetch response:", data);
       return data;
     } catch (error) {
       console.error("Error fetching order by order number:", error);

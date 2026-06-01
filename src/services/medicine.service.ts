@@ -33,8 +33,6 @@ export const MedicineService = {
         });
       }
 
-      console.log("Fetching medicines from URL:", url.toString());
-
       const config: RequestInit = {};
 
       if (options?.cache) {
@@ -49,7 +47,7 @@ export const MedicineService = {
 
       const res = await fetch(url.toString(), config);
       const data = await res.json();
-      console.log("Fetched medicines data:", data);
+
       return data;
     } catch (error) {
       console.log("Error fetching medicines:", error);
@@ -71,11 +69,9 @@ export const MedicineService = {
 
       config.next = { ...config.next, tags: ["manufacturers"] };
 
-      console.log("Fetching manufacturers from URL:", url.toString());
       const res = await fetch(url.toString(), config);
       const data = await res.json();
 
-      console.log("Fetched manufacturers data:", data);
       return data;
     } catch (error) {
       console.log("Error fetching manufacturers:", error);
@@ -97,11 +93,9 @@ export const MedicineService = {
 
       config.next = { ...config.next, tags: ["medicine"] };
 
-      console.log("Fetching medicine by slug from URL:", url.toString());
       const res = await fetch(url.toString(), config);
       const data = await res.json();
 
-      console.log("Fetched medicine data:", data);
       return data;
     } catch (error) {
       console.log("Error fetching medicine:", error);
