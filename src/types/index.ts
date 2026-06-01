@@ -10,3 +10,15 @@ export type {
 } from "./shop.type";
 
 export type { CartItem } from "./cart.type";
+
+export type { Address } from "./address.type";
+
+export type {
+  ShippingAddressSnapshot,
+  CheckoutItemInput,
+  CreateOrderPayload,
+  OrderReceivedPayload,
+  VendorOrder,
+  OrderItemSnapshot,
+  SellerSnapshot,
+} from "./order.type";
