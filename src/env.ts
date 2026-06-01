@@ -7,14 +7,20 @@ export const env = createEnv({
     FRONTEND_URL: z.url(),
     API_URL: z.url(),
     AUTH_URL: z.url(),
-    FREE_SHIPPING_THRESHOLD: z.number().positive(),
-    FLAT_SHIPPING_CHARGE: z.number().positive(),
+    FREE_SHIPPING_THRESHOLD: z.string().regex(/^\d+$/).transform(Number),
+    FLAT_SHIPPING_CHARGE: z.string().regex(/^\d+$/).transform(Number),
   },
   client: {
     NEXT_PUBLIC_BACKEND_URL: z.url(),
     NEXT_PUBLIC_FRONTEND_URL: z.url(),
-    NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD: z.number().positive(),
-    NEXT_PUBLIC_FLAT_SHIPPING_CHARGE: z.number().positive(),
+    NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD: z
+      .string()
+      .regex(/^\d+$/)
+      .transform(Number),
+    NEXT_PUBLIC_FLAT_SHIPPING_CHARGE: z
+      .string()
+      .regex(/^\d+$/)
+      .transform(Number),
   },
 
   runtimeEnv: {
