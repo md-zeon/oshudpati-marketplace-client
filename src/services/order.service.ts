@@ -10,6 +10,30 @@ interface ServiceOptions {
 const API_URL = env.API_URL;
 
 export const OrderService = {
+  getMyOrders: async () => {
+    try {
+      const cookieStore = await cookies();
+      const url = new URL(`${API_URL}/orders/my-orders`);
+
+      const res = await fetch(url.toString(), {
+        method: "GET",
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      });
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      return {
+        success: false,
+        data: [],
+        message: "Failed to fetch orders",
+      };
+    }
+  },
   submitCheckoutOrder: async (
     payload: CreateOrderPayload,
     options?: ServiceOptions,

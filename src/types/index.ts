@@ -29,3 +29,13 @@ export type {
   UpdateReviewPayload,
   ReviewMeta,
 } from "./review.type";
+
+export type {
+  DashboardStats,
+  QuickReorderItem,
+  DashboardVendorOrder,
+  DashboardOrderItem,
+  DashboardRecentOrder,
+  DashboardDefaultAddress,
+  CustomerDashboard,
+} from "./dashboard.type";
