@@ -1,10 +1,44 @@
 import { redirect } from "next/navigation";
 import { userService } from "@/services/user.service";
-import { Users, Pill, ShoppingBag, DollarSign } from "lucide-react";
+import { getAdminDashboardAction } from "@/actions/admin.action";
+import { Users, Pill, ShoppingBag, DollarSign, Package } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const metadata = {
   title: "Admin Dashboard",
   description: "Platform overview",
+};
+
+interface AdminStats {
+  totalUsers: number;
+  totalSellers: number;
+  totalMedicines: number;
+  totalOrders: number;
+  totalRevenue: number;
+}
+
+interface RecentOrder {
+  id: string;
+  orderNumber: string;
+  totalAmount: number;
+  paymentStatus: string;
+  placedAt: string;
+  customerName: string;
+  customerEmail: string;
+}
+
+const PAYMENT_BADGE: Record<string, string> = {
+  PENDING: "bg-amber-50 text-amber-700 border-amber-200",
+  PAID: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  REFUNDED: "bg-red-50 text-red-700 border-red-200",
 };
 
 const AdminDashboard = async () => {
@@ -12,26 +46,23 @@ const AdminDashboard = async () => {
   if (!session?.success || !session.data?.user) return redirect("/signin");
   if (session.data.user.role !== "ADMIN") return redirect("/dashboard");
 
-  let stats = {
-    totalUsers: 0,
-    totalSellers: 0,
-    totalMedicines: 0,
-    totalOrders: 0,
-    totalRevenue: 0,
-  };
-  let recentOrders: any[] = [];
-  try {
-    const { DashboardService } = await import("@/services/dashboard.service");
-    const res = await DashboardService.getAdminDashboard();
-    if (res?.success) {
-      stats = res.data.stats;
-      recentOrders = res.data.recentOrders || [];
-    }
-  } catch {}
+  const res = await getAdminDashboardAction();
+  const stats: AdminStats = res?.success
+    ? res.data.stats
+    : {
+        totalUsers: 0,
+        totalSellers: 0,
+        totalMedicines: 0,
+        totalOrders: 0,
+        totalRevenue: 0,
+      };
+  const recentOrders: RecentOrder[] = res?.success
+    ? res.data.recentOrders || []
+    : [];
 
   const cards = [
     {
-      label: "Users",
+      label: "Total Users",
       value: stats.totalUsers,
       icon: Users,
       color: "text-blue-600",
@@ -60,7 +91,7 @@ const AdminDashboard = async () => {
     },
     {
       label: "Revenue",
-      value: `৳${stats.totalRevenue.toFixed(0)}`,
+      value: `৳${stats.totalRevenue.toLocaleString()}`,
       icon: DollarSign,
       color: "text-rose-600",
       bg: "bg-rose-50",
@@ -68,42 +99,103 @@ const AdminDashboard = async () => {
   ];
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-xl font-bold text-slate-900">Admin Dashboard</h1>
+    <div className="space-y-6">
+      <div className="flex items-center gap-3">
+        <div className="p-2 rounded-xl bg-blue-50">
+          <Package className="w-5 h-5 text-blue-600" />
+        </div>
+        <div>
+          <h1 className="text-xl font-bold text-slate-900">Admin Dashboard</h1>
+          <p className="text-sm text-slate-500">
+            Platform overview and analytics
+          </p>
+        </div>
+      </div>
+
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {cards.map((c) => (
-          <div key={c.label} className={`${c.bg} rounded-xl p-4`}>
+          <div
+            key={c.label}
+            className={`${c.bg} rounded-xl p-4 transition-all hover:scale-[1.02]`}
+          >
             <c.icon className={`w-5 h-5 ${c.color} mb-2`} />
             <p className={`text-2xl font-bold ${c.color}`}>{c.value}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{c.label}</p>
+            <p className="text-xs text-slate-500 mt-0.5 font-medium">
+              {c.label}
+            </p>
           </div>
         ))}
       </div>
-      <div className="bg-white rounded-xl border border-slate-200 p-5">
-        <h2 className="font-bold text-slate-900 mb-4">Recent Orders</h2>
+
+      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="p-5 border-b border-slate-100">
+          <h2 className="font-bold text-slate-900">Recent Orders</h2>
+        </div>
         {recentOrders.length === 0 ? (
-          <p className="text-sm text-slate-500 text-center py-6">
-            No orders yet
-          </p>
-        ) : (
-          <div className="space-y-2">
-            {recentOrders.map((o: any) => (
-              <div
-                key={o.id}
-                className="flex items-center justify-between p-3 rounded-lg border border-slate-100"
-              >
-                <div>
-                  <p className="text-sm font-semibold text-slate-900">
-                    {o.orderNumber}
-                  </p>
-                  <p className="text-xs text-slate-400">{o.customerName}</p>
-                </div>
-                <span className="text-xs font-semibold text-emerald-600">
-                  ৳{Number(o.totalAmount).toFixed(0)}
-                </span>
-              </div>
-            ))}
+          <div className="text-center py-10">
+            <ShoppingBag className="w-10 h-10 text-slate-200 mx-auto mb-3" />
+            <p className="text-sm text-slate-500">No orders yet</p>
           </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-slate-50">
+                <TableHead className="font-semibold text-slate-600">
+                  Order
+                </TableHead>
+                <TableHead className="font-semibold text-slate-600">
+                  Customer
+                </TableHead>
+                <TableHead className="text-right font-semibold text-slate-600">
+                  Amount
+                </TableHead>
+                <TableHead className="text-center font-semibold text-slate-600">
+                  Payment
+                </TableHead>
+                <TableHead className="text-right font-semibold text-slate-600">
+                  Date
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {recentOrders.map((o) => {
+                const badgeClass =
+                  PAYMENT_BADGE[o.paymentStatus] ||
+                  "bg-slate-50 text-slate-600";
+                return (
+                  <TableRow key={o.id} className="hover:bg-slate-50/50">
+                    <TableCell className="font-mono text-sm font-semibold text-slate-900">
+                      {o.orderNumber}
+                    </TableCell>
+                    <TableCell>
+                      <p className="font-medium text-slate-800 text-sm">
+                        {o.customerName}
+                      </p>
+                      <p className="text-xs text-slate-400">
+                        {o.customerEmail}
+                      </p>
+                    </TableCell>
+                    <TableCell className="text-right font-semibold text-slate-800">
+                      ৳{o.totalAmount.toFixed(0)}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Badge
+                        className={`${badgeClass} border text-[10px] font-bold uppercase px-2 py-0.5`}
+                      >
+                        {o.paymentStatus}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right text-xs text-slate-400">
+                      {new Date(o.placedAt).toLocaleDateString("en-BD", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
         )}
       </div>
     </div>
