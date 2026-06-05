@@ -27,3 +27,16 @@ export const getOrderByOrderNumber = async (orderNumber: string) => {
 
   return res;
 };
+
+export const updateOrderStatusAction = async (
+  orderId: string,
+  status: string,
+) => {
+  const res = await OrderService.updateOrderStatus(orderId, status);
+
+  if (res?.success) {
+    updateTag("orders");
+  }
+
+  return res;
+};

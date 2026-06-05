@@ -135,4 +135,22 @@ export const OrderService = {
       return error;
     }
   },
+  updateOrderStatus: async (orderId: string, status: string) => {
+    try {
+      const cookieStore = await cookies();
+      const res = await fetch(`${API_URL}/orders/${orderId}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookieStore.toString(),
+        },
+        body: JSON.stringify({ status }),
+      });
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      return { success: false, message: "Failed to update order status" };
+    }
+  },
 };
