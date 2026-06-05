@@ -21,7 +21,9 @@ export async function proxy(req: NextRequest) {
   }
 
   if (!isAuthenticated) {
-    return NextResponse.redirect(new URL("/signin", req.url));
+    return NextResponse.redirect(
+      new URL(`/signin?redirect=${encodeURIComponent(pathname)}`, req.url),
+    );
   }
 
   if (

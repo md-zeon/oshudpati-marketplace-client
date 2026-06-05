@@ -13,6 +13,7 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_BACKEND_URL: z.url(),
     NEXT_PUBLIC_FRONTEND_URL: z.url(),
+    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1),
     NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD: z
       .string()
       .regex(/^\d+$/)
@@ -33,6 +34,8 @@ export const env = createEnv({
 
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
     NEXT_PUBLIC_FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL,
+    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:
+      process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
     NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD:
       process.env.NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD,
     NEXT_PUBLIC_FLAT_SHIPPING_CHARGE:
