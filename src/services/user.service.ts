@@ -2,6 +2,7 @@ import { env } from "@/env";
 import { cookies } from "next/headers";
 
 const AUTH_URL = env.AUTH_URL;
+const API_URL = env.API_URL;
 
 export const userService = {
   getSession: async () => {
@@ -38,6 +39,34 @@ export const userService = {
             ? error.message
             : "Failed to retrieve user session.",
         data: null,
+      };
+    }
+  },
+  updateProfile: async (payload: {
+    name?: string;
+    phoneNumber?: string;
+    image?: string;
+  }) => {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${API_URL}/users/profile`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookieStore.toString(),
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      return {
+        success: false,
+        data: null,
+        message: "Failed to update profile",
       };
     }
   },
