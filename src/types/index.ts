@@ -30,6 +30,8 @@ export type {
   ReviewMeta,
 } from "./review.type";
 
+export type { WishlistItem } from "./wishlist.type";
+
 export type {
   DashboardStats,
   QuickReorderItem,
