@@ -98,24 +98,26 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
     <HoverCard openDelay={100} closeDelay={200}>
       {/* HOVER TRIGGER: Main Header Cart Target */}
       <HoverCardTrigger asChild>
-        <Link href="/cart">
-          <div className="flex items-center gap-1 cursor-pointer group select-none py-1">
-            <div className="rounded-full border-2 p-1 border-slate-200 group-hover:border-blue-600 transition-colors">
-              <ShoppingCart
-                className="text-slate-600 group-hover:text-blue-600 transition-colors"
-                size={24}
-              />
+        <div>
+          <Link href="/cart">
+            <div className="flex items-center gap-1 cursor-pointer group select-none py-1">
+              <div className="rounded-full border-2 p-1 border-slate-200 group-hover:border-blue-600 transition-colors">
+                <ShoppingCart
+                  className="text-slate-600 group-hover:text-blue-600 transition-colors"
+                  size={24}
+                />
+              </div>
+              <div className="font-medium leading-tight">
+                <p className="text-sm leading-tight font-medium text-slate-600 group-hover:text-blue-600 transition-colors">
+                  Cart Total
+                </p>
+                <span className="text-base leading-tight font-bold text-slate-900">
+                  ৳ {subtotal.toFixed(2)}
+                </span>
+              </div>
             </div>
-            <div className="font-medium leading-tight">
-              <p className="text-sm leading-tight font-medium text-slate-600 group-hover:text-blue-600 transition-colors">
-                Cart Total
-              </p>
-              <span className="text-base leading-tight font-bold text-slate-900">
-                ৳ {subtotal.toFixed(2)}
-              </span>
-            </div>
-          </div>
-        </Link>
+          </Link>
+        </div>
       </HoverCardTrigger>
 
       {/* FLYOUT CONTENT PANEL */}

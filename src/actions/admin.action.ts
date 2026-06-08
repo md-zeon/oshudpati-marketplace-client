@@ -74,6 +74,20 @@ export const updateUserAccountStatusAction = async (
   }
 };
 
+export const getAllOrdersAction = async () => {
+  try {
+    const cookieStore = await cookies();
+    const res = await fetch(`${API_URL}/orders/all-orders`, {
+      headers: { Cookie: cookieStore.toString() },
+      cache: "no-store",
+    });
+    const data = await res.json();
+    return data;
+  } catch {
+    return { success: false, data: [] };
+  }
+};
+
 export const getCategoriesAction = async () => {
   try {
     const cookieStore = await cookies();

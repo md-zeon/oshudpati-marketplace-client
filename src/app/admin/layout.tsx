@@ -18,8 +18,11 @@ import {
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import { Package } from "lucide-react";
+
 const sidebarLinks = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/orders", label: "Orders", icon: Package },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/categories", label: "Categories", icon: Grid3X3 },
 ];

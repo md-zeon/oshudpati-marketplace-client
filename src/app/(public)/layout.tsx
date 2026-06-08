@@ -3,6 +3,7 @@ import NavbarHeader from "@/app/(public)/_components/navigation/NavbarHeader";
 import SiteAnnouncement from "@/app/(public)/_components/SiteAnnouncement";
 import React from "react";
 import NavbarFooter from "./_components/navigation/NavbarFooter";
+import PublicFooter from "./_components/navigation/PublicFooter";
 import MobileNavbarHeader from "./_components/navigation/MobileNavbarHeader";
 import MobileNavbarFooter from "./_components/navigation/MobileNavbarFooter";
 import { AppBreadcrumb } from "@/components/shared/AppBreadcrumb";
@@ -37,7 +38,7 @@ const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
         <AppBreadcrumb />
         {children}
       </main>
-      <footer>Public Footer</footer>
+      <PublicFooter />
       <MobileNavbarFooter medicines={initialMedicines} />
     </>
   );
