@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, ChevronUp, ShoppingBag } from "lucide-react";
-import { DashboardRecentOrder } from "@/types";
+import { ChevronDown, ChevronUp, ShoppingBag, XCircle } from "lucide-react";
+import { DashboardRecentOrder, DashboardVendorOrder } from "@/types";
+import { cancelVendorOrderAction } from "@/actions/order.action";
+import { toast } from "sonner";
 
 interface OrderCardProps {
   order: DashboardRecentOrder;
@@ -40,6 +42,26 @@ export function OrderCard({ order }: OrderCardProps) {
     (sum, v) => sum + v.orderItems.length,
     0,
   );
+
+  const handleCancelVendor = async (
+    e: React.MouseEvent,
+    vendorOrderId: string,
+  ) => {
+    e.stopPropagation();
+    if (
+      !confirm(
+        "Are you sure you want to cancel this vendor's portion of the order?",
+      )
+    )
+      return;
+
+    const res = await cancelVendorOrderAction(vendorOrderId);
+    if (res?.success) {
+      toast.success("Vendor order cancelled successfully");
+    } else {
+      toast.error(res?.message || "Failed to cancel vendor order");
+    }
+  };
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 overflow-hidden transition-all hover:border-slate-300">
@@ -120,11 +142,22 @@ export function OrderCard({ order }: OrderCardProps) {
                 <div key={vendor.id} className="p-4 md:p-5">
                   {/* Vendor Header */}
                   <div className="flex items-center justify-between mb-3">
-                    <span
-                      className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${badgeClass}`}
-                    >
-                      {vendor.orderStatus}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${badgeClass}`}
+                      >
+                        {vendor.orderStatus}
+                      </span>
+                      {vendor.orderStatus === "PLACED" && (
+                        <button
+                          onClick={(e) => handleCancelVendor(e, vendor.id)}
+                          className="text-[10px] font-semibold text-red-500 hover:text-red-700 transition-colors flex items-center gap-0.5"
+                        >
+                          <XCircle className="w-3 h-3" />
+                          Cancel
+                        </button>
+                      )}
+                    </div>
                     <span className="text-xs font-semibold text-slate-600">
                       ৳{vendor.vendorSubtotal.toFixed(0)}
                     </span>
@@ -187,12 +220,14 @@ export function OrderCard({ order }: OrderCardProps) {
                 Delivery: <strong>৳{order.deliveryFee.toFixed(0)}</strong>
               </span>
             </div>
-            <Link
-              href={`/order-tracking?orderNumber=${order.orderNumber}`}
-              className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
-            >
-              Track Order →
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/order-tracking?orderNumber=${order.orderNumber}`}
+                className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+              >
+                Track Order →
+              </Link>
+            </div>
           </div>
         </div>
       )}

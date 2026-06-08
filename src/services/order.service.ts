@@ -135,6 +135,25 @@ export const OrderService = {
       return error;
     }
   },
+  cancelVendorOrder: async (vendorOrderId: string) => {
+    try {
+      const cookieStore = await cookies();
+      const res = await fetch(
+        `${API_URL}/orders/vendor-order/${vendorOrderId}/cancel`,
+        {
+          method: "PATCH",
+          headers: {
+            Cookie: cookieStore.toString(),
+          },
+        },
+      );
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error("Error cancelling vendor order:", error);
+      return { success: false, message: "Failed to cancel vendor order" };
+    }
+  },
   updateOrderStatus: async (orderId: string, status: string) => {
     try {
       const cookieStore = await cookies();

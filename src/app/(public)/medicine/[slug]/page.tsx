@@ -5,6 +5,7 @@ import { Star } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { MedicineActions } from "./_components/MedicineActions";
+import { WishlistButton } from "@/components/shared/wishlist/WishlistButton";
 import AdditionalInfoTabs from "./_components/AdditionalInfoTabs";
 
 interface Props {
@@ -51,6 +52,11 @@ const MedicineDetails = async ({ params }: Props) => {
               {discount}% OFF
             </span>
           )}
+
+          {/* Wishlist Button */}
+          <div className="absolute top-4 right-4 z-10">
+            <WishlistButton medicineId={medicine.id} size="md" />
+          </div>
 
           <div className="relative w-full h-64">
             <Image

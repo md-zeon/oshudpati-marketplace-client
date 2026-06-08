@@ -28,6 +28,16 @@ export const getOrderByOrderNumber = async (orderNumber: string) => {
   return res;
 };
 
+export const cancelVendorOrderAction = async (vendorOrderId: string) => {
+  const res = await OrderService.cancelVendorOrder(vendorOrderId);
+
+  if (res?.success) {
+    updateTag("orders");
+  }
+
+  return res;
+};
+
 export const updateOrderStatusAction = async (
   orderId: string,
   status: string,

@@ -1,8 +1,8 @@
 import { Medicine } from "@/types";
-import { Star, ShoppingBag, Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Star } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { WishlistButton } from "@/components/shared/wishlist/WishlistButton";
 
 import {
   getPrimaryImage,
@@ -43,15 +43,10 @@ export function ProductCard({ medicine, viewMode }: ProductCardProps) {
         </span>
       )}
 
-      {/* Wishlist (UI only for now) */}
-      <Button
-        aria-label="Wishlist"
-        variant="ghost"
-        size="icon"
-        className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/90 text-slate-400 hover:text-rose-500 border border-slate-100 shadow-xs"
-      >
-        <Heart className="w-4 h-4" />
-      </Button>
+      {/* Wishlist Button */}
+      <div className="absolute top-3 right-3 z-10">
+        <WishlistButton medicineId={medicine.id} />
+      </div>
 
       {/* Image */}
       <div

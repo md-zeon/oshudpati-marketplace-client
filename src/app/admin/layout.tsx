@@ -7,6 +7,8 @@ import {
   LogOut,
   Menu,
   Pill,
+  Package,
+  MessageSquare,
 } from "lucide-react";
 import { userService } from "@/services/user.service";
 import { redirect } from "next/navigation";
@@ -18,12 +20,11 @@ import {
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { Package } from "lucide-react";
-
 const sidebarLinks = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/orders", label: "Orders", icon: Package },
   { href: "/admin/users", label: "Users", icon: Users },
+  { href: "/admin/reviews", label: "Reviews", icon: MessageSquare },
   { href: "/admin/categories", label: "Categories", icon: Grid3X3 },
 ];
 

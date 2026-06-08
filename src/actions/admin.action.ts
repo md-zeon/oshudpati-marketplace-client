@@ -147,6 +147,20 @@ export const updateCategoryAction = async (
   }
 };
 
+export const getAllReviewsAction = async () => {
+  try {
+    const cookieStore = await cookies();
+    const res = await fetch(`${API_URL}/reviews/all`, {
+      headers: { Cookie: cookieStore.toString() },
+      cache: "no-store",
+    });
+    const data = await res.json();
+    return data;
+  } catch {
+    return { success: false, data: [] };
+  }
+};
+
 export const deleteCategoryAction = async (id: string) => {
   try {
     const cookieStore = await cookies();
