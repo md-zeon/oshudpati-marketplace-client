@@ -1,24 +1,62 @@
 @import "tailwindcss";
 
+/* ============================================================
+   OSHUDPATI COLOR PALETTE
+   ============================================================
+   Primary (Emerald):   #059669 (emerald-600) - Main brand color, CTAs
+   Primary Light:       #d1fae5 (emerald-100) - Light backgrounds
+   Primary Dark:        #047857 (emerald-700) - Hover states
+   Secondary:           #2563eb (blue-600)    - Accent links
+   Accent:              #f59e0b (amber-400)   - Star ratings
+   Danger:              #dc2626 (red-500)     - Discounts, errors
+   Success:             #16a34a (green-600)   - Stock available
+   Wishlist:            #f43f5e (rose-500)    - Wishlist heart
+   Background:          #ffffff               - Page bg
+   Surface:             #f8fafc (slate-50)    - Card backgrounds
+   Border:              #e2e8f0 (slate-200)   - Borders
+   Text Primary:        #0f172a (slate-900)   - Headings
+   Text Secondary:      #64748b (slate-500)   - Body text
+   Text Muted:          #94a3b8 (slate-400)   - Captions
+   ============================================================ */
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f172a;
+  --primary: #059669;
+  --primary-light: #d1fae5;
+  --primary-dark: #047857;
+  --secondary: #2563eb;
+  --accent: #f59e0b;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --wishlist: #f43f5e;
+  --surface: #f8fafc;
+  --border: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-wishlist: var(--wishlist);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-fredoka: var(--font-fredoka);
 }
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
 
 body {
   background: var(--background);
