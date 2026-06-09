@@ -13,7 +13,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { WishlistButton } from "@/components/shared/wishlist/WishlistButton";
-import { TestimonialsSection } from "@/components/shared/TestimonialsSection";
+import { TestimonialsSection } from "@/components/shared/home/TestimonialsSection";
 
 export const metadata = {
   title: "Oshudpati | Trusted Online Medicine & Healthcare Marketplace",
