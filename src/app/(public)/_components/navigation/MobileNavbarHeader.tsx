@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -14,7 +12,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import {
   Menu,
-  ShoppingCart,
   X,
   Home,
   Heart,
@@ -26,8 +23,16 @@ import {
   CircleQuestionMark,
 } from "lucide-react";
 import Link from "next/link";
+import { MobileCartDrawer } from "@/components/shared/cart/MobileCartDrawer";
+import { userService } from "@/services/user.service";
+import { CartService } from "@/services/cart.service";
 
-const MobileNavbarHeader = () => {
+const MobileNavbarHeader = async () => {
+  const userPromise = userService.getSession();
+  const cartPromise = CartService.getCartItems();
+
+  const [user, cart] = await Promise.all([userPromise, cartPromise]);
+
   const navLinks = [
     { label: "Home", href: "/", icon: Home },
     { label: "Categories", href: "/categories", icon: Package },
@@ -184,13 +189,8 @@ const MobileNavbarHeader = () => {
           Oshudpati
         </Link>
 
-        {/* Right Cart */}
-        <Button variant="ghost" size="icon" className="relative cursor-pointer">
-          <ShoppingCart className="h-6 w-6" />
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary-foreground text-[10px] font-bold text-primary">
-            0
-          </span>
-        </Button>
+        {/* Right Cart Drawer */}
+        <MobileCartDrawer cart={cart.data} isLoggedIn={!!user} />
       </div>
     </nav>
   );

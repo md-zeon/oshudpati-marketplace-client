@@ -214,12 +214,12 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
         )}
 
         <Link
-          href="/dashboard/account"
+          href="/account"
           className="flex items-center justify-between group text-slate-700"
         >
           <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
             <User className="text-blue-600 inline-block" size={20} />
-            Account Details
+            My Account
           </div>
 
           <ArrowRight

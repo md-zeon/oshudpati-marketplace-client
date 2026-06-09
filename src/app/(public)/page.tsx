@@ -12,6 +12,8 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { WishlistButton } from "@/components/shared/wishlist/WishlistButton";
+import { TestimonialsSection } from "@/components/shared/TestimonialsSection";
 
 export const metadata = {
   title: "Oshudpati | Trusted Online Medicine & Healthcare Marketplace",
@@ -127,7 +129,7 @@ const HomePage = async () => {
   return (
     <div className="space-y-12 pb-12">
       {/* ==================== HERO SECTION ==================== */}
-      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-500 p-8 md:p-12 text-white">
+      <section className="relative overflow-hidden rounded-2xl bg-linear-to-br from-emerald-600 via-emerald-500 to-teal-500 p-8 md:p-12 text-white">
         <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-white/5" />
         <div className="absolute -bottom-16 -left-16 w-40 h-40 rounded-full bg-white/5" />
         <div className="relative z-10 max-w-2xl">
@@ -255,61 +257,65 @@ const HomePage = async () => {
                 : null;
 
               return (
-                <Link
+                <div
                   key={medicine.id}
-                  href={`/medicine/${medicine.slug}`}
-                  className="group bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition-all"
+                  className="relative group bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition-all"
                 >
-                  <div className="relative w-full h-36 bg-slate-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
-                    {image ? (
-                      <Image
-                        src={image}
-                        alt={medicine.name}
-                        fill
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                        className="object-contain p-3 group-hover:scale-105 transition-transform duration-300"
-                      />
-                    ) : (
-                      <Pill className="w-10 h-10 text-slate-300" />
-                    )}
-                    {discount && discount > 0 && (
-                      <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                        -{discount}%
+                  <div className="absolute top-3 right-3 z-10">
+                    <WishlistButton medicineId={medicine.id} />
+                  </div>
+                  <Link href={`/medicine/${medicine.slug}`}>
+                    <div className="relative w-full h-36 bg-slate-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
+                      {image ? (
+                        <Image
+                          src={image}
+                          alt={medicine.name}
+                          fill
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-contain p-3 group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <Pill className="w-10 h-10 text-slate-300" />
+                      )}
+                      {discount && discount > 0 && (
+                        <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                          -{discount}%
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-emerald-600 font-semibold uppercase mb-0.5">
+                      {medicine.genericName}
+                    </p>
+                    <p className="text-sm font-semibold text-slate-900 line-clamp-2 leading-tight">
+                      {medicine.name}
+                    </p>
+                    <div className="flex items-center gap-1 mt-1.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-3 h-3 ${
+                            i < Math.round(medicine.averageRating)
+                              ? "text-amber-400 fill-amber-400"
+                              : "text-slate-200"
+                          }`}
+                        />
+                      ))}
+                      <span className="text-[10px] text-slate-400 ml-1">
+                        ({medicine.reviewCount})
                       </span>
-                    )}
-                  </div>
-                  <p className="text-[11px] text-emerald-600 font-semibold uppercase mb-0.5">
-                    {medicine.genericName}
-                  </p>
-                  <p className="text-sm font-semibold text-slate-900 line-clamp-2 leading-tight">
-                    {medicine.name}
-                  </p>
-                  <div className="flex items-center gap-1 mt-1.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-3 h-3 ${
-                          i < Math.round(medicine.averageRating)
-                            ? "text-amber-400 fill-amber-400"
-                            : "text-slate-200"
-                        }`}
-                      />
-                    ))}
-                    <span className="text-[10px] text-slate-400 ml-1">
-                      ({medicine.reviewCount})
-                    </span>
-                  </div>
-                  <div className="mt-2 flex items-baseline gap-1.5">
-                    <span className="font-bold text-slate-800">
-                      ৳{current.toFixed(0)}
-                    </span>
-                    {original && (
-                      <span className="text-xs text-slate-400 line-through">
-                        ৳{original.toFixed(0)}
+                    </div>
+                    <div className="mt-2 flex items-baseline gap-1.5">
+                      <span className="font-bold text-slate-800">
+                        ৳{current.toFixed(0)}
                       </span>
-                    )}
-                  </div>
-                </Link>
+                      {original && (
+                        <span className="text-xs text-slate-400 line-through">
+                          ৳{original.toFixed(0)}
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                </div>
               );
             })}
           </div>
@@ -377,66 +383,73 @@ const HomePage = async () => {
                 : null;
 
               return (
-                <Link
+                <div
                   key={medicine.id}
-                  href={`/medicine/${medicine.slug}`}
-                  className="group bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition-all"
+                  className="relative group bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition-all"
                 >
-                  <div className="relative w-full h-36 bg-slate-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
-                    {image ? (
-                      <Image
-                        src={image}
-                        alt={medicine.name}
-                        fill
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                        className="object-contain p-3 group-hover:scale-105 transition-transform duration-300"
-                      />
-                    ) : (
-                      <Pill className="w-10 h-10 text-slate-300" />
-                    )}
-                    {discount && discount > 0 && (
-                      <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                        -{discount}%
+                  <div className="absolute top-3 right-3 z-10">
+                    <WishlistButton medicineId={medicine.id} />
+                  </div>
+                  <Link href={`/medicine/${medicine.slug}`}>
+                    <div className="relative w-full h-36 bg-slate-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
+                      {image ? (
+                        <Image
+                          src={image}
+                          alt={medicine.name}
+                          fill
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-contain p-3 group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <Pill className="w-10 h-10 text-slate-300" />
+                      )}
+                      {discount && discount > 0 && (
+                        <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                          -{discount}%
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-emerald-600 font-semibold uppercase mb-0.5">
+                      {medicine.genericName}
+                    </p>
+                    <p className="text-sm font-semibold text-slate-900 line-clamp-2 leading-tight">
+                      {medicine.name}
+                    </p>
+                    <div className="flex items-center gap-1 mt-1.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-3 h-3 ${
+                            i < Math.round(medicine.averageRating)
+                              ? "text-amber-400 fill-amber-400"
+                              : "text-slate-200"
+                          }`}
+                        />
+                      ))}
+                      <span className="text-[10px] text-slate-400 ml-1">
+                        ({medicine.reviewCount})
                       </span>
-                    )}
-                  </div>
-                  <p className="text-[11px] text-emerald-600 font-semibold uppercase mb-0.5">
-                    {medicine.genericName}
-                  </p>
-                  <p className="text-sm font-semibold text-slate-900 line-clamp-2 leading-tight">
-                    {medicine.name}
-                  </p>
-                  <div className="flex items-center gap-1 mt-1.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-3 h-3 ${
-                          i < Math.round(medicine.averageRating)
-                            ? "text-amber-400 fill-amber-400"
-                            : "text-slate-200"
-                        }`}
-                      />
-                    ))}
-                    <span className="text-[10px] text-slate-400 ml-1">
-                      ({medicine.reviewCount})
-                    </span>
-                  </div>
-                  <div className="mt-2 flex items-baseline gap-1.5">
-                    <span className="font-bold text-slate-800">
-                      ৳{current.toFixed(0)}
-                    </span>
-                    {original && (
-                      <span className="text-xs text-slate-400 line-through">
-                        ৳{original.toFixed(0)}
+                    </div>
+                    <div className="mt-2 flex items-baseline gap-1.5">
+                      <span className="font-bold text-slate-800">
+                        ৳{current.toFixed(0)}
                       </span>
-                    )}
-                  </div>
-                </Link>
+                      {original && (
+                        <span className="text-xs text-slate-400 line-through">
+                          ৳{original.toFixed(0)}
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                </div>
               );
             })}
           </div>
         </section>
       )}
+
+      {/* ==================== TESTIMONIALS ==================== */}
+      <TestimonialsSection />
 
       {/* ==================== CTA BANNER ==================== */}
       <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 p-8 md:p-12 text-white text-center">
