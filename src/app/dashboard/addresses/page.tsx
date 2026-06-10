@@ -176,7 +176,7 @@ export default function AddressesPage() {
         </div>
         <Button
           onClick={() => handleOpenModal(null)}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs tracking-wide rounded-xl gap-1.5 shadow-sm px-4 py-2.5 transition cursor-pointer"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs tracking-wide rounded-xl gap-1.5 shadow-sm px-4 py-2.5 transition cursor-pointer"
         >
           <Plus className="w-4 h-4" /> Add New Address
         </Button>
@@ -218,7 +218,7 @@ export default function AddressesPage() {
               key={address.id}
               className={`relative border rounded-2xl p-5 bg-white shadow-sm transition-all flex flex-col justify-between ${
                 address.isDefault
-                  ? "border-blue-500 ring-1 ring-blue-500/20"
+                  ? "border-emerald-500 ring-1 ring-emerald-500/20"
                   : "border-slate-200"
               }`}
             >
@@ -229,8 +229,8 @@ export default function AddressesPage() {
                     {address.addressLabel || "Home"}
                   </span>
                   {address.isDefault && (
-                    <span className="flex items-center gap-1 text-[11px] font-bold text-blue-600">
-                      <CheckCircle2 className="w-3.5 h-3.5 fill-blue-50" />{" "}
+                    <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-600">
+                      <CheckCircle2 className="w-3.5 h-3.5 fill-emerald-50" />{" "}
                       Default
                     </span>
                   )}
@@ -262,7 +262,7 @@ export default function AddressesPage() {
                 {!address.isDefault ? (
                   <button
                     onClick={() => handleSetDefault(address.id)}
-                    className="text-xs font-semibold text-slate-500 hover:text-blue-600 transition cursor-pointer"
+                    className="text-xs font-semibold text-slate-500 hover:text-emerald-600 transition cursor-pointer"
                   >
                     Set as Default
                   </button>
@@ -467,7 +467,7 @@ export default function AddressesPage() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg px-5 cursor-pointer"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg px-5 cursor-pointer"
               >
                 {isSubmitting ? "Saving changes..." : "Save Address"}
               </Button>

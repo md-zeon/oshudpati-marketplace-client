@@ -1,6 +1,4 @@
-import {
-  Truck,
-} from "lucide-react";
+import { Truck } from "lucide-react";
 import { NavbarSearch } from "./NavbarSearch";
 import Link from "next/link";
 import { userService } from "@/services/user.service";
@@ -39,7 +37,7 @@ const NavbarContent = async ({ medicines = [] }: { medicines: Medicine[] }) => {
           <Link href="/order-tracking" className="flex items-center gap-1">
             <Truck className="text-slate-600 inline-block" size={36} />
             <div className="font-medium leading-tight">
-              <p className="text-sm leading-tight font-medium text-slate-600 hover:text-blue-600 cursor-pointer">
+              <p className="text-sm leading-tight font-medium text-slate-600 hover:text-emerald-600 cursor-pointer">
                 Track
               </p>
               <span className="text-base leading-tight">Your Order</span>

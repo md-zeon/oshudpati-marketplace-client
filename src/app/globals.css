@@ -1,58 +1,122 @@
 @import "tailwindcss";
 
 /* ============================================================
-   OSHUDPATI COLOR PALETTE
+   OSHUDPATI DESIGN SYSTEM — SEMANTIC COLOR TOKENS
    ============================================================
-   Primary (Emerald):   #059669 (emerald-600) - Main brand color, CTAs
-   Primary Light:       #d1fae5 (emerald-100) - Light backgrounds
-   Primary Dark:        #047857 (emerald-700) - Hover states
-   Secondary:           #2563eb (blue-600)    - Accent links
-   Accent:              #f59e0b (amber-400)   - Star ratings
-   Danger:              #dc2626 (red-500)     - Discounts, errors
-   Success:             #16a34a (green-600)   - Stock available
-   Wishlist:            #f43f5e (rose-500)    - Wishlist heart
-   Background:          #ffffff               - Page bg
-   Surface:             #f8fafc (slate-50)    - Card backgrounds
-   Border:              #e2e8f0 (slate-200)   - Borders
-   Text Primary:        #0f172a (slate-900)   - Headings
-   Text Secondary:      #64748b (slate-500)   - Body text
-   Text Muted:          #94a3b8 (slate-400)   - Captions
+   
+   BRAND COLORS (Public-facing site)
+   brand           : #059669 (emerald-600) - CTAs, primary buttons, links
+   brand-light     : #d1fae5 (emerald-100) - Light icon / badge backgrounds
+   brand-subtle    : #f0fdf4 (emerald-50)  - Very light card backgrounds
+   brand-dark      : #047857 (emerald-700) - Hover states
+   brand-accent    : #10b981 (emerald-500) - Success states
+
+   ADMIN COLORS (Admin panel only)
+   admin-bg        : #eff6ff (blue-50)
+   admin-text      : #1d4ed8 (blue-700)
+   admin-border    : #bfdbfe (blue-200)
+   admin-hover     : #dbeafe (blue-100)
+
+   STATUS COLORS (Order tracking)
+   status-placed   : #3b82f6 (blue-500)
+   status-proc     : #f59e0b (amber-500)
+   status-shipped  : #8b5cf6 (violet-500)
+   status-deliv    : #10b981 (emerald-500)
+   status-cancel   : #ef4444 (red-500)
+
+   SYSTEM COLORS
+   danger          : #dc2626 (red-500)    - Errors, critical
+   warning         : #f59e0b (amber-400)  - Star ratings
+   accent          : #f59e0b (amber-400)  - Star ratings
+   wishlist        : #f43f5e (rose-500)   - Wishlist heart
+   
+   SURFACE COLORS
+   surface         : #ffffff              - Page background
+   surface-card    : #f8fafc (slate-50)   - Card backgrounds
+   border-default  : #e2e8f0 (slate-200)  - Borders
+   
+   TEXT COLORS
+   text-primary    : #0f172a (slate-900)  - Headings
+   text-secondary  : #64748b (slate-500)  - Body text
+   text-muted      : #94a3b8 (slate-400)  - Captions
    ============================================================ */
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --primary: #059669;
-  --primary-light: #d1fae5;
-  --primary-dark: #047857;
-  --secondary: #2563eb;
-  --accent: #f59e0b;
+  /* Brand */
+  --brand: #059669;
+  --brand-light: #d1fae5;
+  --brand-subtle: #f0fdf4;
+  --brand-dark: #047857;
+  --brand-accent: #10b981;
+
+  /* Admin */
+  --admin-bg: #eff6ff;
+  --admin-text: #1d4ed8;
+  --admin-border: #bfdbfe;
+  --admin-hover: #dbeafe;
+
+  /* Status */
+  --status-placed: #3b82f6;
+  --status-processing: #f59e0b;
+  --status-shipped: #8b5cf6;
+  --status-delivered: #10b981;
+  --status-cancelled: #ef4444;
+
+  /* System */
   --danger: #dc2626;
-  --success: #16a34a;
+  --warning: #f59e0b;
+  --accent: #f59e0b;
   --wishlist: #f43f5e;
-  --surface: #f8fafc;
-  --border: #e2e8f0;
+  --success: #16a34a;
+
+  /* Surface */
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-card: #f8fafc;
+  --border-default: #e2e8f0;
+
+  /* Text */
+  --foreground: #0f172a;
   --text-primary: #0f172a;
   --text-secondary: #64748b;
   --text-muted: #94a3b8;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-light: var(--primary-light);
-  --color-primary-dark: var(--primary-dark);
-  --color-secondary: var(--secondary);
-  --color-accent: var(--accent);
+  /* Brand tokens */
+  --color-brand: var(--brand);
+  --color-brand-light: var(--brand-light);
+  --color-brand-subtle: var(--brand-subtle);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-accent: var(--brand-accent);
+
+  /* Status tokens */
+  --color-status-placed: var(--status-placed);
+  --color-status-processing: var(--status-processing);
+  --color-status-shipped: var(--status-shipped);
+  --color-status-delivered: var(--status-delivered);
+  --color-status-cancelled: var(--status-cancelled);
+
+  /* System tokens */
   --color-danger: var(--danger);
-  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-accent: var(--accent);
   --color-wishlist: var(--wishlist);
+  --color-success: var(--success);
+
+  /* Surface tokens */
+  --color-background: var(--background);
   --color-surface: var(--surface);
-  --color-border: var(--border);
+  --color-surface-card: var(--surface-card);
+  --color-border-default: var(--border-default);
+
+  /* Text tokens */
+  --color-foreground: var(--foreground);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
+
+  /* Font tokens */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-fredoka: var(--font-fredoka);

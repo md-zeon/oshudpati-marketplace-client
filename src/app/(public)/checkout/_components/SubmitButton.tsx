@@ -10,7 +10,7 @@ export const SubmitButton = ({ disabled }: { disabled: boolean }) => {
     <Button
       type="submit"
       disabled={submitting || disabled}
-      className="w-full mt-2 h-11 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs tracking-wider uppercase rounded-xl transition cursor-pointer shadow-sm"
+      className="w-full mt-2 h-11 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs tracking-wider uppercase rounded-xl transition cursor-pointer shadow-sm"
     >
       {submitting ? (
         <div className="flex items-center gap-2 justify-center">

@@ -148,7 +148,7 @@ export default async function OrderReceivedPage({ params }: PageProps) {
         <Card className="shadow-sm border border-slate-200 rounded-xl bg-white overflow-hidden">
           <CardHeader className="bg-slate-50/60 border-b border-slate-100 p-4">
             <CardTitle className="text-xs font-black tracking-wider text-slate-700 uppercase flex items-center gap-2">
-              <ShoppingBag className="w-3.5 h-3.5 text-blue-600" /> Items
+              <ShoppingBag className="w-3.5 h-3.5 text-emerald-600" /> Items
               Summary Bundle ({allItems?.length})
             </CardTitle>
           </CardHeader>
@@ -177,7 +177,7 @@ export default async function OrderReceivedPage({ params }: PageProps) {
                       Qty: {item.quantity} × ৳
                       {Number(item.unitPrice).toFixed(2)}
                     </p>
-                    <p className="text-[9px] text-blue-600 font-semibold bg-blue-50 px-1.5 py-0.5 rounded inline-block mt-1">
+                    <p className="text-[9px] text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded inline-block mt-1">
                       Seller: {item.sellerName}
                     </p>
                   </div>
@@ -219,7 +219,7 @@ export default async function OrderReceivedPage({ params }: PageProps) {
         {/* Shipping Snapshot Destination block */}
         <Card className="shadow-sm border border-slate-200 rounded-xl bg-white p-6">
           <div className="flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
-            <MapPin className="w-4 h-4 text-blue-600" />
+            <MapPin className="w-4 h-4 text-emerald-600" />
             <h3 className="font-bold text-sm text-slate-800">
               Delivery Address Details
             </h3>
@@ -275,7 +275,7 @@ export default async function OrderReceivedPage({ params }: PageProps) {
         </Button>
         <Button
           asChild
-          className="w-full sm:w-auto h-11 px-6 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold tracking-wider uppercase shadow-sm"
+          className="w-full sm:w-auto h-11 px-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold tracking-wider uppercase shadow-sm"
         >
           <Link href="/" className="flex items-center gap-2">
             Continue Shopping <ArrowRight className="w-3.5 h-3.5" />

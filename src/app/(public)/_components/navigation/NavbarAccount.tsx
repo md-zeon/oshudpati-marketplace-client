@@ -42,14 +42,14 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
       <div className="font-medium leading-tight">
         {user ? (
           <>
-            <span className="text-base leading-tight font-medium text-slate-600 group-hover:text-blue-600">
+            <span className="text-base leading-tight font-medium text-slate-600 group-hover:text-emerald-600">
               Welcome
             </span>
             <p className="text-xs leading-tight">{user.name}</p>
           </>
         ) : (
           <>
-            <p className="text-sm leading-tight font-medium text-slate-600 group-hover:text-blue-600">
+            <p className="text-sm leading-tight font-medium text-slate-600 group-hover:text-emerald-600">
               Sign in
             </p>
             <span className="text-base leading-tight">Account</span>
@@ -72,7 +72,10 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
           className="flex items-center justify-between group text-slate-700"
         >
           <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
-            <LayoutDashboard className="text-blue-600 inline-block" size={20} />
+            <LayoutDashboard
+              className="text-emerald-600 inline-block"
+              size={20}
+            />
             Dashboard
           </div>
 
@@ -87,7 +90,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
           className="flex items-center justify-between group text-slate-700"
         >
           <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
-            <User className="text-blue-600 inline-block" size={20} />
+            <User className="text-emerald-600 inline-block" size={20} />
             My Profile
           </div>
 
@@ -104,7 +107,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
-                <Box className="text-blue-600 inline-block" size={20} />
+                <Box className="text-emerald-600 inline-block" size={20} />
                 Orders
               </div>
 
@@ -119,7 +122,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
-                <Heart className="text-blue-600 inline-block" size={20} />
+                <Heart className="text-emerald-600 inline-block" size={20} />
                 Wishlist
               </div>
 
@@ -134,7 +137,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
-                <MapPin className="text-blue-600 inline-block" size={20} />
+                <MapPin className="text-emerald-600 inline-block" size={20} />
                 Addresses
               </div>
               <ArrowRight
@@ -152,7 +155,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
-                <Boxes className="text-blue-600 inline-block" size={20} />
+                <Boxes className="text-emerald-600 inline-block" size={20} />
                 My Products
               </div>
 
@@ -167,7 +170,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
-                <Box className="text-blue-600 inline-block" size={20} />
+                <Box className="text-emerald-600 inline-block" size={20} />
                 Manage Orders
               </div>
 
@@ -186,7 +189,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
-                <UserCog className="text-blue-600 inline-block" size={20} />
+                <UserCog className="text-emerald-600 inline-block" size={20} />
                 Manage Users
               </div>
 
@@ -201,7 +204,10 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
-                <LayoutGrid className="text-blue-600 inline-block" size={20} />
+                <LayoutGrid
+                  className="text-emerald-600 inline-block"
+                  size={20}
+                />
                 Categories
               </div>
 
@@ -218,7 +224,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
           className="flex items-center justify-between group text-slate-700"
         >
           <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
-            <User className="text-blue-600 inline-block" size={20} />
+            <User className="text-emerald-600 inline-block" size={20} />
             My Account
           </div>
 

@@ -43,7 +43,7 @@ export function AddressSection({
       {/* 1. Delivery Address Selection Option block */}
       <Card className="bg-white p-6">
         <div className="flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
-          <MapPin className="w-4 h-4 text-blue-600" />
+          <MapPin className="w-4 h-4 text-emerald-600" />
           <h3 className="font-bold text-sm text-slate-800">
             Delivery Address Options
           </h3>
@@ -64,7 +64,7 @@ export function AddressSection({
                   }}
                   className={`p-4 border rounded-xl cursor-pointer text-left transition ${
                     !isCustomAddress && selectedAddressId === addr.id
-                      ? "border-blue-600 bg-blue-50/10 ring-1 ring-blue-600"
+                      ? "border-emerald-600 bg-emerald-50/10 ring-1 ring-emerald-600"
                       : "border-slate-200 hover:border-slate-300"
                   }`}
                 >
@@ -92,7 +92,7 @@ export function AddressSection({
           onClick={() => setIsCustomAddress(!isCustomAddress)}
           className={`p-4 border rounded-xl cursor-pointer transition flex items-center gap-3 mt-4 ${
             isCustomAddress
-              ? "border-blue-600 bg-blue-50/10"
+              ? "border-emerald-600 bg-emerald-50/10"
               : "border-slate-200 hover:bg-slate-50/50"
           }`}
         >
@@ -100,7 +100,7 @@ export function AddressSection({
             type="checkbox"
             checked={isCustomAddress}
             readOnly
-            className="rounded text-blue-600 pointer-events-none focus:ring-0"
+            className="rounded text-emerald-600 pointer-events-none focus:ring-0"
           />
           <div className="text-xs">
             <p className="font-bold text-slate-800">
@@ -230,7 +230,7 @@ export function AddressSection({
       {/* Special Instructions Notes Card */}
       <Card className="rounded-xl bg-white p-6">
         <div className="flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
-          <NotepadText className="w-4 h-4 text-blue-600" />
+          <NotepadText className="w-4 h-4 text-emerald-600" />
           <h3 className="font-bold text-sm text-slate-800">
             2. Special Dispatch Notes
           </h3>
@@ -251,7 +251,7 @@ export function AddressSection({
       {/* Static Payment Method Showcase */}
       <Card className="rounded-xl bg-white p-6">
         <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-          <CreditCard className="w-4 h-4 text-blue-600" />
+          <CreditCard className="w-4 h-4 text-emerald-600" />
           <h3 className="font-bold text-sm text-slate-800">Payment Method</h3>
         </div>
         <div className="bg-emerald-50/20 p-4 rounded-xl flex items-center gap-3">

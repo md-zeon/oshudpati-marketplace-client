@@ -34,7 +34,7 @@ export default function AboutPage() {
           <div className="space-y-4">
             <div className="p-5 rounded-xl border bg-muted/30 space-y-3">
               <div className="flex items-center gap-2.5 text-foreground font-semibold">
-                <ShieldAlert className="w-5 h-5 text-blue-500" />
+                <ShieldAlert className="w-5 h-5 text-emerald-500" />
                 <h3>The Core Promise: 100% Authenticity</h3>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">

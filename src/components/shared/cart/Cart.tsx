@@ -101,14 +101,14 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
         <div>
           <Link href="/cart">
             <div className="flex items-center gap-1 cursor-pointer group select-none py-1">
-              <div className="rounded-full border-2 p-1 border-slate-200 group-hover:border-blue-600 transition-colors">
+              <div className="rounded-full border-2 p-1 border-slate-200 group-hover:border-emerald-600 transition-colors">
                 <ShoppingCart
-                  className="text-slate-600 group-hover:text-blue-600 transition-colors"
+                  className="text-slate-600 group-hover:text-emerald-600 transition-colors"
                   size={24}
                 />
               </div>
               <div className="font-medium leading-tight">
-                <p className="text-sm leading-tight font-medium text-slate-600 group-hover:text-blue-600 transition-colors">
+                <p className="text-sm leading-tight font-medium text-slate-600 group-hover:text-emerald-600 transition-colors">
                   Cart Total
                 </p>
                 <span className="text-base leading-tight font-bold text-slate-900">
@@ -196,7 +196,7 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
                     <div className="flex-1 min-w-0">
                       <Link
                         href={`/medicine/${item.medicine.slug}`}
-                        className="text-xs font-semibold text-slate-800 leading-tight line-clamp-2 group-hover:text-blue-600 transition-colors block"
+                        className="text-xs font-semibold text-slate-800 leading-tight line-clamp-2 group-hover:text-emerald-600 transition-colors block"
                       >
                         {item.medicine.name}
                       </Link>
@@ -235,7 +235,7 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
                 <Link href="/cart">View cart</Link>
               </Button>
               <Button
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs h-10 rounded-xl shadow-md shadow-blue-100 transition-all"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs h-10 rounded-xl shadow-md shadow-emerald-100 transition-all"
                 asChild
               >
                 <Link href="/checkout">Checkout</Link>

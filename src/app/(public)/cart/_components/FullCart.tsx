@@ -117,7 +117,7 @@ export default function FullCart({
   if (!cart || cart.length === 0) return <EmptyCart />;
 
   return (
-    <div className="text-slate-900 selection:bg-blue-100 mt-5">
+    <div className="text-slate-900 selection:bg-emerald-100 mt-5">
       <div className="flex flex-col lg:flex-row gap-8 items-start">
         <div className="flex-1 w-full">
           {/* Realtime Actionable Shipping Progress Banner */}
@@ -199,7 +199,7 @@ export default function FullCart({
                     <div className="min-w-0">
                       <Link
                         href={`/medicine/${item.medicine.slug}`}
-                        className="font-bold text-sm md:text-base text-slate-900 leading-snug hover:text-blue-600 transition-colors block"
+                        className="font-bold text-sm md:text-base text-slate-900 leading-snug hover:text-emerald-600 transition-colors block"
                       >
                         {item.medicine.name}
                       </Link>
@@ -312,7 +312,7 @@ export default function FullCart({
 
           {/* Bottom Processing Control Button Trigger Elements */}
           <Button
-            className="w-full bg-[#008ecc] hover:bg-[#007cbd] text-white font-bold py-6 rounded-xl transition-all text-sm tracking-wide shadow-sm"
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-6 rounded-xl transition-all text-sm tracking-wide shadow-sm"
             asChild
           >
             <Link href="/checkout">Proceed to checkout</Link>

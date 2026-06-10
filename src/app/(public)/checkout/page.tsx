@@ -70,7 +70,7 @@ export default async function CheckoutPage() {
           <Card className="shadow-sm border border-slate-200 rounded-xl bg-white overflow-hidden">
             <CardHeader className="bg-slate-50/60 border-b border-slate-100 p-4">
               <CardTitle className="text-xs font-black tracking-wider text-slate-700 uppercase flex items-center gap-2">
-                <ShoppingBag className="w-3.5 h-3.5 text-blue-600" /> Cart
+                <ShoppingBag className="w-3.5 h-3.5 text-emerald-600" /> Cart
                 Summary ({cartItems.length})
               </CardTitle>
             </CardHeader>

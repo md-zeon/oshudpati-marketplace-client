@@ -26,7 +26,7 @@ const NavbarFooter = () => {
             href="/faq"
             className="flex items-center text-xs font-semibold gap-1"
           >
-            <MapPin className="inline-block text-blue-600" size={14} />
+            <MapPin className="inline-block text-emerald-600" size={14} />
             <span>FAQ</span>
           </Link>
         </div>

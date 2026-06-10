@@ -185,8 +185,8 @@ const AccountPage = async () => {
         </div>
 
         <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white">
-          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-            <Smartphone className="w-5 h-5 text-blue-600" />
+          <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+            <Smartphone className="w-5 h-5 text-emerald-600" />
           </div>
           <div>
             <p className="text-xs text-slate-500 font-medium">Phone</p>
