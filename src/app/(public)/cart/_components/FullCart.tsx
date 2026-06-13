@@ -6,11 +6,12 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { getLocalCart, saveLocalCart } from "@/lib/local-cart";
-import { CartItem } from "@/types";
+import { Address, CartItem } from "@/types";
 import { addToCart, removeFromCart } from "@/actions/cart.action";
 import { ShoppingBag, Minus, Plus, X } from "lucide-react";
 import { env } from "@/env";
 import EmptyCart from "./EmptyCart";
+import { getMyAddresses } from "@/actions/address.action";
 
 const FREE_SHIPPING_THRESHOLD = env.NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD;
 const FLAT_SHIPPING_CHARGE = env.NEXT_PUBLIC_FLAT_SHIPPING_CHARGE;
@@ -25,7 +26,21 @@ export default function FullCart({
   isLoggedIn = false,
 }: FullCartProps) {
   const [cart, setCart] = useState<CartItem[]>(initialCart ?? []);
+  const [address, setAddress] = useState<Address | null>(null);
 
+  // Fetch default address for shipping cost estimation and display in totals summary
+  useEffect(() => {
+    async function fetchDefaultAddress() {
+      const res = await getMyAddresses();
+      const defaultAddr = res.find((addr) => addr.isDefault) || null;
+      setAddress(defaultAddr);
+    }
+    if (isLoggedIn) {
+      fetchDefaultAddress();
+    }
+  }, [isLoggedIn]);
+
+  // Sync cart state with local storage for guest users and server state for logged-in users
   useEffect(() => {
     const onLocalCart = () =>
       setCart(isLoggedIn ? initialCart : getLocalCart());
@@ -296,7 +311,11 @@ export default function FullCart({
               {/* Shipping Location will be dynamically updated in the future from address model */}
               <div className="text-xs text-slate-400 mt-1">
                 Shipping to{" "}
-                <span className="font-bold text-slate-700">Dhaka, BD</span>
+                <span className="font-bold text-slate-700">
+                  {address
+                    ? `${address?.streetAddress}, ${address?.area}, ${address?.district}`
+                    : "Not specified"}
+                </span>
               </div>
             </div>
           </div>

@@ -23,7 +23,6 @@ export function AddressSection({
     setCustomAddress,
   } = useCheckout();
 
-  // Set default address values using high-speed native client init
   useEffect(() => {
     if (savedAddresses.length > 0 && !selectedAddressId) {
       const defaultAddr = savedAddresses.find((addr) => addr.isDefault);
