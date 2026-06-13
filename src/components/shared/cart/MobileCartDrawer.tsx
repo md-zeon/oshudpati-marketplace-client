@@ -13,29 +13,45 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { removeFromCart } from "@/actions/cart.action";
+import { getCartItems, removeFromCart } from "@/actions/cart.action";
 import { toast } from "sonner";
 import { getLocalCart, saveLocalCart } from "@/lib/local-cart";
 import { CartItem } from "@/types";
 import { env } from "@/env";
 import { cn } from "@/lib/utils";
-
-interface MobileCartDrawerProps {
-  cart?: CartItem[];
-  isLoggedIn?: boolean;
-}
+import { authClient } from "@/lib/auth-client";
 
 const FREE_SHIPPING_THRESHOLD = env.NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD;
 
-export function MobileCartDrawer({
-  cart = [],
-  isLoggedIn = false,
-}: MobileCartDrawerProps) {
-  const [runtimeCart, setRuntimeCart] = useState<CartItem[]>(cart);
+export function MobileCartDrawer() {
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [runtimeCart, setRuntimeCart] = useState<CartItem[]>([]);
   const [mounted] = useState<boolean>(typeof window !== "undefined");
-
   const [open, setOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Listen for local cart updates (for guest users)
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = await authClient.getSession();
+      setIsLoggedIn(user.data?.user ? true : false);
+    };
+    checkAuth();
+  }, []);
+
+  // Fetch cart items on mount
+  useEffect(() => {
+    const fetchCart = async () => {
+      const cartData = await getCartItems({ cache: "no-store" });
+      setRuntimeCart(
+        isLoggedIn ? (cartData.success ? cartData.data : []) : getLocalCart(),
+      );
+      setCart(cartData.success ? cartData.data : []);
+    };
+    fetchCart();
+  }, [isLoggedIn]);
+
+  // Sync runtime cart with local cart for guest users
   useEffect(() => {
     const syncCart = () => setRuntimeCart(isLoggedIn ? cart : getLocalCart());
 
@@ -46,7 +62,6 @@ export function MobileCartDrawer({
 
   const isCartEmpty = runtimeCart.length === 0;
 
-  // Calculate total price based on item quantity and individual pricing
   const subtotal = runtimeCart.reduce((acc, item) => {
     const activePrice = parseFloat(
       item.medicine.discountPrice || item.medicine.price || "0",
@@ -85,14 +100,11 @@ export function MobileCartDrawer({
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon" className="relative cursor-pointer">
-        <ShoppingCart className="h-6 w-6" />
-        {itemCount > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-bold text-white">
-            {itemCount > 9 ? "9+" : itemCount}
-          </span>
-        )}
-      </Button>
+      <Drawer open={open} onOpenChange={setOpen}>
+        <Button variant="ghost" size="icon" className="relative cursor-pointer">
+          <ShoppingCart className="h-6 w-6" />
+        </Button>
+      </Drawer>
     );
   }
 
@@ -149,7 +161,6 @@ export function MobileCartDrawer({
           </div>
         ) : (
           <div className="flex flex-col h-full">
-            {/* Items List - Scrollable */}
             <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 max-h-[40vh]">
               {runtimeCart.map((item) => {
                 const primaryImage =
@@ -165,7 +176,6 @@ export function MobileCartDrawer({
                     key={item.id}
                     className="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-100"
                   >
-                    {/* Image */}
                     <div className="relative w-14 h-14 rounded-lg bg-white border border-slate-100 p-1 shrink-0 flex items-center justify-center overflow-hidden">
                       {primaryImage ? (
                         <Image
@@ -180,7 +190,6 @@ export function MobileCartDrawer({
                       )}
                     </div>
 
-                    {/* Details */}
                     <div className="flex-1 min-w-0">
                       <Link
                         href={`/medicine/${item.medicine.slug}`}
@@ -198,7 +207,6 @@ export function MobileCartDrawer({
                       </p>
                     </div>
 
-                    {/* Remove Button */}
                     <button
                       onClick={() => handleRemoveItem(item.id, item.medicineId)}
                       className="shrink-0 p-1.5 rounded-full bg-white border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-200 transition-colors"
@@ -210,9 +218,7 @@ export function MobileCartDrawer({
               })}
             </div>
 
-            {/* Footer - Fixed */}
             <div className="border-t border-slate-100 px-4 py-4 space-y-3 bg-white">
-              {/* Subtotal */}
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-slate-700">
                   Subtotal
@@ -222,7 +228,6 @@ export function MobileCartDrawer({
                 </span>
               </div>
 
-              {/* Shipping Progress */}
               <div className="bg-slate-50 border border-slate-100 rounded-xl p-3">
                 <p className="text-xs font-medium text-slate-700 mb-2">
                   {remainingForFreeShipping > 0 ? (
@@ -252,7 +257,6 @@ export function MobileCartDrawer({
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="grid grid-cols-2 gap-3">
                 <DrawerClose asChild>
                   <Button

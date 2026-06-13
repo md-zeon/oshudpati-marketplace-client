@@ -36,7 +36,10 @@ export function AppBreadcrumb() {
           const isLast = index === segments.length - 1;
 
           return (
-            <BreadcrumbItem key={href}>
+            <BreadcrumbItem
+              key={href}
+              aria-current={isLast ? "page" : undefined}
+            >
               {!isLast ? (
                 <BreadcrumbLink asChild>
                   <Link

@@ -24,15 +24,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { MobileCartDrawer } from "@/components/shared/cart/MobileCartDrawer";
-import { userService } from "@/services/user.service";
-import { CartService } from "@/services/cart.service";
 
 const MobileNavbarHeader = async () => {
-  const userPromise = userService.getSession();
-  const cartPromise = CartService.getCartItems();
-
-  const [user, cart] = await Promise.all([userPromise, cartPromise]);
-
   const navLinks = [
     { label: "Home", href: "/", icon: Home },
     { label: "Categories", href: "/categories", icon: Package },
@@ -190,7 +183,7 @@ const MobileNavbarHeader = async () => {
         </Link>
 
         {/* Right Cart Drawer */}
-        <MobileCartDrawer cart={cart.data} isLoggedIn={!!user} />
+        <MobileCartDrawer />
       </div>
     </nav>
   );

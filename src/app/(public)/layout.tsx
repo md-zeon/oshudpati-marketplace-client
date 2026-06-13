@@ -10,6 +10,8 @@ import { AppBreadcrumb } from "@/components/shared/AppBreadcrumb";
 import { MedicineService } from "@/services/medicine.service";
 import { Medicine } from "@/types";
 
+export const dynamic = "force-dynamic";
+
 const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
   const medicineResponse = await MedicineService.getMedicines(
     { limit: 100 },
