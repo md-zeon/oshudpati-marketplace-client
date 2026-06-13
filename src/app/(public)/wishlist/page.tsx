@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import { userService } from "@/services/user.service";
-import { getMyWishlistAction } from "@/actions/wishlist.action";
 import { WishlistItem } from "@/types";
 import { Heart, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { WishlistService } from "@/services/wishlist.service";
 
 export const metadata = {
   title: "My Wishlist",
@@ -15,7 +15,7 @@ const WishlistPage = async () => {
   const session = await userService.getSession();
   if (!session?.success || !session.data?.user) return redirect("/signin");
 
-  const res = await getMyWishlistAction();
+  const res = await WishlistService.getMyWishlist();
   const items: WishlistItem[] = res?.success ? res.data : [];
 
   return (

@@ -9,7 +9,7 @@ import { toggleWishlistAction } from "@/actions/wishlist.action";
 
 interface WishlistButtonProps {
   medicineId: string;
-  initialWishlisted?: boolean;
+  isWishlisted: boolean;
   className?: string;
   size?: "sm" | "md" | "lg";
   onToggle?: (newState: boolean) => void;
@@ -17,7 +17,7 @@ interface WishlistButtonProps {
 
 export function WishlistButton({
   medicineId,
-  initialWishlisted = false,
+  isWishlisted: initialWishlisted,
   className = "",
   size = "sm",
   onToggle,

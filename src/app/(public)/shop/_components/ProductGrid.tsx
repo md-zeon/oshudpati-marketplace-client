@@ -1,8 +1,18 @@
 import { ProductCard } from "@/components/shared/shop/ProductCard";
 import EmptyState from "./EmptyState";
-import { ProductGridProps } from "@/types";
+import { Medicine, ProductGridProps, WishlistItem } from "@/types";
 
-export default function ProductGrid({ medicines, viewMode }: ProductGridProps) {
+interface ProductGridProps {
+  medicines: Medicine[];
+  viewMode: "grid" | "list";
+  wishlistItems: WishlistItem[];
+}
+
+export default function ProductGrid({
+  medicines,
+  viewMode,
+  wishlistItems,
+}: ProductGridProps) {
   if (!medicines.length) {
     return <EmptyState />;
   }
@@ -20,6 +30,9 @@ export default function ProductGrid({ medicines, viewMode }: ProductGridProps) {
           key={medicine.id}
           medicine={medicine}
           viewMode={viewMode}
+          isWishlisted={wishlistItems.includes(
+            medicine.id as unknown as WishlistItem,
+          )}
         />
       ))}
     </div>

@@ -15,9 +15,14 @@ import ProductCardAddToCart from "./ProductCardAddToCart";
 interface ProductCardProps {
   medicine: Medicine;
   viewMode: "grid" | "list";
+  isWishlisted: boolean;
 }
 
-export function ProductCard({ medicine, viewMode }: ProductCardProps) {
+export function ProductCard({
+  medicine,
+  viewMode,
+  isWishlisted,
+}: ProductCardProps) {
   const isList = viewMode === "list";
 
   const primaryImage = getPrimaryImage(medicine);
@@ -45,7 +50,7 @@ export function ProductCard({ medicine, viewMode }: ProductCardProps) {
 
       {/* Wishlist Button */}
       <div className="absolute top-3 right-3 z-10">
-        <WishlistButton medicineId={medicine.id} />
+        <WishlistButton medicineId={medicine.id} isWishlisted={isWishlisted} />
       </div>
 
       {/* Image */}

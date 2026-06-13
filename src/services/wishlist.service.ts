@@ -23,7 +23,10 @@ export const WishlistService = {
       const cookieStore = await cookies();
       const res = await fetch(`${API_URL}/wishlist`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Cookie: cookieStore.toString() },
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookieStore.toString(),
+        },
         body: JSON.stringify({ medicineId }),
       });
       const data = await res.json();

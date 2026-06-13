@@ -36,8 +36,3 @@ export interface ShopSidebarProps {
   params: SearchParams;
   filters: ParsedShopFilters;
 }
-
-export interface ProductGridProps {
-  medicines: Medicine[];
-  viewMode: "grid" | "list";
-}
