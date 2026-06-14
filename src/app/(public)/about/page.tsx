@@ -7,16 +7,17 @@ import {
   Building2,
   CheckCircle2,
 } from "lucide-react";
+import { PageSection } from "@/components/shared/PageSection";
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         {/* LEFT SIDE - BRAND MISSION & MARKETPLACE IDENTITY */}
-        <div className="space-y-8">
+        <PageSection className="space-y-8">
           <div className="space-y-3">
             <p className="text-sm font-semibold tracking-wider text-primary uppercase">
-              Bangladesh&apos;s Trusted Healthcare Marketplace
+              Bangladesh{"'"}s Trusted Healthcare Marketplace
             </p>
             <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
               About Oshudpati
@@ -108,7 +109,7 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-        </div>
+        </PageSection>
 
         {/* RIGHT SIDE - OPERATIONAL STANDARDS CARD */}
         <div className="lg:sticky lg:top-16 space-y-6">

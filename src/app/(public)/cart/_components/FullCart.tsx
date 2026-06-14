@@ -27,6 +27,7 @@ export default function FullCart({
 }: FullCartProps) {
   const [cart, setCart] = useState<CartItem[]>(initialCart ?? []);
   const [address, setAddress] = useState<Address | null>(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   // Fetch default address for shipping cost estimation and display in totals summary
   useEffect(() => {
@@ -80,6 +81,7 @@ export default function FullCart({
     if (newQty < 1 || newQty > (item.medicine.stockQuantity || 999)) return;
 
     if (isLoggedIn) {
+      setButtonDisabled(true);
       try {
         const res = await addToCart(item.medicineId, newQty - item.quantity);
 
@@ -98,6 +100,8 @@ export default function FullCart({
         toast.error(
           e instanceof Error ? e.message : "Server error updating quantity",
         );
+      } finally {
+        setButtonDisabled(false);
       }
     } else {
       const updated = cart.map((it) =>
@@ -237,7 +241,7 @@ export default function FullCart({
                     <div className="flex items-center border border-slate-300 rounded-lg bg-white overflow-hidden shadow-sm">
                       <button
                         onClick={() => changeQuantity(item, item.quantity - 1)}
-                        disabled={item.quantity <= 1}
+                        disabled={item.quantity <= 1 || buttonDisabled}
                         className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 disabled:opacity-30 disabled:hover:bg-transparent transition"
                       >
                         <Minus className="w-3.5 h-3.5" />
@@ -248,7 +252,9 @@ export default function FullCart({
                       <button
                         onClick={() => changeQuantity(item, item.quantity + 1)}
                         disabled={
-                          item.quantity >= (item.medicine.stockQuantity || 999)
+                          item.quantity >=
+                            (item.medicine.stockQuantity || 999) ||
+                          buttonDisabled
                         }
                         className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 disabled:opacity-30 disabled:hover:bg-transparent transition"
                       >
@@ -269,6 +275,7 @@ export default function FullCart({
                     </div>
                     <button
                       onClick={() => handleRemove(item)}
+                      disabled={buttonDisabled}
                       className="text-slate-400 hover:text-rose-500 border border-slate-200 hover:border-rose-100 rounded-lg p-1.5 transition bg-white hover:bg-rose-50/40 cursor-pointer"
                     >
                       <X className="w-4 h-4" />

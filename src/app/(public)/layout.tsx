@@ -9,6 +9,7 @@ import MobileNavbarFooter from "./_components/navigation/MobileNavbarFooter";
 import { AppBreadcrumb } from "@/components/shared/AppBreadcrumb";
 import { MedicineService } from "@/services/medicine.service";
 import { Medicine } from "@/types";
+import { PageTransition } from "@/components/shared/PageTransition";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +39,7 @@ const PublicLayout = async ({ children }: { children: React.ReactNode }) => {
       {/* Main Content */}
       <main className="w-full max-w-360 mx-auto p-4">
         <AppBreadcrumb />
-        {children}
+        <PageTransition>{children}</PageTransition>
       </main>
       <PublicFooter />
       <MobileNavbarFooter medicines={initialMedicines} />

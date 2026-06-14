@@ -146,10 +146,190 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-fredoka: var(--font-fredoka);
+
+  /* ===== ANIMATION KEYFRAMES ===== */
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-fade-in-up: fade-in-up 0.5s ease-out;
+  --animate-fade-in-down: fade-in-down 0.4s ease-out;
+  --animate-slide-in-right: slide-in-right 0.3s ease-out;
+  --animate-slide-in-left: slide-in-left 0.3s ease-out;
+  --animate-scale-in: scale-in 0.3s ease-out;
+  --animate-spin-slow: spin 3s linear infinite;
+  --animate-pulse-soft: pulse-soft 2s ease-in-out infinite;
+  --animate-bounce-in: bounce-in 0.5s ease-out;
+  --animate-float: float 3s ease-in-out infinite;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-fredoka);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom utility for staggered children animation */
+.stagger-children > * {
+  animation: fade-in-up 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.stagger-children > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.stagger-children > *:nth-child(2) {
+  animation-delay: 80ms;
+}
+.stagger-children > *:nth-child(3) {
+  animation-delay: 160ms;
+}
+.stagger-children > *:nth-child(4) {
+  animation-delay: 240ms;
+}
+.stagger-children > *:nth-child(5) {
+  animation-delay: 320ms;
+}
+.stagger-children > *:nth-child(6) {
+  animation-delay: 400ms;
+}
+.stagger-children > *:nth-child(7) {
+  animation-delay: 480ms;
+}
+.stagger-children > *:nth-child(8) {
+  animation-delay: 560ms;
+}
+.stagger-children > *:nth-child(9) {
+  animation-delay: 640ms;
+}
+.stagger-children > *:nth-child(10) {
+  animation-delay: 720ms;
+}
+.stagger-children > *:nth-child(11) {
+  animation-delay: 800ms;
+}
+.stagger-children > *:nth-child(12) {
+  animation-delay: 880ms;
 }

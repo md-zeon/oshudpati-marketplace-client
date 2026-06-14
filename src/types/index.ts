@@ -6,7 +6,6 @@ export type {
   SearchParams,
   ParsedShopFilters,
   ShopSidebarProps,
-  ProductGridProps,
 } from "./shop.type";
 
 export type { CartItem } from "./cart.type";

@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
+import { PageSection } from "@/components/shared/PageSection";
 
 export const metadata = {
   title: "Frequently Asked Questions",
@@ -110,23 +111,25 @@ const faqs = [
 const FaqPage = () => {
   return (
     <div className="py-8 max-w-4xl mx-auto">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="p-2 rounded-xl bg-emerald-50">
-          <HelpCircle className="w-5 h-5 text-emerald-600" />
+      <PageSection>
+        <div className="flex items-center gap-3 mb-8">
+          <div className="p-2 rounded-xl bg-emerald-50">
+            <HelpCircle className="w-5 h-5 text-emerald-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">
+              Frequently Asked Questions
+            </h1>
+            <p className="text-sm text-slate-500">
+              Everything you need to know about Oshudpati Marketplace
+            </p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">
-            Frequently Asked Questions
-          </h1>
-          <p className="text-sm text-slate-500">
-            Everything you need to know about Oshudpati Marketplace
-          </p>
-        </div>
-      </div>
+      </PageSection>
 
       <div className="space-y-8">
-        {faqs.map((section) => (
-          <div key={section.category}>
+        {faqs.map((section, idx) => (
+          <PageSection key={section.category} delay={idx * 0.08}>
             <h2 className="text-lg font-bold text-slate-900 mb-3">
               {section.category}
             </h2>
@@ -146,7 +149,7 @@ const FaqPage = () => {
                 </AccordionItem>
               ))}
             </Accordion>
-          </div>
+          </PageSection>
         ))}
       </div>
     </div>

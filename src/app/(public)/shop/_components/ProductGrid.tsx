@@ -1,6 +1,6 @@
 import { ProductCard } from "@/components/shared/shop/ProductCard";
 import EmptyState from "./EmptyState";
-import { Medicine, ProductGridProps, WishlistItem } from "@/types";
+import { Medicine, WishlistItem } from "@/types";
 
 interface ProductGridProps {
   medicines: Medicine[];

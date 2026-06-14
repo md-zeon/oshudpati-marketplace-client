@@ -5,6 +5,7 @@ import { Heart, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { WishlistService } from "@/services/wishlist.service";
+import { PageSection } from "@/components/shared/PageSection";
 
 export const metadata = {
   title: "My Wishlist",
@@ -20,15 +21,17 @@ const WishlistPage = async () => {
 
   return (
     <div className="py-8">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 rounded-xl bg-rose-50">
-          <Heart className="w-5 h-5 text-rose-500" />
+      <PageSection>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 rounded-xl bg-rose-50">
+            <Heart className="w-5 h-5 text-rose-500" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">My Wishlist</h1>
+            <p className="text-sm text-slate-500">{items.length} saved items</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">My Wishlist</h1>
-          <p className="text-sm text-slate-500">{items.length} saved items</p>
-        </div>
-      </div>
+      </PageSection>
 
       {items.length === 0 ? (
         <div className="text-center py-20">
@@ -47,7 +50,7 @@ const WishlistPage = async () => {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 stagger-children">
           {items.map((item) => {
             const primaryImage =
               item.medicine.images?.find((i) => i.isPrimary)?.imageUrl ||
@@ -61,7 +64,7 @@ const WishlistPage = async () => {
               <Link
                 key={item.id}
                 href={`/medicine/${item.medicine.slug}`}
-                className="group bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition-all"
+                className="group bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
               >
                 <div className="relative w-full h-32 bg-slate-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
                   {primaryImage ? (
@@ -70,7 +73,7 @@ const WishlistPage = async () => {
                       alt={item.medicine.name}
                       fill
                       sizes="(max-width: 768px) 50vw, 25vw"
-                      className="object-contain p-2 group-hover:scale-105 transition-transform"
+                      className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
                     <ShoppingBag className="w-8 h-8 text-slate-300" />
