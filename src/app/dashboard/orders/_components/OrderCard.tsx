@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, ChevronUp, ShoppingBag, XCircle } from "lucide-react";
-import { DashboardRecentOrder, DashboardVendorOrder } from "@/types";
+import { DashboardRecentOrder } from "@/types";
 import { cancelVendorOrderAction } from "@/actions/order.action";
 import { toast } from "sonner";
 
@@ -64,7 +65,10 @@ export function OrderCard({ order }: OrderCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden transition-all hover:border-slate-300">
+    <motion.div
+      className="bg-white rounded-xl border border-slate-200 overflow-hidden transition-all hover:border-slate-300"
+      layout
+    >
       {/* Header — always visible */}
       <button
         onClick={() => setExpanded(!expanded)}
@@ -126,111 +130,121 @@ export function OrderCard({ order }: OrderCardProps) {
       </button>
 
       {/* Expanded details */}
-      {expanded && (
-        <div className="border-t border-slate-100">
-          {/* Vendor orders */}
-          <div className="divide-y divide-slate-50">
-            {order.vendorOrders.map((vendor) => {
-              const progress = getProgress(vendor.orderStatus);
-              const statusColor =
-                STATUS_COLORS[vendor.orderStatus] || "bg-slate-400";
-              const badgeClass =
-                STATUS_BADGES[vendor.orderStatus] ||
-                "bg-slate-50 text-slate-600 border-slate-200";
+      <AnimatePresence initial={false}>
+        {expanded && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="border-t border-slate-100 overflow-hidden"
+          >
+            {/* Vendor orders */}
+            <div className="divide-y divide-slate-50">
+              {order.vendorOrders.map((vendor) => {
+                const progress = getProgress(vendor.orderStatus);
+                const statusColor =
+                  STATUS_COLORS[vendor.orderStatus] || "bg-slate-400";
+                const badgeClass =
+                  STATUS_BADGES[vendor.orderStatus] ||
+                  "bg-slate-50 text-slate-600 border-slate-200";
 
-              return (
-                <div key={vendor.id} className="p-4 md:p-5">
-                  {/* Vendor Header */}
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${badgeClass}`}
-                      >
-                        {vendor.orderStatus}
-                      </span>
-                      {vendor.orderStatus === "PLACED" && (
-                        <button
-                          onClick={(e) => handleCancelVendor(e, vendor.id)}
-                          className="text-[10px] font-semibold text-red-500 hover:text-red-700 transition-colors flex items-center gap-0.5"
+                return (
+                  <div key={vendor.id} className="p-4 md:p-5">
+                    {/* Vendor Header */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${badgeClass}`}
                         >
-                          <XCircle className="w-3 h-3" />
-                          Cancel
-                        </button>
-                      )}
-                    </div>
-                    <span className="text-xs font-semibold text-slate-600">
-                      ৳{vendor.vendorSubtotal.toFixed(0)}
-                    </span>
-                  </div>
-
-                  {/* Progress bar */}
-                  <div className="relative h-1 bg-slate-100 rounded-full overflow-hidden mb-4">
-                    <div
-                      className={`h-full rounded-full transition-all ${statusColor}`}
-                      style={{ width: `${progress}%` }}
-                    />
-                  </div>
-
-                  {/* Items */}
-                  <div className="space-y-2">
-                    {vendor.orderItems.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors"
-                      >
-                        <div className="w-10 h-10 rounded-lg bg-slate-100 overflow-hidden flex items-center justify-center shrink-0">
-                          {item.medicineImageSnapshot ? (
-                            <Image
-                              src={item.medicineImageSnapshot}
-                              alt={item.medicineNameSnapshot}
-                              width={40}
-                              height={40}
-                              className="object-cover"
-                            />
-                          ) : (
-                            <ShoppingBag className="w-4 h-4 text-slate-300" />
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-slate-800 truncate">
-                            {item.medicineNameSnapshot}
-                          </p>
-                          <p className="text-xs text-slate-400">
-                            Qty: {item.quantity} × ৳{item.unitPrice.toFixed(0)}
-                          </p>
-                        </div>
-                        <p className="text-sm font-semibold text-slate-700">
-                          ৳{item.totalPrice.toFixed(0)}
-                        </p>
+                          {vendor.orderStatus}
+                        </span>
+                        {vendor.orderStatus === "PLACED" && (
+                          <button
+                            onClick={(e) => handleCancelVendor(e, vendor.id)}
+                            className="text-[10px] font-semibold text-red-500 hover:text-red-700 transition-colors flex items-center gap-0.5"
+                          >
+                            <XCircle className="w-3 h-3" />
+                            Cancel
+                          </button>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                      <span className="text-xs font-semibold text-slate-600">
+                        ৳{vendor.vendorSubtotal.toFixed(0)}
+                      </span>
+                    </div>
 
-          {/* Footer */}
-          <div className="flex items-center justify-between p-4 md:p-5 bg-slate-50/50 border-t border-slate-100">
-            <div className="flex gap-4 text-xs text-slate-500">
-              <span>
-                Subtotal: <strong>৳{order.subtotalAmount.toFixed(0)}</strong>
-              </span>
-              <span>
-                Delivery: <strong>৳{order.deliveryFee.toFixed(0)}</strong>
-              </span>
+                    {/* Progress bar */}
+                    <div className="relative h-1 bg-slate-100 rounded-full overflow-hidden mb-4">
+                      <div
+                        className={`h-full rounded-full transition-all ${statusColor}`}
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+
+                    {/* Items */}
+                    <div className="space-y-2">
+                      {vendor.orderItems.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="w-10 h-10 rounded-lg bg-slate-100 overflow-hidden flex items-center justify-center shrink-0">
+                            {item.medicineImageSnapshot ? (
+                              <Image
+                                src={item.medicineImageSnapshot}
+                                alt={item.medicineNameSnapshot}
+                                width={40}
+                                height={40}
+                                className="object-cover"
+                              />
+                            ) : (
+                              <ShoppingBag className="w-4 h-4 text-slate-300" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-slate-800 truncate">
+                              {item.medicineNameSnapshot}
+                            </p>
+                            <p className="text-xs text-slate-400">
+                              Qty: {item.quantity} × ৳
+                              {item.unitPrice.toFixed(0)}
+                            </p>
+                          </div>
+                          <p className="text-sm font-semibold text-slate-700">
+                            ৳{item.totalPrice.toFixed(0)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <div className="flex items-center gap-2">
-              <Link
-                href={`/order-tracking?orderNumber=${order.orderNumber}`}
-                className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
-              >
-                Track Order →
-              </Link>
+
+            {/* Footer */}
+            <div className="flex items-center justify-between p-4 md:p-5 bg-slate-50/50 border-t border-slate-100">
+              <div className="flex gap-4 text-xs text-slate-500">
+                <span>
+                  Subtotal: <strong>৳{order.subtotalAmount.toFixed(0)}</strong>
+                </span>
+                <span>
+                  Delivery: <strong>৳{order.deliveryFee.toFixed(0)}</strong>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/order-tracking?orderNumber=${order.orderNumber}`}
+                  className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+                >
+                  Track Order →
+                </Link>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-    </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }

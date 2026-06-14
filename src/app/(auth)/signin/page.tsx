@@ -1,6 +1,5 @@
 import { SignInForm } from "./_components/SignInForm";
 
-// /signin?redirect=/checkout
 const SignInPage = async ({
   searchParams,
 }: {
@@ -8,13 +7,11 @@ const SignInPage = async ({
 }) => {
   const params = await searchParams;
   return (
-    <>
-      <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-        <div className="w-full max-w-md">
-          <SignInForm redirect={params?.redirect} />
-        </div>
+    <div className="flex min-h-9/12 w-full items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-md animate-fade-in-up">
+        <SignInForm redirect={params?.redirect} />
       </div>
-    </>
+    </div>
   );
 };
 

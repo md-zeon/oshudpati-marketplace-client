@@ -1,7 +1,7 @@
-
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { DashboardRecentOrder } from "@/types";
 import { OrderCard } from "./OrderCard";
 import { ShoppingBag, Package, CheckCircle, XCircle } from "lucide-react";
@@ -24,27 +24,21 @@ function matchesFilter(
   filter: FilterTab,
 ): boolean {
   if (filter === "all") return true;
-
   const statuses = order.vendorOrders.map((v) => v.orderStatus);
-
   if (filter === "active") {
     return statuses.some((s) => s !== "DELIVERED" && s !== "CANCELLED");
   }
-
   if (filter === "completed") {
     return statuses.every((s) => s === "DELIVERED");
   }
-
   if (filter === "cancelled") {
     return statuses.every((s) => s === "CANCELLED");
   }
-
   return true;
 }
 
 export function OrderList({ orders }: OrderListProps) {
   const [activeFilter, setActiveFilter] = useState<FilterTab>("all");
-
   const filteredOrders = orders.filter((o) => matchesFilter(o, activeFilter));
 
   return (
@@ -54,9 +48,8 @@ export function OrderList({ orders }: OrderListProps) {
         {FILTERS.map((f) => {
           const Icon = f.icon;
           const isActive = activeFilter === f.key;
-
           return (
-            <button
+            <motion.button
               key={f.key}
               onClick={() => setActiveFilter(f.key)}
               className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
@@ -64,6 +57,8 @@ export function OrderList({ orders }: OrderListProps) {
                   ? "bg-white text-slate-900 shadow-sm"
                   : "text-slate-500 hover:text-slate-700"
               }`}
+              layout
+              layoutId={`filter-${f.key}`}
             >
               <Icon className="w-3.5 h-3.5" />
               {f.label}
@@ -72,27 +67,42 @@ export function OrderList({ orders }: OrderListProps) {
                   ({filteredOrders.length})
                 </span>
               )}
-            </button>
+            </motion.button>
           );
         })}
       </div>
 
       {/* Orders */}
       {filteredOrders.length === 0 ? (
-        <div className="text-center py-16">
+        <motion.div
+          className="text-center py-16"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
           <ShoppingBag className="w-12 h-12 text-slate-200 mx-auto mb-4" />
           <p className="text-sm font-medium text-slate-500">
             {activeFilter === "all"
               ? "No orders yet"
               : `No ${activeFilter} orders`}
           </p>
-        </div>
+        </motion.div>
       ) : (
-        <div className="space-y-3">
-          {filteredOrders.map((order) => (
-            <OrderCard key={order.id} order={order} />
-          ))}
-        </div>
+        <motion.div className="space-y-3" layout>
+          <AnimatePresence mode="popLayout">
+            {filteredOrders.map((order) => (
+              <motion.div
+                key={order.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.25 }}
+                layout
+              >
+                <OrderCard order={order} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       )}
     </div>
   );

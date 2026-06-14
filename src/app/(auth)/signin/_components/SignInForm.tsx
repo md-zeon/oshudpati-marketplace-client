@@ -86,7 +86,7 @@ export function SignInForm({
     },
   });
   return (
-    <Card {...props} className="ring-background">
+    <Card {...props} className="ring-background bg-transparent">
       <CardHeader className="text-center">
         <CardTitle className="text-3xl font-semibold">
           Sign in to your account

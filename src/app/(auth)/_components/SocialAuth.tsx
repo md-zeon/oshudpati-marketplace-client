@@ -7,25 +7,17 @@ import Image from "next/image";
 
 const SocialAuth = () => {
   const handleGoogleLogin = async () => {
-    try {
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: `${env.NEXT_PUBLIC_FRONTEND_URL}/auth-callback`,
-      });
-    } catch (error) {
-      console.error("Google login failed:", error);
-    }
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: `${env.NEXT_PUBLIC_FRONTEND_URL}/auth-callback`,
+    });
   };
 
   const handleGitHubLogin = async () => {
-    try {
-      await authClient.signIn.social({
-        provider: "github",
-        callbackURL: `${env.NEXT_PUBLIC_FRONTEND_URL}/auth-callback`,
-      });
-    } catch (error) {
-      console.error("GitHub login failed:", error);
-    }
+    await authClient.signIn.social({
+      provider: "github",
+      callbackURL: `${env.NEXT_PUBLIC_FRONTEND_URL}/auth-callback`,
+    });
   };
 
   return (
@@ -38,12 +30,11 @@ const SocialAuth = () => {
         <hr className="flex-1 border-t text-slate-300" />
       </div>
       <div className="flex gap-4">
-        {/* Google */}
         <Button
           variant="outline"
           type="button"
-          onClick={() => handleGoogleLogin()}
-          className="flex-1 py-5 cursor-pointer"
+          onClick={handleGoogleLogin}
+          className="flex-1 py-5 cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-sm"
         >
           <Image
             src="/logo/google.svg"
@@ -53,12 +44,11 @@ const SocialAuth = () => {
           />
           Google
         </Button>
-        {/* GitHub */}
         <Button
           variant="outline"
           type="button"
-          onClick={() => handleGitHubLogin()}
-          className="flex-1 py-5 cursor-pointer"
+          onClick={handleGitHubLogin}
+          className="flex-1 py-5 cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-sm"
         >
           <Image
             src="/logo/github.svg"

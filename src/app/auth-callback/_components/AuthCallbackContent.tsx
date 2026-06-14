@@ -5,6 +5,8 @@ import { syncGuestCartWithDatabase } from "@/actions/cart.action";
 import { clearLocalCart, getLocalCart } from "@/lib/local-cart";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { motion } from "motion/react";
+import { Loader2, Store } from "lucide-react";
 
 export default function AuthCallbackContent({
   redirect,
@@ -19,7 +21,6 @@ export default function AuthCallbackContent({
   useEffect(() => {
     if (isPending) return;
 
-    // If login failed or no session, send them back to login page
     if (!session) {
       router.push("/signin");
       return;
@@ -37,25 +38,21 @@ export default function AuthCallbackContent({
 
         try {
           const syncRes = await syncGuestCartWithDatabase(guestCart);
-
           if (syncRes?.success) {
             clearLocalCart();
             toast.success("Cart synchronized successfully!", { id: toastId });
           } else {
-            console.error("Cart synchronization failed:", syncRes?.message);
             toast.error("Signed in, but temporary items could not sync.", {
               id: toastId,
             });
           }
-        } catch (err) {
-          console.error("Sync error:", err);
+        } catch {
           toast.error("An error occurred during cart synchronization.", {
             id: toastId,
           });
         }
       }
 
-      // Finally, redirect the user to the intended page
       setMessage("Redirecting you to your destination...");
       router.push(redirect);
     };
@@ -64,8 +61,29 @@ export default function AuthCallbackContent({
   }, [session, isPending, router, redirect]);
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center gap-4">
-      <p className="text-muted-foreground animate-pulse">{message}</p>
+    <div className="flex h-screen w-screen flex-col items-center justify-center gap-6">
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="flex flex-col items-center gap-4"
+      >
+        <div className="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center">
+          <Store className="w-8 h-8 text-emerald-600" />
+        </div>
+        <div className="flex items-center gap-2 text-emerald-700 font-bold text-xl">
+          Oshudpati
+        </div>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="flex items-center gap-2 text-slate-500 text-sm"
+      >
+        <Loader2 className="w-4 h-4 animate-spin" />
+        {message}
+      </motion.div>
     </div>
   );
 }
