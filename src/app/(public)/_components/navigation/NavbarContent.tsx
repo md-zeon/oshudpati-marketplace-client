@@ -6,6 +6,7 @@ import { CartService } from "@/services/cart.service";
 import Cart from "@/components/shared/cart/Cart";
 import NavbarAccount from "./NavbarAccount";
 import { Medicine } from "@/types";
+import Logo from "@/components/shared/Logo";
 
 const NavbarContent = async ({ medicines = [] }: { medicines: Medicine[] }) => {
   const sessionPromise = userService.getSession();
@@ -20,11 +21,7 @@ const NavbarContent = async ({ medicines = [] }: { medicines: Medicine[] }) => {
     <nav className="max-lg:hidden sticky top-0 z-50 w-full bg-background/95 backdrop-blur">
       <div className="flex h-16 items-center justify-between gap-4 px-4">
         {/* Logo */}
-        <div className="flex items-center gap-1 cursor-pointer shrink-0">
-          <Link href="/" className="text-4xl font-black tracking-tight">
-            Oshudpati
-          </Link>
-        </div>
+        <Logo />
 
         {/* Search Area  */}
         <div className="flex-1 max-w-xl mx-2 md:mx-8">

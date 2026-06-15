@@ -248,7 +248,6 @@ export function SignupForm({
               <Button
                 form="signup-form"
                 type="submit"
-                variant="outline"
                 className="w-full py-5 cursor-pointer"
               >
                 Sign Up

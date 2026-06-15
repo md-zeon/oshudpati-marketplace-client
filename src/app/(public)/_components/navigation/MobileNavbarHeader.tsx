@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { MobileCartDrawer } from "@/components/shared/cart/MobileCartDrawer";
+import Logo from "@/components/shared/Logo";
 
 const MobileNavbarHeader = async () => {
   const navLinks = [
@@ -59,14 +60,7 @@ const MobileNavbarHeader = async () => {
               <DrawerHeader className="px-4 py-4">
                 <DrawerTitle className="flex items-center justify-between">
                   {/* Logo */}
-                  <div>
-                    <Link
-                      href="/"
-                      className="text-xl font-black tracking-tight text-primary"
-                    >
-                      Oshudpati
-                    </Link>
-                  </div>
+                  <Logo />
                   {/* Close Button */}
                   <DrawerClose asChild>
                     <Button
@@ -178,9 +172,7 @@ const MobileNavbarHeader = async () => {
         </Drawer>
 
         {/* Center Logo */}
-        <Link href="/" className="text-xl font-black inline-block">
-          Oshudpati
-        </Link>
+        <Logo />
 
         {/* Right Cart Drawer */}
         <MobileCartDrawer />

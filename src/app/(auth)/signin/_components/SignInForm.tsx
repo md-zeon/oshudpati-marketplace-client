@@ -159,11 +159,7 @@ export function SignInForm({
               }}
             </form.Field>
             <Field>
-              <Button
-                type="submit"
-                variant="outline"
-                className="w-full py-5 cursor-pointer"
-              >
+              <Button type="submit" className="w-full py-5 cursor-pointer">
                 Sign In
               </Button>
               <SocialAuth />
