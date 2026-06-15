@@ -22,8 +22,8 @@ const STATUS_BADGE: Record<string, string> = {
 };
 
 const NEXT_STATUS: Record<string, string[]> = {
-  PLACED: ["PROCESSING", "CANCELLED"],
-  PROCESSING: ["SHIPPED", "CANCELLED"],
+  PLACED: ["PROCESSING"],
+  PROCESSING: ["SHIPPED"],
   SHIPPED: ["DELIVERED"],
   DELIVERED: [],
   CANCELLED: [],

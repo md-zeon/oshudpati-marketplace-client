@@ -2,12 +2,12 @@ import React from "react";
 import Link from "next/link";
 import {
   LayoutDashboard,
-  ShoppingBag,
   Store,
   Package,
   LogOut,
   Menu,
   Pill,
+  User,
 } from "lucide-react";
 import { userService } from "@/services/user.service";
 import { redirect } from "next/navigation";
@@ -18,12 +18,14 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Logo from "@/components/shared/Logo";
 
 const sidebarLinks = [
   { href: "/seller/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/seller/medicines", label: "Medicines", icon: Pill },
   { href: "/seller/orders", label: "Orders", icon: Package },
   { href: "/seller/shop", label: "My Shop", icon: Store },
+  { href: "/seller/profile", label: "Profile", icon: User },
 ];
 
 const SellerLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -53,7 +55,7 @@ const SellerLayout = async ({ children }: { children: React.ReactNode }) => {
               </SheetTrigger>
               <SheetContent side="left" className="w-72 p-0">
                 <SheetTitle className="sr-only">Seller Menu</SheetTitle>
-                <div className="p-4 border-b border-slate-100 bg-gradient-to-r from-emerald-50 to-teal-50">
+                <div className="p-4 border-b border-slate-100 bg-linear-to-r from-emerald-50 to-teal-50">
                   <div className="flex items-center gap-3">
                     <Avatar className="w-10 h-10 border-2 border-emerald-200">
                       <AvatarImage src={user.image || ""} alt={user.name} />
@@ -90,13 +92,14 @@ const SellerLayout = async ({ children }: { children: React.ReactNode }) => {
                 </nav>
               </SheetContent>
             </Sheet>
-            <Link
+            {/* <Link
               href="/"
               className="flex items-center gap-2 text-lg font-bold text-emerald-700 tracking-tight"
             >
               <Pill className="w-5 h-5" />
               <span>Oshudpati</span>
-            </Link>
+            </Link> */}
+            <Logo />
           </div>
           <div className="flex items-center gap-3">
             <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">

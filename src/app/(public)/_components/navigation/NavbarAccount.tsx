@@ -86,7 +86,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
         </Link>
 
         <Link
-          href="/profile"
+          href="/dashboard/profile"
           className="flex items-center justify-between group text-slate-700"
         >
           <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">

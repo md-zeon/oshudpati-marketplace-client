@@ -40,6 +40,16 @@ export async function proxy(req: NextRequest) {
     }
   }
 
+  if (pathname === "/dashboard/profile") {
+    if (userRole === Roles.ADMIN) {
+      return NextResponse.redirect(new URL("/admin/profile", req.url));
+    } else if (userRole === Roles.SELLER) {
+      return NextResponse.redirect(new URL("/seller/profile", req.url));
+    } else if (userRole === Roles.CUSTOMER) {
+      return NextResponse.redirect(new URL("/dashboard/profile", req.url));
+    }
+  }
+
   // Role-based redirection
   // Admins should not access seller or customer routes, Sellers should not access admin or customer routes, and Customers should not access admin or seller routes.
   if (

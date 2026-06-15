@@ -255,7 +255,7 @@ const AccountPage = async () => {
           Account Settings
         </h2>
         <Link
-          href="/profile"
+          href="/dashboard/profile"
           className="group flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-emerald-200 hover:shadow-sm transition-all"
         >
           <div className="flex items-center gap-3">

@@ -90,7 +90,7 @@ const SellerDashboard = async () => {
     <div className="space-y-5">
       {!shop ? (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
-          You haven't created a shop yet.{" "}
+          You haven&apos;t created a shop yet.{" "}
           <Link href="/seller/shop" className="font-semibold underline">
             Create your shop
           </Link>

@@ -6,7 +6,8 @@ import { clearLocalCart, getLocalCart } from "@/lib/local-cart";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { motion } from "motion/react";
-import { Loader2, Store } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import Logo from "@/components/shared/Logo";
 
 export default function AuthCallbackContent({
   redirect,
@@ -68,12 +69,7 @@ export default function AuthCallbackContent({
         transition={{ duration: 0.5 }}
         className="flex flex-col items-center gap-4"
       >
-        <div className="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center">
-          <Store className="w-8 h-8 text-emerald-600" />
-        </div>
-        <div className="flex items-center gap-2 text-emerald-700 font-bold text-xl">
-          Oshudpati
-        </div>
+        <Logo />
       </motion.div>
       <motion.div
         initial={{ opacity: 0 }}

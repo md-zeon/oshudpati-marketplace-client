@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { OrderActions } from "./_components/OrderActions";
+import { cn } from "@/lib/utils";
 
 export const metadata = {
   title: "Orders",
@@ -154,7 +155,13 @@ const SellerOrders = async () => {
                 return (
                   <TableRow key={o.id} className="hover:bg-slate-50/50">
                     <TableCell>
-                      <span className="font-mono text-sm font-semibold text-slate-900">
+                      <span
+                        className={cn(
+                          "font-mono text-sm font-semibold text-slate-900",
+                          badgeClass,
+                          "px-2 py-1 rounded-lg",
+                        )}
+                      >
                         {o.order.orderNumber}
                       </span>
                     </TableCell>
