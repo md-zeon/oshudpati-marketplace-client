@@ -119,7 +119,7 @@ export const AddressService = {
     try {
       const cookieStore = await cookies();
       const res = await fetch(`${API_URL}/addresses/${addressId}/default`, {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Cookie: cookieStore.toString(),

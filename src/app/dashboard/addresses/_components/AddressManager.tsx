@@ -17,6 +17,7 @@ import { deleteAddress, setDefaultAddress } from "@/actions/address.action";
 import { motion } from "motion/react";
 import { PageSection } from "@/components/shared/PageSection";
 import { AddressFormDialog } from "./AddressFormDialog";
+import { AddressDeleteDialog } from "./AddressDeleteDialog";
 
 interface AddressManagerProps {
   initialAddresses: Address[];
@@ -26,9 +27,13 @@ export function AddressManager({ initialAddresses }: AddressManagerProps) {
   const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
   const [isOpen, setIsOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deletingAddressId, setDeletingAddressId] = useState<string | null>(
+    null,
+  );
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this address?")) return;
+    setDeleteModalOpen(false);
     try {
       const res = await deleteAddress(id);
       if (res?.success) {
@@ -191,7 +196,10 @@ export function AddressManager({ initialAddresses }: AddressManagerProps) {
                     <Edit3 className="w-3.5 h-3.5" />
                   </button>
                   <button
-                    onClick={() => handleDelete(address.id)}
+                    onClick={() => {
+                      setDeleteModalOpen(true);
+                      setDeletingAddressId(address.id);
+                    }}
                     className="p-1.5 border border-slate-200 rounded-lg text-slate-400 hover:text-rose-600 hover:border-rose-100 hover:bg-rose-50/30 transition cursor-pointer"
                     title="Delete Address"
                   >
@@ -210,6 +218,13 @@ export function AddressManager({ initialAddresses }: AddressManagerProps) {
         onOpenChange={setIsOpen}
         editingAddress={editingAddress}
         onSuccess={handleSaveSuccess}
+      />
+      {/* Delete Confirmation Modal */}
+      <AddressDeleteDialog
+        deleteModalOpen={deleteModalOpen}
+        setDeleteModalOpen={setDeleteModalOpen}
+        handleDelete={handleDelete}
+        addressId={deletingAddressId as string}
       />
     </>
   );
