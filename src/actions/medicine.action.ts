@@ -6,10 +6,19 @@ import { cookies } from "next/headers";
 
 const API_URL = env.API_URL;
 
-export const getSellerMedicines = async () => {
+export const getSellerMedicines = async (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+}) => {
   try {
     const cookieStore = await cookies();
-    const res = await fetch(`${API_URL}/medicines/my-medicines`, {
+    const url = new URL(`${API_URL}/medicines/my-medicines`);
+    if (params?.page) url.searchParams.set("page", String(params.page));
+    if (params?.limit) url.searchParams.set("limit", String(params.limit));
+    if (params?.search) url.searchParams.set("search", params.search);
+
+    const res = await fetch(url.toString(), {
       headers: { Cookie: cookieStore.toString() },
       cache: "no-store",
     });
@@ -17,7 +26,12 @@ export const getSellerMedicines = async () => {
     return data;
   } catch (error) {
     console.error("Error fetching seller medicines:", error);
-    return { success: false, data: [], message: "Failed to fetch medicines" };
+    return {
+      success: false,
+      data: [],
+      meta: null,
+      message: "Failed to fetch medicines",
+    };
   }
 };
 

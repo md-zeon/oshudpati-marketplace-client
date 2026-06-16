@@ -1,40 +1,17 @@
 import { redirect } from "next/navigation";
 import { userService } from "@/services/user.service";
-import {
-  getSellerMedicines,
-  deleteMedicineAction,
-} from "@/actions/medicine.action";
-import { Pill, Plus, Package, Edit3, Trash2 } from "lucide-react";
+import { getSellerMedicines } from "@/actions/medicine.action";
+import { Pill, Plus, Package } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { PageSection } from "@/components/shared/PageSection";
+import { MedicinesTable } from "./_components/MedicinesTable";
 
 export const metadata = {
   title: "My Medicines",
   description: "Manage your medicines",
 };
 
-interface MedicineImage {
-  imageUrl: string;
-  altText: string | null;
-  isPrimary: boolean;
-}
-
-interface MedicineCategory {
-  id: string;
-  name: string;
-  slug: string;
-}
-
-interface MedicineItem {
+export interface MedicineItem {
   id: string;
   name: string;
   slug: string;
@@ -42,19 +19,42 @@ interface MedicineItem {
   discountPrice: string | null;
   stockQuantity: number;
   isActive: boolean;
-  images: MedicineImage[];
-  category: MedicineCategory;
+  images: { imageUrl: string; altText: string | null; isPrimary: boolean }[];
+  category: { id: string; name: string; slug: string };
   _count: { orderItems: number };
   createdAt: string;
 }
 
-const SellerMedicines = async () => {
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+}
+
+interface SearchParams {
+  page?: string;
+  search?: string;
+}
+
+const SellerMedicines = async ({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) => {
   const session = await userService.getSession();
   if (!session?.success || !session.data?.user) return redirect("/signin");
   if (session.data.user.role !== "SELLER") return redirect("/dashboard");
 
-  const res = await getSellerMedicines();
+  const params = await searchParams;
+  const page = params.page ? parseInt(params.page) : 1;
+  const search = params.search || "";
+
+  const res = await getSellerMedicines({ page, limit: 10, search });
   const medicines: MedicineItem[] = res?.success ? res.data : [];
+  const meta: PaginationMeta | null = res?.meta || null;
 
   return (
     <div>
@@ -68,7 +68,7 @@ const SellerMedicines = async () => {
             <div>
               <h1 className="text-xl font-bold text-slate-900">My Medicines</h1>
               <p className="text-sm text-slate-500">
-                {medicines.length} medicines
+                {meta ? meta.total : medicines.length} medicines
               </p>
             </div>
           </div>
@@ -82,7 +82,7 @@ const SellerMedicines = async () => {
       </PageSection>
 
       {/* Empty State */}
-      {medicines.length === 0 ? (
+      {medicines.length === 0 && !search ? (
         <PageSection>
           <div className="text-center py-20">
             <Package className="w-12 h-12 text-slate-200 mx-auto mb-4" />
@@ -98,129 +98,7 @@ const SellerMedicines = async () => {
           </div>
         </PageSection>
       ) : (
-        <PageSection>
-          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-slate-50">
-                  <TableHead className="font-semibold text-slate-600">
-                    Medicine
-                  </TableHead>
-                  <TableHead className="font-semibold text-slate-600">
-                    Category
-                  </TableHead>
-                  <TableHead className="text-right font-semibold text-slate-600">
-                    Price
-                  </TableHead>
-                  <TableHead className="text-right font-semibold text-slate-600">
-                    Stock
-                  </TableHead>
-                  <TableHead className="text-right font-semibold text-slate-600">
-                    Sold
-                  </TableHead>
-                  <TableHead className="text-right font-semibold text-slate-600">
-                    Actions
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {medicines.map((m, index) => {
-                  const primaryImage =
-                    m.images?.find((i) => i.isPrimary)?.imageUrl ||
-                    m.images?.[0]?.imageUrl;
-                  const price = m.discountPrice
-                    ? Number(m.discountPrice)
-                    : Number(m.price);
-                  const originalPrice = Number(m.price);
-
-                  return (
-                    <TableRow
-                      key={m.id}
-                      className="hover:bg-slate-50/50 transition-colors animate-fade-in"
-                      style={{ animationDelay: `${index * 30}ms` }}
-                    >
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-slate-100 overflow-hidden flex items-center justify-center shrink-0">
-                            {primaryImage ? (
-                              <Image
-                                src={primaryImage}
-                                alt={m.name}
-                                width={40}
-                                height={40}
-                                className="object-cover"
-                              />
-                            ) : (
-                              <Pill className="w-4 h-4 text-slate-300" />
-                            )}
-                          </div>
-                          <div className="min-w-0">
-                            <p className="font-semibold text-slate-900 truncate">
-                              {m.name}
-                            </p>
-                            <p className="text-[11px] text-slate-400">
-                              /{m.slug}
-                            </p>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-slate-500">
-                        {m.category?.name || "-"}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <span className="font-semibold text-slate-800">
-                          ৳{price.toFixed(0)}
-                        </span>
-                        {originalPrice > price && (
-                          <span className="text-[10px] text-slate-400 line-through ml-1">
-                            ৳{originalPrice.toFixed(0)}
-                          </span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <span
-                          className={`font-semibold ${
-                            m.stockQuantity > 5
-                              ? "text-emerald-600"
-                              : "text-red-500"
-                          }`}
-                        >
-                          {m.stockQuantity}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-right text-slate-500">
-                        {m._count?.orderItems || 0}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <Link
-                            href={`/seller/medicines/${m.id}`}
-                            className="p-2 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
-                          >
-                            <Edit3 className="w-4 h-4" />
-                          </Link>
-                          <form
-                            action={async () => {
-                              "use server";
-                              await deleteMedicineAction(m.id);
-                            }}
-                          >
-                            <button
-                              type="submit"
-                              className="p-2 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </form>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </div>
-        </PageSection>
+        <MedicinesTable medicines={medicines} meta={meta} />
       )}
     </div>
   );
