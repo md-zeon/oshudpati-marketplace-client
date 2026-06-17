@@ -76,23 +76,22 @@ export function OrderActions({ orderId, currentStatus }: OrderActionsProps) {
 
   return (
     <div
-      className="flex items-center gap-2"
+      className="flex flex-col sm:flex-row lg:items-center lg:justify-center gap-2 w-full"
       onClick={(e) => e.stopPropagation()}
     >
-      <Badge
-        className={`${badgeClass} border text-[10px] font-bold uppercase px-2 py-0.5 shrink-0`}
-      >
-        {status}
-      </Badge>
       <Select value="" onValueChange={handleStatusChange} disabled={isPending}>
-        <SelectTrigger className="h-7 w-24 text-[10px] rounded-lg border-slate-200">
+        <SelectTrigger className="h-7 w-fit text-[10px] rounded-lg border-slate-200">
           {isPending ? (
             <Loader2 className="w-3 h-3 animate-spin" />
           ) : (
-            <SelectValue placeholder="Update" />
+            <Badge
+              className={`${badgeClass} border text-[10px] font-bold uppercase px-2 py-0.5 shrink-0 self-start sm:self-auto`}
+            >
+              <SelectValue placeholder={status} />
+            </Badge>
           )}
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="w-fit">
           {allowedTransitions.map((s) => (
             <SelectItem key={s} value={s} className="text-xs">
               {s.charAt(0) + s.slice(1).toLowerCase()}

@@ -20,7 +20,7 @@ export const OrderService = {
         headers: {
           Cookie: cookieStore.toString(),
         },
-        cache: "no-store",
+        cache: "no-store", // Always fetch fresh data for the user's orders
       });
 
       const data = await res.json();
@@ -31,6 +31,32 @@ export const OrderService = {
         success: false,
         data: [],
         message: "Failed to fetch orders",
+      };
+    }
+  },
+  getSellerOrders: async (params: { page: number; limit: number }) => {
+    try {
+      const cookieStore = await cookies();
+      const url = new URL(`${API_URL}/orders/seller-orders`);
+      url.searchParams.append("page", params.page.toString());
+      url.searchParams.append("limit", params.limit.toString());
+
+      const res = await fetch(url.toString(), {
+        method: "GET",
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        cache: "no-store", // Always fetch fresh data for the seller's orders
+      });
+
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching seller orders:", error);
+      return {
+        success: false,
+        data: [],
+        message: "Failed to fetch seller orders",
       };
     }
   },
