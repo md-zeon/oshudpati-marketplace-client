@@ -1,5 +1,4 @@
 import { Category } from "./category.type";
-import { Medicine } from "./medicine.type";
 
 export interface SearchParams {
   page?: string;
@@ -35,4 +34,17 @@ export interface ShopSidebarProps {
   }[];
   params: SearchParams;
   filters: ParsedShopFilters;
+}
+
+export interface Shop {
+  id: string;
+  name: string;
+  slug: string;
+  logo?: string;
+  banner?: string;
+  description?: string;
+  isActive: boolean;
+  sellerId: string;
+  createdAt: string;
+  updatedAt: string;
 }
