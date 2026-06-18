@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { LogOut, Menu, Pill, Store } from "lucide-react";
+import { Menu, Pill, Store } from "lucide-react";
 import { userService } from "@/services/user.service";
 import { redirect } from "next/navigation";
 import {
@@ -12,7 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DashboardSidebar } from "./_components/DashboardSidebar";
 import { MobileDashboardNav } from "./_components/MobileDashboardNav";
-import Signout from "./_components/Signout";
+import Signout from "../../components/shared/Signout";
 
 const sidebarLinks = [
   { href: "/dashboard", label: "Overview", iconName: "overview" },
@@ -84,13 +84,9 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
                       <Pill className="w-4 h-4" />
                       Back to Store
                     </Link>
-                    <Link
-                      href="/api/auth/signout"
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      Sign Out
-                    </Link>
+                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
+                      <Signout />
+                    </div>
                   </div>
                 </div>
               </SheetContent>
@@ -143,13 +139,6 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
               <Store className="w-4 h-4" />
               Back to Store
             </Link>
-            {/* <Link
-              href="/api/auth/signout"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-              Sign Out
-            </Link> */}
             <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
               <Signout />
             </div>
