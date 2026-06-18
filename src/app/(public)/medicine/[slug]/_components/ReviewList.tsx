@@ -74,6 +74,17 @@ export function ReviewList({ reviews }: ReviewListProps) {
                     {review.comment}
                   </p>
                 )}
+
+                {review.reply && (
+                  <div className="mt-3 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                    <p className="text-[10px] font-bold text-blue-700 uppercase tracking-wider mb-1">
+                      Admin Reply
+                    </p>
+                    <p className="text-sm text-blue-900 leading-relaxed">
+                      {review.reply}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           );

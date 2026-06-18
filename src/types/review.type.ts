@@ -4,6 +4,9 @@ export interface Review {
   medicineId: string;
   rating: number;
   comment: string | null;
+  isActive: boolean;
+  reply: string | null;
+  repliedAt: string | null;
   createdAt: string;
   updatedAt: string;
   customer: {

@@ -175,3 +175,44 @@ export const deleteCategoryAction = async (id: string) => {
     return { success: false, message: "Failed to delete category" };
   }
 };
+
+export const toggleReviewStatusAction = async (
+  reviewId: string,
+  isActive: boolean,
+) => {
+  try {
+    const cookieStore = await cookies();
+    const res = await fetch(`${API_URL}/reviews/${reviewId}/status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieStore.toString(),
+      },
+      body: JSON.stringify({ isActive }),
+    });
+    const data = await res.json();
+    if (data.success) updateTag("reviews");
+    return data;
+  } catch {
+    return { success: false, message: "Failed to update review status" };
+  }
+};
+
+export const addReviewReplyAction = async (reviewId: string, reply: string) => {
+  try {
+    const cookieStore = await cookies();
+    const res = await fetch(`${API_URL}/reviews/${reviewId}/reply`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieStore.toString(),
+      },
+      body: JSON.stringify({ reply }),
+    });
+    const data = await res.json();
+    if (data.success) updateTag("reviews");
+    return data;
+  } catch {
+    return { success: false, message: "Failed to add reply" };
+  }
+};
