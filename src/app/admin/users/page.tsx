@@ -1,12 +1,10 @@
 import { redirect } from "next/navigation";
 import { userService } from "@/services/user.service";
-import {
-  getAllUsersAction,
-  updateUserAccountStatusAction,
-} from "@/actions/admin.action";
+import { getAllUsersAction } from "@/actions/admin.action";
 import { Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { PageSection } from "@/components/shared/PageSection";
+import { BanButton } from "./_components/BanButton";
 
 export const metadata = {
   title: "Manage Users",
@@ -95,8 +93,8 @@ const AdminUsers = async ({
         ) : (
           <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
             {/* Desktop Table */}
-            <div className="hidden md:block">
-              <table className="w-full">
+            <div className="hidden lg:block overflow-x-auto">
+              <table className="w-full min-w-175">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-200">
                     <th className="text-left font-semibold text-slate-600 text-xs uppercase tracking-wider px-4 py-3">
@@ -174,30 +172,11 @@ const AdminUsers = async ({
                           })}
                         </td>
                         <td className="px-4 py-3 text-right">
-                          <form
-                            action={async () => {
-                              "use server";
-                              await updateUserAccountStatusAction(
-                                u.id,
-                                u.accountStatus === "ACTIVE"
-                                  ? "BANNED"
-                                  : "ACTIVE",
-                              );
-                            }}
-                          >
-                            <button
-                              type="submit"
-                              className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                                u.accountStatus === "ACTIVE"
-                                  ? "bg-red-50 text-red-600 hover:bg-red-100"
-                                  : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
-                              }`}
-                            >
-                              {u.accountStatus === "ACTIVE"
-                                ? "Ban"
-                                : "Activate"}
-                            </button>
-                          </form>
+                          <BanButton
+                            userId={u.id}
+                            currentStatus={u.accountStatus}
+                            isAdmin={u.role === "ADMIN"}
+                          />
                         </td>
                       </tr>
                     );
@@ -207,7 +186,7 @@ const AdminUsers = async ({
             </div>
 
             {/* Mobile Cards */}
-            <div className="md:hidden divide-y divide-slate-100">
+            <div className="lg:hidden divide-y divide-slate-100">
               {users.map((u) => {
                 const roleBadge =
                   ROLE_BADGE[u.role] || "bg-slate-50 text-slate-600";
@@ -215,67 +194,57 @@ const AdminUsers = async ({
                   STATUS_BADGE[u.accountStatus] || "bg-slate-50 text-slate-600";
                 return (
                   <div key={u.id} className="p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-slate-800 text-sm">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-slate-800 text-sm truncate">
                           {u.name}
                         </p>
-                        <p className="text-xs text-slate-400">{u.email}</p>
+                        <p className="text-xs text-slate-400 truncate">
+                          {u.email}
+                        </p>
                       </div>
                       <Badge
-                        className={`${roleBadge} border text-[10px] font-bold uppercase px-2 py-0.5`}
+                        className={`${roleBadge} border text-[10px] font-bold uppercase px-2 py-0.5 shrink-0`}
                       >
                         {u.role}
                       </Badge>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="space-y-1">
-                        <p className="text-slate-500">
-                          Status:{" "}
-                          <Badge
-                            className={`${statusBadge} border text-[10px] font-bold uppercase px-2 py-0.5 ml-1`}
-                          >
-                            {u.accountStatus}
-                          </Badge>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <p className="text-[10px] text-slate-400 uppercase font-semibold">
+                          Status
                         </p>
-                        <p className="text-slate-500">
-                          Shop:{" "}
-                          <span className="text-slate-800">
-                            {u.shop?.name || "-"}
-                          </span>
+                        <Badge
+                          className={`${statusBadge} border text-[10px] font-bold uppercase px-2 py-0.5`}
+                        >
+                          {u.accountStatus}
+                        </Badge>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[10px] text-slate-400 uppercase font-semibold">
+                          Shop
+                        </p>
+                        <p className="text-slate-800 truncate">
+                          {u.shop?.name || "-"}
                         </p>
                       </div>
-                      <div className="text-right text-xs text-slate-400">
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-slate-400">
+                      <span>
                         {u.emailVerified ? "✓ Verified" : "✗ Unverified"}
-                        <br />
+                      </span>
+                      <span>
                         {new Date(u.createdAt).toLocaleDateString("en-BD", {
                           month: "short",
                           day: "numeric",
                         })}
-                      </div>
+                      </span>
                     </div>
-                    <form
-                      action={async () => {
-                        "use server";
-                        await updateUserAccountStatusAction(
-                          u.id,
-                          u.accountStatus === "ACTIVE" ? "BANNED" : "ACTIVE",
-                        );
-                      }}
-                    >
-                      <button
-                        type="submit"
-                        className={`w-full text-xs font-semibold px-3 py-2 rounded-lg transition-colors cursor-pointer ${
-                          u.accountStatus === "ACTIVE"
-                            ? "bg-red-50 text-red-600 hover:bg-red-100"
-                            : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
-                        }`}
-                      >
-                        {u.accountStatus === "ACTIVE"
-                          ? "Ban User"
-                          : "Activate User"}
-                      </button>
-                    </form>
+                    <BanButton
+                      userId={u.id}
+                      currentStatus={u.accountStatus}
+                      isAdmin={u.role === "ADMIN"}
+                    />
                   </div>
                 );
               })}
