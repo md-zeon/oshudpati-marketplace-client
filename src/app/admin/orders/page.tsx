@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
 import { userService } from "@/services/user.service";
 import { getAllOrdersAction } from "@/actions/admin.action";
-import { Package, Search } from "lucide-react";
+import { Package } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -12,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { PageSection } from "@/components/shared/PageSection";
 
 export const metadata = {
   title: "Manage Orders",
@@ -47,11 +47,7 @@ interface VendorOrder {
   orderStatus: string;
   vendorSubtotal: string;
   orderItems: OrderItem[];
-  seller: {
-    id: string;
-    name: string;
-    email: string;
-  };
+  seller: { id: string; name: string; email: string };
 }
 
 interface Order {
@@ -66,10 +62,14 @@ interface Order {
   vendorOrders: VendorOrder[];
 }
 
+interface SearchParams {
+  search?: string;
+}
+
 const AdminOrders = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ search?: string }>;
+  searchParams: Promise<SearchParams>;
 }) => {
   const session = await userService.getSession();
   if (!session?.success || !session.data?.user) return redirect("/signin");
@@ -80,7 +80,6 @@ const AdminOrders = async ({
   const res = await getAllOrdersAction();
   const orders: Order[] = res?.success ? res.data : [];
 
-  // Client-side search filter
   const filteredOrders = params.search
     ? orders.filter(
         (o) =>
@@ -94,132 +93,194 @@ const AdminOrders = async ({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-purple-50">
-            <Package className="w-5 h-5 text-purple-600" />
+      <PageSection>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-purple-50">
+              <Package className="w-5 h-5 text-purple-600" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-slate-900">Orders</h1>
+              <p className="text-sm text-slate-500">
+                {filteredOrders.length} total orders
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-slate-900">Orders</h1>
-            <p className="text-sm text-slate-500">
-              {filteredOrders.length} total orders
+        </div>
+      </PageSection>
+
+      <PageSection>
+        {filteredOrders.length === 0 ? (
+          <div className="text-center py-20">
+            <Package className="w-12 h-12 text-slate-200 mx-auto mb-4" />
+            <p className="text-sm font-medium text-slate-500">
+              {params.search
+                ? "No orders match your search"
+                : "No orders found"}
             </p>
           </div>
-        </div>
-      </div>
+        ) : (
+          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+            {/* Desktop Table */}
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-slate-50">
+                    <TableHead className="font-semibold text-slate-600">
+                      Order #
+                    </TableHead>
+                    <TableHead className="font-semibold text-slate-600">
+                      Customer
+                    </TableHead>
+                    <TableHead className="font-semibold text-slate-600">
+                      Items
+                    </TableHead>
+                    <TableHead className="text-center font-semibold text-slate-600">
+                      Status
+                    </TableHead>
+                    <TableHead className="text-right font-semibold text-slate-600">
+                      Total
+                    </TableHead>
+                    <TableHead className="text-right font-semibold text-slate-600">
+                      Date
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredOrders.map((order) => {
+                    const totalItems = order.vendorOrders.reduce(
+                      (sum, vo) =>
+                        sum + vo.orderItems.reduce((s, i) => s + i.quantity, 0),
+                      0,
+                    );
+                    const statuses = order.vendorOrders.map(
+                      (vo) => vo.orderStatus,
+                    );
+                    const displayStatus = statuses.every(
+                      (s) => s === "DELIVERED",
+                    )
+                      ? "DELIVERED"
+                      : statuses.some((s) => s === "CANCELLED") &&
+                          statuses.every(
+                            (s) => s === "DELIVERED" || s === "CANCELLED",
+                          )
+                        ? "DELIVERED"
+                        : statuses.some((s) => s === "CANCELLED")
+                          ? "CANCELLED"
+                          : statuses.some((s) => s === "SHIPPED")
+                            ? "SHIPPED"
+                            : statuses.some((s) => s === "PROCESSING")
+                              ? "PROCESSING"
+                              : "PLACED";
+                    const statusBadge =
+                      STATUS_BADGE[displayStatus] ||
+                      "bg-slate-50 text-slate-600";
 
-      {/* Search */}
-      <div className="flex flex-wrap items-center gap-3 mb-5">
-        <form className="flex items-center gap-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <Input
-              name="search"
-              defaultValue={params.search || ""}
-              placeholder="Search by order #, customer..."
-              className="pl-9 rounded-lg w-72 text-sm"
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors cursor-pointer"
-          >
-            Search
-          </button>
-        </form>
-      </div>
+                    return (
+                      <TableRow
+                        key={order.id}
+                        className="hover:bg-slate-50/50 transition-colors"
+                      >
+                        <TableCell>
+                          <span className="font-mono font-bold text-sm text-slate-800">
+                            #{order.orderNumber}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <p className="font-medium text-slate-800 text-sm">
+                            {order.customer.name}
+                          </p>
+                          <p className="text-xs text-slate-400">
+                            {order.customer.email}
+                          </p>
+                        </TableCell>
+                        <TableCell className="text-sm text-slate-600">
+                          {totalItems} item{totalItems !== 1 ? "s" : ""}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <Badge
+                            className={`${statusBadge} border text-[10px] font-bold uppercase px-2 py-0.5`}
+                          >
+                            {displayStatus}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right font-bold text-sm text-slate-800">
+                          ৳{Number(order.totalAmount).toFixed(2)}
+                        </TableCell>
+                        <TableCell className="text-right text-xs text-slate-400">
+                          {new Date(
+                            order.placedAt || order.createdAt,
+                          ).toLocaleDateString("en-BD", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
 
-      {filteredOrders.length === 0 ? (
-        <div className="text-center py-20">
-          <Package className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-          <p className="text-sm font-medium text-slate-500">
-            {params.search ? "No orders match your search" : "No orders found"}
-          </p>
-        </div>
-      ) : (
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-slate-50">
-                <TableHead className="font-semibold text-slate-600">
-                  Order #
-                </TableHead>
-                <TableHead className="font-semibold text-slate-600">
-                  Customer
-                </TableHead>
-                <TableHead className="font-semibold text-slate-600">
-                  Items
-                </TableHead>
-                <TableHead className="text-center font-semibold text-slate-600">
-                  Status
-                </TableHead>
-                <TableHead className="text-right font-semibold text-slate-600">
-                  Total
-                </TableHead>
-                <TableHead className="text-right font-semibold text-slate-600">
-                  Date
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+            {/* Mobile Cards */}
+            <div className="md:hidden divide-y divide-slate-100">
               {filteredOrders.map((order) => {
                 const totalItems = order.vendorOrders.reduce(
                   (sum, vo) =>
                     sum + vo.orderItems.reduce((s, i) => s + i.quantity, 0),
                   0,
                 );
-
-                // Show the aggregate status across vendor orders
                 const statuses = order.vendorOrders.map((vo) => vo.orderStatus);
                 const displayStatus = statuses.every((s) => s === "DELIVERED")
                   ? "DELIVERED"
-                  : statuses.some((s) => s === "CANCELLED") &&
-                      statuses.every(
-                        (s) => s === "DELIVERED" || s === "CANCELLED",
-                      )
-                    ? "DELIVERED"
-                    : statuses.some((s) => s === "CANCELLED")
-                      ? "CANCELLED"
-                      : statuses.some((s) => s === "SHIPPED")
-                        ? "SHIPPED"
-                        : statuses.some((s) => s === "PROCESSING")
-                          ? "PROCESSING"
-                          : "PLACED";
-
+                  : statuses.some((s) => s === "CANCELLED")
+                    ? "CANCELLED"
+                    : statuses.some((s) => s === "SHIPPED")
+                      ? "SHIPPED"
+                      : statuses.some((s) => s === "PROCESSING")
+                        ? "PROCESSING"
+                        : "PLACED";
                 const statusBadge =
                   STATUS_BADGE[displayStatus] || "bg-slate-50 text-slate-600";
 
                 return (
-                  <TableRow key={order.id} className="hover:bg-slate-50/50">
-                    <TableCell>
-                      <span className="font-mono font-bold text-sm text-slate-800">
+                  <div key={order.id} className="p-4 space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono font-bold text-sm text-slate-800 truncate">
                         #{order.orderNumber}
                       </span>
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium text-slate-800 text-sm">
-                          {order.customer.name}
-                        </p>
-                        <p className="text-xs text-slate-400">
-                          {order.customer.email}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm text-slate-600">
-                      {totalItems} item{totalItems !== 1 ? "s" : ""}
-                    </TableCell>
-                    <TableCell className="text-center">
                       <Badge
-                        className={`${statusBadge} border text-[10px] font-bold uppercase px-2 py-0.5`}
+                        className={`${statusBadge} border text-[10px] font-bold uppercase px-2 py-0.5 shrink-0`}
                       >
                         {displayStatus}
                       </Badge>
-                    </TableCell>
-                    <TableCell className="text-right font-bold text-sm text-slate-800">
-                      ৳{Number(order.totalAmount).toFixed(2)}
-                    </TableCell>
-                    <TableCell className="text-right text-xs text-slate-400">
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <p className="text-[10px] text-slate-400 uppercase font-semibold">
+                          Customer
+                        </p>
+                        <p className="font-medium text-slate-800 truncate">
+                          {order.customer.name}
+                        </p>
+                        <p className="text-xs text-slate-400 truncate">
+                          {order.customer.email}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-[10px] text-slate-400 uppercase font-semibold">
+                          Amount
+                        </p>
+                        <p className="font-bold text-slate-900">
+                          ৳{Number(order.totalAmount).toFixed(2)}
+                        </p>
+                        <p className="text-xs text-slate-400">
+                          {totalItems} items
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-xs text-slate-400">
                       {new Date(
                         order.placedAt || order.createdAt,
                       ).toLocaleDateString("en-BD", {
@@ -227,16 +288,15 @@ const AdminOrders = async ({
                         day: "numeric",
                         year: "numeric",
                       })}
-                    </TableCell>
-                  </TableRow>
+                    </div>
+                  </div>
                 );
               })}
-            </TableBody>
-          </Table>
-        </div>
-      )}
+            </div>
+          </div>
+        )}
+      </PageSection>
     </div>
   );
 };
-
 export default AdminOrders;
