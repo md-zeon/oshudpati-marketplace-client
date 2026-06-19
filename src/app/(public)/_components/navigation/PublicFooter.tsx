@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Pill, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
+import Logo from "@/components/shared/Logo";
 
 /* eslint-disable react/no-unescaped-entities */
 
@@ -80,13 +81,7 @@ const PublicFooter = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand Column */}
           <div className="lg:col-span-1">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-white text-xl font-bold tracking-tight mb-4"
-            >
-              <Pill className="w-6 h-6 text-emerald-400" />
-              <span>Oshudpati</span>
-            </Link>
+            <Logo className="w-32 h-auto mb-4" />
             <p className="text-sm text-slate-400 leading-relaxed mb-4">
               Bangladesh's trusted online medicine and healthcare marketplace.
               We make healthcare accessible, authentic, and affordable.

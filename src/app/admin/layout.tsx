@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Menu, Pill, Store } from "lucide-react";
+import { Menu, Store } from "lucide-react";
 import { userService } from "@/services/user.service";
 import { redirect } from "next/navigation";
 import {
@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AdminSidebar } from "./_components/AdminSidebar";
 import { MobileAdminNav } from "./_components/MobileAdminNav";
 import Signout from "@/components/shared/Signout";
+import Logo from "@/components/shared/Logo";
 
 const sidebarLinks = [
   { href: "/admin/dashboard", label: "Dashboard", iconName: "dashboard" },
@@ -84,13 +85,7 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
                 </div>
               </SheetContent>
             </Sheet>
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-lg font-bold text-emerald-700 tracking-tight"
-            >
-              <Pill className="w-5 h-5" />
-              <span>Oshudpati</span>
-            </Link>
+            <Logo />
           </div>
           <div className="flex items-center gap-3">
             <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">

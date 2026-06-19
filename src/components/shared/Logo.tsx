@@ -1,11 +1,11 @@
 import Link from "next/link";
 
-const Logo = () => {
+const Logo = ({ className }: { className?: string }) => {
   return (
     <div className="relative flex items-center gap-1 cursor-pointer shrink-0 w-fit">
       <Link
         href="/"
-        className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-emerald-600"
+        className={`text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-emerald-600 ${className || ""}`}
       >
         Oshudpati
       </Link>

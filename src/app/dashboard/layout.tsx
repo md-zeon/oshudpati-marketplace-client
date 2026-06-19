@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DashboardSidebar } from "./_components/DashboardSidebar";
 import { MobileDashboardNav } from "./_components/MobileDashboardNav";
 import Signout from "../../components/shared/Signout";
+import Logo from "@/components/shared/Logo";
 
 const sidebarLinks = [
   { href: "/dashboard", label: "Overview", iconName: "overview" },
@@ -92,12 +93,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
               </SheetContent>
             </Sheet>
 
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-lg font-bold text-emerald-700 tracking-tight"
-            >
-              <span>Oshudpati</span>
-            </Link>
+            <Logo />
           </div>
 
           <div className="flex items-center gap-3">
