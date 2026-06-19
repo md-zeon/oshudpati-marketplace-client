@@ -3,6 +3,7 @@
 import { updateTag } from "next/cache";
 import { env } from "@/env";
 import { cookies } from "next/headers";
+import { AdminService } from "@/services/admin.service";
 
 const API_URL = env.API_URL;
 
@@ -28,20 +29,7 @@ export const getAllUsersAction = async (params?: {
   limit?: number;
 }) => {
   try {
-    const cookieStore = await cookies();
-    const url = new URL(`${API_URL}/users`);
-    if (params?.role) url.searchParams.set("role", params.role);
-    if (params?.accountStatus)
-      url.searchParams.set("accountStatus", params.accountStatus);
-    if (params?.search) url.searchParams.set("search", params.search);
-    if (params?.page) url.searchParams.set("page", String(params.page));
-    if (params?.limit) url.searchParams.set("limit", String(params.limit));
-
-    const res = await fetch(url.toString(), {
-      headers: { Cookie: cookieStore.toString() },
-      cache: "no-store",
-    });
-    const data = await res.json();
+    const data = await AdminService.getAllUsers(params);
     return data;
   } catch {
     return {
@@ -76,12 +64,7 @@ export const updateUserAccountStatusAction = async (
 
 export const getAllOrdersAction = async () => {
   try {
-    const cookieStore = await cookies();
-    const res = await fetch(`${API_URL}/orders/all-orders`, {
-      headers: { Cookie: cookieStore.toString() },
-      cache: "no-store",
-    });
-    const data = await res.json();
+    const data = await AdminService.getAllOrders();
     return data;
   } catch {
     return { success: false, data: [] };
@@ -149,12 +132,7 @@ export const updateCategoryAction = async (
 
 export const getAllReviewsAction = async () => {
   try {
-    const cookieStore = await cookies();
-    const res = await fetch(`${API_URL}/reviews/all`, {
-      headers: { Cookie: cookieStore.toString() },
-      cache: "no-store",
-    });
-    const data = await res.json();
+    const data = await AdminService.getAllReviews();
     return data;
   } catch {
     return { success: false, data: [] };

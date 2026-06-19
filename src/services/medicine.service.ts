@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { cookies } from "next/headers";
 
 interface GetMedicinesParams {
   search?: string;
@@ -104,8 +105,15 @@ export const MedicineService = {
   },
   getMedicineById: async (id: string, options?: ServiceOptions) => {
     try {
+      const cookieStore = await cookies();
       const url = new URL(`${API_URL}/medicines/${id}`);
-      const config: RequestInit = {};
+      const config: RequestInit = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookieStore.toString(),
+        },
+      };
 
       if (options?.cache) {
         config.cache = options.cache;
@@ -119,6 +127,7 @@ export const MedicineService = {
 
       const res = await fetch(url.toString(), config);
       const data = await res.json();
+
       return data;
     } catch (error) {
       console.log("Error fetching medicine by ID:", error);
