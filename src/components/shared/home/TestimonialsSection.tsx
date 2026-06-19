@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Star } from "lucide-react";
+import { ShieldCheck, Star } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";
 
@@ -97,14 +97,14 @@ export function TestimonialsSection({
 
   return (
     <section className="relative py-10">
-      <div className="mx-auto max-w-5xl">
-        <div className="mx-auto flex max-w-sm flex-col items-center justify-center gap-4">
-          <h2 className="font-bold text-3xl tracking-tighter lg:text-4xl text-slate-900">
-            What our customers say
+      <div className="mx-auto max-w-7xl">
+        <div className="mx-auto flex max-w-md flex-col items-center justify-center gap-4">
+          <h2 className="font-bold text-3xl tracking-tighter lg:text-4xl text-slate-700 text-center">
+            Trusted by Thousands Across Bangladesh
           </h2>
           <p className="text-center text-slate-500 text-sm max-w-md">
-            Hear from thousands of satisfied customers across Bangladesh who
-            trust us with their healthcare needs.
+            Real experiences from customers who rely on Oshudpati for authentic
+            medicines and healthcare essentials.
           </p>
         </div>
 
@@ -163,7 +163,7 @@ function TestimonialCard({
   return (
     <figure
       className={cn(
-        "w-full max-w-xs rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/50",
+        "w-full max-w-sm rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/50 transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl",
         className,
       )}
       {...props}
@@ -195,9 +195,10 @@ function TestimonialCard({
           <cite className="font-semibold not-italic leading-5 tracking-tight text-slate-900 text-sm">
             {name}
           </cite>
-          <span className="text-slate-400 text-xs leading-5 tracking-tight">
-            Verified buyer of {medicine}
-          </span>
+          <div className="flex items-center gap-1 text-xs text-emerald-600">
+            <ShieldCheck className="w-3 h-3" />
+            Verified buyer • {medicine}
+          </div>
         </div>
       </figcaption>
     </figure>
