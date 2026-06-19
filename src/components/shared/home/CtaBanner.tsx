@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 export function CtaBanner() {
   return (
-    <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 p-8 md:p-12 text-white text-center">
+    <section className="relative overflow-hidden rounded-2xl bg-linear-to-br from-slate-800 to-slate-900 p-8 text-white text-center">
       <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-emerald-500/10 animate-pulse-soft" />
       <div
         className="absolute -bottom-12 -left-12 w-32 h-32 rounded-full bg-emerald-500/10 animate-pulse-soft"

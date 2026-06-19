@@ -54,7 +54,6 @@ export default async function OrderReceivedPage({ params }: PageProps) {
           </p>
           <Button
             asChild
-            variant="outline"
             className="mt-6 h-11 px-6 rounded-xl text-xs font-bold tracking-wider uppercase"
           >
             <Link href="/dashboard/orders">View My Orders</Link>
@@ -268,7 +267,6 @@ export default async function OrderReceivedPage({ params }: PageProps) {
       <div className="flex flex-col sm:flex-row gap-3 items-center justify-center mt-8">
         <Button
           asChild
-          variant="outline"
           className="w-full sm:w-auto h-11 px-6 rounded-xl text-xs font-bold tracking-wider uppercase"
         >
           <Link href="/dashboard/orders">View My Orders</Link>

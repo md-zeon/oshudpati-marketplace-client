@@ -31,10 +31,18 @@ const NavbarContent = async ({ medicines = [] }: { medicines: Medicine[] }) => {
         {/* Navigation */}
         <div className="flex items-center gap-2 md:gap-4 shrink-0">
           {/* Track Your Order */}
-          <Link href="/order-tracking" className="flex items-center gap-1">
-            <Truck className="text-slate-600 inline-block" size={36} />
+          <Link
+            href="/order-tracking"
+            className="flex items-center gap-1 group"
+          >
+            <div className="border-2 rounded-full p-0.75 group-hover:border-emerald-600 transition-colors duration-200">
+              <Truck
+                className="text-slate-600 inline-block group-hover:text-emerald-600 transition-colors duration-200"
+                size={24}
+              />
+            </div>
             <div className="font-medium leading-tight">
-              <p className="text-sm leading-tight font-medium text-slate-600 hover:text-emerald-600 cursor-pointer">
+              <p className="text-sm leading-tight font-medium text-slate-600 group-hover:text-emerald-600 cursor-pointer">
                 Track
               </p>
               <span className="text-base leading-tight">Your Order</span>

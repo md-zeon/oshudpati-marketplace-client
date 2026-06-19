@@ -27,7 +27,7 @@ export default function OrderTrackingForm() {
         onChange={(e) => setOrderNumber(e.target.value)}
       />
 
-      <Button type="submit" variant="outline">
+      <Button type="submit">
         <Search />
         Track
       </Button>

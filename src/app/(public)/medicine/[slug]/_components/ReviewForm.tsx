@@ -183,7 +183,7 @@ export function ReviewForm({
             onClick={() => setIsOpen(true)}
             variant="outline"
             size="sm"
-            className="text-xs cursor-pointer"
+            className="text-xs cursor-pointer text-brand hover:bg-brand hover:text-white transition-colors duration-200"
           >
             Edit Your Review
           </Button>
@@ -192,7 +192,7 @@ export function ReviewForm({
             disabled={isDeleting}
             variant="outline"
             size="sm"
-            className="text-xs text-red-500 border-red-200 hover:bg-red-50 cursor-pointer"
+            className="text-xs text-red-500 border-red-200 hover:bg-red-500 hover:text-white cursor-pointer"
           >
             {isDeleting ? (
               <Loader2 className="w-3 h-3 animate-spin" />

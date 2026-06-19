@@ -5,11 +5,11 @@ import Link from "next/link";
 import {
   ArrowRight,
   Box,
-  Boxes,
   Heart,
   LayoutDashboard,
   LayoutGrid,
   MapPin,
+  Plus,
   User,
   UserCog,
 } from "lucide-react";
@@ -36,8 +36,11 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
 
   const trigger = (
     <div className="flex items-center gap-1 cursor-pointer group">
-      <div className="rounded-full border-2 p-1">
-        <User className="text-slate-600 inline-block" size={24} />
+      <div className="rounded-full border-2 p-0.5 group-hover:border-emerald-600 transition-colors duration-200">
+        <User
+          className="text-slate-600 inline-block group-hover:text-emerald-600"
+          size={24}
+        />
       </div>
       <div className="font-medium leading-tight">
         {user ? (
@@ -151,12 +154,12 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
         {user.role === "SELLER" && (
           <>
             <Link
-              href="/dashboard/products"
+              href="/dashboard/medicines"
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
-                <Boxes className="text-emerald-600 inline-block" size={20} />
-                My Products
+                <Plus className="text-emerald-600 inline-block" size={20} />
+                Add Medicines
               </div>
 
               <ArrowRight
@@ -249,7 +252,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
         <Button
           variant="outline"
           size="sm"
-          className="w-full rounded-full py-4"
+          className="w-full rounded-full py-4 border-brand text-brand hover:bg-brand hover:text-white transition-colors duration-200"
           asChild
         >
           <Link href="/signin" className="w-full">
@@ -262,7 +265,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
             New Customer?{" "}
             <Link
               href="/signup"
-              className="font-semibold hover:underline cursor-pointer"
+              className="font-semibold hover:underline cursor-pointer text-emerald-600"
             >
               Sign Up
             </Link>

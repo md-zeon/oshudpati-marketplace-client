@@ -3,7 +3,7 @@ import { ArrowRight, ShoppingBag, UserPlus } from "lucide-react";
 
 export function CtaBannerSection() {
   return (
-    <section className="py-10 sm:py-16">
+    <section>
       <div className="relative overflow-hidden rounded-3xl bg-gray-50 border border-gray-100 p-8 md:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-8">
         {/* Subtle abstract background accent for texture */}
         <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#00875A_1px,transparent_1px)] bg-size-[16px_16px] pointer-events-none" />

@@ -25,7 +25,7 @@ export function WelcomeHero({
   const greeting = getGreeting();
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-500 p-6 md:p-8 text-white">
+    <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-emerald-600 via-emerald-500 to-teal-500 p-6 md:p-8 text-white">
       {/* Decorative circles */}
       <motion.div
         className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5"

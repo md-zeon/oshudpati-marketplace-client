@@ -174,7 +174,7 @@ export default function ContactUsForm(
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Please details your request or question here..."
-                      className="min-h-[140px] resize-y transition-all focus-visible:ring-1"
+                      className="min-h-35 resize-y transition-all focus-visible:ring-1"
                     />
                     {isInvalid && (
                       <FieldError
@@ -195,7 +195,6 @@ export default function ContactUsForm(
                     type="submit"
                     disabled={isSubmitting}
                     className="w-full h-11 text-sm font-medium transition-colors"
-                    variant="outline"
                   >
                     {isSubmitting ? (
                       <>
