@@ -45,8 +45,6 @@ export async function proxy(req: NextRequest) {
       return NextResponse.redirect(new URL("/admin/profile", req.url));
     } else if (userRole === Roles.SELLER) {
       return NextResponse.redirect(new URL("/seller/profile", req.url));
-    } else if (userRole === Roles.CUSTOMER) {
-      return NextResponse.redirect(new URL("/dashboard/profile", req.url));
     }
   }
 

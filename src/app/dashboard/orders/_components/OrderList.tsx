@@ -44,7 +44,7 @@ export function OrderList({ orders }: OrderListProps) {
   return (
     <div>
       {/* Filter Tabs */}
-      <div className="flex items-center gap-1 mb-5 bg-slate-100 p-1 rounded-xl w-fit">
+      <div className="flex flex-wrap items-center gap-1 mb-5 bg-slate-100 p-1 rounded-xl w-fit">
         {FILTERS.map((f) => {
           const Icon = f.icon;
           const isActive = activeFilter === f.key;
