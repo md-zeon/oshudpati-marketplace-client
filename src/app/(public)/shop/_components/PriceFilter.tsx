@@ -102,7 +102,7 @@ export default function PriceFilter({
           </p>
         )}
 
-        <Button type="submit" variant="outline" className="w-full">
+        <Button type="submit" className="w-full">
           Filter
         </Button>
       </form>
