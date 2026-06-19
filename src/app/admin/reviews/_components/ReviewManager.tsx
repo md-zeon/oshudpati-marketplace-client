@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   toggleReviewStatusAction,
   addReviewReplyAction,
+  getAllReviewsAction,
 } from "@/actions/admin.action";
 import { Star, MessageSquare, ShieldCheck, ShieldOff } from "lucide-react";
 import { Review } from "@/types";
@@ -31,7 +32,6 @@ export function ReviewManager({ initialReviews }: ReviewManagerProps) {
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const refresh = async () => {
-    const { getAllReviewsAction } = await import("@/actions/admin.action");
     const res = await getAllReviewsAction();
     if (res?.success) setReviews(res.data);
     router.refresh();

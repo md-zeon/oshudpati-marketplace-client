@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Medicine, Review } from "@/types";
 import { ReviewList } from "./ReviewList";
 import { ReviewFormWrapper } from "./ReviewFormWrapper";
+import { ReviewService } from "@/services/review.service";
 
 interface AdditionalInfoTabsProps {
   medicine: Medicine;
@@ -21,7 +22,6 @@ const AdditionalInfoTabs = async ({ medicine }: AdditionalInfoTabsProps) => {
   // Fetch reviews on the server
   let reviews: Review[] = [];
   try {
-    const { ReviewService } = await import("@/services/review.service");
     const res = await ReviewService.getMedicineReviews(medicine.id);
     if (res?.success) {
       reviews = (res.data as Review[]) || [];

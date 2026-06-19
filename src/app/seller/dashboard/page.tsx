@@ -3,6 +3,7 @@ import { userService } from "@/services/user.service";
 import { Pill, ShoppingBag, Package, DollarSign, Store } from "lucide-react";
 import Link from "next/link";
 import { PageSection } from "@/components/shared/PageSection";
+import { DashboardService } from "@/services/dashboard.service";
 
 export const metadata = {
   title: "Seller Dashboard",
@@ -49,7 +50,6 @@ const SellerDashboard = async () => {
     recentOrders: [],
   };
   try {
-    const { DashboardService } = await import("@/services/dashboard.service");
     const res = await DashboardService.getSellerDashboard();
     if (res?.success) data = res.data;
   } catch {}

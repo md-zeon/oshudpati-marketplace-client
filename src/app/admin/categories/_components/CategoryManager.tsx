@@ -5,6 +5,7 @@ import {
   createCategoryAction,
   updateCategoryAction,
   deleteCategoryAction,
+  getCategoriesAction,
 } from "@/actions/admin.action";
 import { Grid3X3, Plus, Edit3, Trash2, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -48,7 +49,6 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
   const [saving, setSaving] = useState(false);
 
   const refresh = async () => {
-    const { getCategoriesAction } = await import("@/actions/admin.action");
     const res = await getCategoriesAction();
     if (res?.success) setCategories(res.data);
     router.refresh();
@@ -185,7 +185,10 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                   </p>
                 )}
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Badge variant="outline" className="text-[10px] font-semibold">
+                  <Badge
+                    variant="outline"
+                    className="text-[10px] font-semibold"
+                  >
                     {cat._count?.medicines || 0} medicines
                   </Badge>
                   {cat.isActive ? (
@@ -213,9 +216,7 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-slate-700">
-                Name *
-              </Label>
+              <Label className="text-xs font-bold text-slate-700">Name *</Label>
               <Input
                 value={name}
                 onChange={(e) => setName(e.target.value)}

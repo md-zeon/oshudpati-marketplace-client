@@ -149,6 +149,23 @@ export const deleteCategoryAction = async (id: string) => {
   }
 };
 
+// Recover Category
+export async function recoverCategoryAction(id: string) {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_URL}/api/categories/${id}/recover`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isActive: true }),
+      },
+    );
+    return await res.json();
+  } catch (error) {
+    return { success: false, message: "Failed to recover category" };
+  }
+}
+
 export const toggleReviewStatusAction = async (
   reviewId: string,
   isActive: boolean,
