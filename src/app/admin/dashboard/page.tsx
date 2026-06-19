@@ -150,68 +150,118 @@ const AdminDashboard = async () => {
               <p className="text-sm text-slate-500">No orders yet</p>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-slate-50">
-                  <TableHead className="font-semibold text-slate-600">
-                    Order
-                  </TableHead>
-                  <TableHead className="font-semibold text-slate-600">
-                    Customer
-                  </TableHead>
-                  <TableHead className="text-right font-semibold text-slate-600">
-                    Amount
-                  </TableHead>
-                  <TableHead className="text-center font-semibold text-slate-600">
-                    Payment
-                  </TableHead>
-                  <TableHead className="text-right font-semibold text-slate-600">
-                    Date
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+            <>
+              {/* Desktop Table */}
+              <div className="hidden md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-slate-50">
+                      <TableHead className="font-semibold text-slate-600">
+                        Order
+                      </TableHead>
+                      <TableHead className="font-semibold text-slate-600">
+                        Customer
+                      </TableHead>
+                      <TableHead className="text-right font-semibold text-slate-600">
+                        Amount
+                      </TableHead>
+                      <TableHead className="text-center font-semibold text-slate-600">
+                        Payment
+                      </TableHead>
+                      <TableHead className="text-right font-semibold text-slate-600">
+                        Date
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {recentOrders.map((o) => {
+                      const badgeClass =
+                        PAYMENT_BADGE[o.paymentStatus] ||
+                        "bg-slate-50 text-slate-600";
+                      return (
+                        <TableRow
+                          key={o.id}
+                          className="hover:bg-slate-50/50 transition-colors"
+                        >
+                          <TableCell className="font-mono text-sm font-semibold text-slate-900">
+                            {o.orderNumber}
+                          </TableCell>
+                          <TableCell>
+                            <p className="font-medium text-slate-800 text-sm">
+                              {o.customerName}
+                            </p>
+                            <p className="text-xs text-slate-400">
+                              {o.customerEmail}
+                            </p>
+                          </TableCell>
+                          <TableCell className="text-right font-semibold text-slate-800">
+                            ৳{o.totalAmount.toFixed(0)}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Badge
+                              className={`${badgeClass} border text-[10px] font-bold uppercase px-2 py-0.5`}
+                            >
+                              {o.paymentStatus}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right text-xs text-slate-400">
+                            {new Date(o.placedAt).toLocaleDateString("en-BD", {
+                              month: "short",
+                              day: "numeric",
+                            })}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Mobile Cards */}
+              <div className="md:hidden divide-y divide-slate-100">
                 {recentOrders.map((o) => {
                   const badgeClass =
                     PAYMENT_BADGE[o.paymentStatus] ||
                     "bg-slate-50 text-slate-600";
                   return (
-                    <TableRow
-                      key={o.id}
-                      className="hover:bg-slate-50/50 transition-colors"
-                    >
-                      <TableCell className="font-mono text-sm font-semibold text-slate-900">
-                        {o.orderNumber}
-                      </TableCell>
-                      <TableCell>
-                        <p className="font-medium text-slate-800 text-sm">
-                          {o.customerName}
-                        </p>
-                        <p className="text-xs text-slate-400">
-                          {o.customerEmail}
-                        </p>
-                      </TableCell>
-                      <TableCell className="text-right font-semibold text-slate-800">
-                        ৳{o.totalAmount.toFixed(0)}
-                      </TableCell>
-                      <TableCell className="text-center">
+                    <div key={o.id} className="p-4 space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-mono text-sm font-bold text-slate-900">
+                          {o.orderNumber}
+                        </span>
                         <Badge
-                          className={`${badgeClass} border text-[10px] font-bold uppercase px-2 py-0.5`}
+                          className={`${badgeClass} border text-[10px] font-bold uppercase px-2 py-0.5 shrink-0`}
                         >
                           {o.paymentStatus}
                         </Badge>
-                      </TableCell>
-                      <TableCell className="text-right text-xs text-slate-400">
-                        {new Date(o.placedAt).toLocaleDateString("en-BD", {
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </TableCell>
-                    </TableRow>
+                      </div>
+                      <div>
+                        <p className="font-medium text-slate-800 text-sm truncate">
+                          {o.customerName}
+                        </p>
+                        <p className="text-xs text-slate-400 truncate">
+                          {o.customerEmail}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <p className="text-slate-500">
+                          Amount:{" "}
+                          <span className="font-bold text-slate-900">
+                            ৳{o.totalAmount.toFixed(0)}
+                          </span>
+                        </p>
+                        <p className="text-xs text-slate-400">
+                          {new Date(o.placedAt).toLocaleDateString("en-BD", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </p>
+                      </div>
+                    </div>
                   );
                 })}
-              </TableBody>
-            </Table>
+              </div>
+            </>
           )}
         </div>
       </PageSection>

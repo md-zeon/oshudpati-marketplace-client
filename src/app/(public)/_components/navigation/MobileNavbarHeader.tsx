@@ -21,14 +21,22 @@ import {
   Package,
   BookOpen,
   CircleQuestionMark,
+  Layout,
+  User,
 } from "lucide-react";
 import Link from "next/link";
 import { MobileCartDrawer } from "@/components/shared/cart/MobileCartDrawer";
 import Logo from "@/components/shared/Logo";
+import Image from "next/image";
+import { userService } from "@/services/user.service";
 
 const MobileNavbarHeader = async () => {
+  const session = await userService.getSession();
+  const isLoggedIn = session?.success && !!session.data?.user;
+
   const navLinks = [
     { label: "Home", href: "/", icon: Home },
+    { label: "Dashboard", href: "/dashboard", icon: Layout },
     { label: "Categories", href: "/categories", icon: Package },
     { label: "Medicines", href: "/medicines", icon: Pill },
     { label: "Blog", href: "/blog", icon: BookOpen },
@@ -104,6 +112,23 @@ const MobileNavbarHeader = async () => {
                   <p className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                     Account & Help
                   </p>
+                  {isLoggedIn ? (
+                    <Link
+                      href="/account"
+                      className="flex items-center gap-3 text-base font-medium py-2 text-foreground/80 hover:text-foreground transition-colors"
+                    >
+                      <CircleQuestionMark className="h-5 w-5 opacity-70" />
+                      My Account
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/signin"
+                      className="flex items-center gap-3 text-base font-medium py-2 text-foreground/80 hover:text-foreground transition-colors"
+                    >
+                      <User className="h-5 w-5 opacity-70" />
+                      Sign In
+                    </Link>
+                  )}
                   {bottomLinks.map((link) => (
                     <Link
                       key={link.label}
@@ -132,7 +157,12 @@ const MobileNavbarHeader = async () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {/* <Facebook size={16} /> */} Facebook
+                    <Image
+                      src="/icons/facebook.svg"
+                      alt="Facebook"
+                      width={16}
+                      height={16}
+                    />
                   </Link>
                 </Button>
                 <Button
@@ -142,11 +172,16 @@ const MobileNavbarHeader = async () => {
                   asChild
                 >
                   <Link
-                    href="https://twitter.com"
+                    href="https://www.linkedin.com"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {/* <Twitter size={16} /> */} Twitter
+                    <Image
+                      src="/icons/linkedin.svg"
+                      alt="LinkedIn"
+                      width={16}
+                      height={16}
+                    />
                   </Link>
                 </Button>
                 <Button
@@ -156,11 +191,16 @@ const MobileNavbarHeader = async () => {
                   asChild
                 >
                   <Link
-                    href="https://instagram.com"
+                    href="https://www.x.com"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {/* <Instagram size={16} /> */} Instagram
+                    <Image
+                      src="/icons/x.svg"
+                      alt="X (Twitter)"
+                      width={16}
+                      height={16}
+                    />
                   </Link>
                 </Button>
               </div>

@@ -18,6 +18,7 @@ import {
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import Signout from "./_components/Signout";
 
 export const metadata = {
   title: "My Account",
@@ -273,6 +274,11 @@ const AccountPage = async () => {
           </div>
           <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all shrink-0" />
         </Link>
+      </div>
+
+      {/* ============ SIGN OUT ============ */}
+      <div className="mt-6">
+        <Signout />
       </div>
     </div>
   );
