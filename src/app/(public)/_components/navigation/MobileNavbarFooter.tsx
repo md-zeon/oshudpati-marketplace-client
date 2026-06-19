@@ -98,7 +98,7 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
   ];
 
   return (
-    <Command>
+    <Command className="lg:hidden">
       {/* ================= BOTTOM NAVIGATION TABS ================= */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 h-16 border-t bg-background/95 backdrop-blur pb-safe">
         <div className="grid h-full grid-cols-5 px-2">
