@@ -10,31 +10,13 @@ import { CtaBanner } from "@/components/shared/home/CtaBanner";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { TestimonialsSection } from "@/components/shared/home/TestimonialsSection";
 import { MedicineCard } from "@/components/shared/medicine/MedicineCard";
+import { CategorySection } from "@/components/shared/home/CategorySection";
 
 export const metadata = {
   title: "Oshudpati | Trusted Online Medicine & Healthcare Marketplace",
   description:
     "Buy authentic medicines, healthcare products, and wellness essentials online from trusted pharmacies across Bangladesh.",
 };
-
-function getPrimaryImage(medicine: Medicine): string {
-  return (
-    medicine.images?.find((img) => img.isPrimary)?.imageUrl ||
-    medicine.images?.[0]?.imageUrl ||
-    ""
-  );
-}
-
-function getPrice(medicine: Medicine): {
-  current: number;
-  original: number | null;
-} {
-  const original = Number(medicine.price);
-  const current = medicine.discountPrice
-    ? Number(medicine.discountPrice)
-    : original;
-  return { current, original: current < original ? original : null };
-}
 
 async function getFeaturedMedicines(): Promise<Medicine[]> {
   try {
@@ -134,39 +116,8 @@ const HomePage = async () => {
         ))}
       </section>
 
-      {/* FEATURED CATEGORIES */}
-      {categories.length > 0 && (
-        <section>
-          <SectionHeader
-            title="Shop by Category"
-            description="Find what you need faster"
-            viewAllHref="/shop"
-          />
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 stagger-children">
-            {categories.slice(0, 8).map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/shop?category=${cat.slug}`}
-                className="group bg-white rounded-xl border border-slate-200 p-4 hover:border-emerald-200 hover:shadow-sm transition-all duration-300 hover:-translate-y-0.5"
-              >
-                <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center mb-3 group-hover:bg-emerald-100 transition-colors">
-                  <Pill className="w-5 h-5 text-emerald-600" />
-                </div>
-                <h3 className="font-semibold text-slate-900 text-sm">
-                  {cat.name}
-                </h3>
-                {"_count" in cat && (
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    {(cat as Category & { _count: { medicines: number } })
-                      ._count?.medicines || 0}{" "}
-                    items
-                  </p>
-                )}
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+      {/* CATEGORIES */}
+      <CategorySection categories={categories} />
 
       {/* FEATURED MEDICINES */}
       {featuredMedicines.length > 0 && (
