@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Medicine } from "@/types";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import MinimalistAddToCart from "./MinimalistAddToCart";
+import { Star } from "lucide-react";
 
 interface TopRatedMedicinesSectionProps {
   medicines: Medicine[];
@@ -63,9 +64,30 @@ export function TopRatedMedicinesSection({
                   <h3 className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors line-clamp-1">
                     {medicine.name}
                   </h3>
-                  <p className="text-xs text-gray-500 font-medium truncate">
-                    {medicine.strength} • {medicine.dosageForm}
-                  </p>
+                  {/* Specifications & Rating Row */}
+                  <div className="flex items-center gap-2 text-xs text-gray-500 font-medium flex-wrap">
+                    <span className="truncate">
+                      {medicine.strength} • {medicine.dosageForm}
+                    </span>
+
+                    {medicine.averageRating &&
+                      Number(medicine.averageRating) > 0 && (
+                        <>
+                          <span className="text-gray-300 text-[10px]">•</span>
+                          <div className="flex items-center gap-0.5 bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded text-[11px] font-bold shrink-0">
+                            <Star className="w-3 h-3 fill-amber-400 stroke-amber-400" />
+                            <span>
+                              {Number(medicine.averageRating).toFixed(1)}
+                            </span>
+                            {medicine.reviewCount > 0 && (
+                              <span className="text-gray-400 font-normal text-[10px] ml-0.5">
+                                ({medicine.reviewCount})
+                              </span>
+                            )}
+                          </div>
+                        </>
+                      )}
+                  </div>
                   <p className="text-[11px] text-gray-400 truncate">
                     {medicine.manufacturerName}
                   </p>
