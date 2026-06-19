@@ -38,7 +38,7 @@ const MobileNavbarHeader = async () => {
     { label: "Home", href: "/", icon: Home },
     { label: "Dashboard", href: "/dashboard", icon: Layout },
     { label: "Categories", href: "/categories", icon: Package },
-    { label: "Medicines", href: "/medicines", icon: Pill },
+    { label: "Medicines", href: "/medicine", icon: Pill },
     { label: "Blog", href: "/blog", icon: BookOpen },
   ];
 

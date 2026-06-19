@@ -14,7 +14,7 @@ export function AppBreadcrumb() {
   const pathname = usePathname();
   const segments = pathname?.split("/").filter(Boolean) ?? [];
 
-  //   Don't render breadcrumb on the home page
+  // Don't render breadcrumb on the home page
   if (segments.length === 0) {
     return null;
   }
@@ -24,38 +24,47 @@ export function AppBreadcrumb() {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            {/* Default dim hover normal */}
-            <Link href="/" className="text-slate-500 hover:text-slate-700">
+            <Link
+              href="/"
+              className="text-slate-500 hover:text-slate-700 transition-colors"
+            >
               Home
             </Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
+
         {segments.length > 0 && <BreadcrumbSeparator />}
+
         {segments.map((segment, index) => {
           const href = "/" + segments.slice(0, index + 1).join("/");
           const isLast = index === segments.length - 1;
 
+          // Clean up text format (e.g., "shop-items" becomes "Shop Items")
+          const formattedSegment = segment
+            .replace(/-+/g, " ")
+            .replace(/\b\w/g, (char) => char.toUpperCase());
+
           return (
-            <BreadcrumbItem
-              key={href}
-              aria-current={isLast ? "page" : undefined}
-            >
-              {!isLast ? (
-                <BreadcrumbLink asChild>
-                  <Link
-                    href={href}
-                    className="text-slate-500 hover:text-slate-700"
-                  >
-                    {segment.charAt(0).toUpperCase() + segment.slice(1)}
-                  </Link>
-                </BreadcrumbLink>
-              ) : (
-                <span>
-                  {segment.charAt(0).toUpperCase() + segment.slice(1)}
-                </span>
-              )}
+            <section key={href} className="flex items-center gap-1.5">
+              <BreadcrumbItem aria-current={isLast ? "page" : undefined}>
+                {!isLast ? (
+                  <BreadcrumbLink asChild>
+                    <Link
+                      href={href}
+                      className="text-slate-500 hover:text-slate-700 transition-colors"
+                    >
+                      {formattedSegment}
+                    </Link>
+                  </BreadcrumbLink>
+                ) : (
+                  <span className="font-semibold text-slate-900 pointer-events-none">
+                    {formattedSegment}
+                  </span>
+                )}
+              </BreadcrumbItem>
+
               {!isLast && <BreadcrumbSeparator />}
-            </BreadcrumbItem>
+            </section>
           );
         })}
       </BreadcrumbList>
