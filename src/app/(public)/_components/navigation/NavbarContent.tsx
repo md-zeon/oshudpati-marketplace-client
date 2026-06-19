@@ -18,7 +18,7 @@ const NavbarContent = async ({ medicines = [] }: { medicines: Medicine[] }) => {
 
   return (
     // Desktop Navigation
-    <nav className="max-lg:hidden sticky top-0 z-50 w-full bg-background/95 backdrop-blur">
+    <nav className="max-w-360 mx-auto max-lg:hidden sticky top-0 z-50 w-full bg-background/95 backdrop-blur">
       <div className="flex h-16 items-center justify-between gap-4 px-4">
         {/* Logo */}
         <Logo />

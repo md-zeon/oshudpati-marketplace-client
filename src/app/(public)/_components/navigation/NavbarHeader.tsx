@@ -13,7 +13,7 @@ import {
 const NavbarHeader = () => {
   return (
     // hidden on mobile, visible on large screens and above
-    <nav className="hidden text-xs lg:flex justify-between gap-3 px-4 py-2 text-black">
+    <nav className="max-w-360 mx-auto hidden text-xs lg:flex justify-between gap-3 px-4 py-2 text-black">
       {/* Header Left */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
         {/* Contact Information */}
