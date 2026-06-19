@@ -5,7 +5,7 @@ import { SearchParams } from "@/types";
 
 interface CategoryFilterProps {
   categories: Category[];
-  selectedCategory: string;
+  selectedCategory: string[];
   params: SearchParams;
 }
 
@@ -14,6 +14,26 @@ export default function CategoryFilter({
   selectedCategory,
   params,
 }: CategoryFilterProps) {
+  function buildHref(slug: string) {
+    const isSelected = selectedCategory.includes(slug);
+    let nextCategories: string[];
+
+    if (isSelected) {
+      nextCategories = selectedCategory.filter((s) => s !== slug);
+    } else {
+      nextCategories = [...selectedCategory, slug];
+    }
+
+    return {
+      pathname: "/shop",
+      query: {
+        ...params,
+        category: nextCategories.length > 0 ? nextCategories.join(",") : undefined,
+        page: 1,
+      },
+    };
+  }
+
   return (
     <div>
       <h3 className="font-bold text-xs text-slate-900 uppercase tracking-wider mb-2.5">
@@ -22,19 +42,12 @@ export default function CategoryFilter({
 
       <div className="space-y-1 max-h-56 overflow-y-auto pr-1">
         {categories.map((cat) => {
-          const isSelected = selectedCategory === cat.slug;
+          const isSelected = selectedCategory.includes(cat.slug);
 
           return (
             <Link
               key={cat.id}
-              href={{
-                pathname: "/shop",
-                query: {
-                  ...params,
-                  category: isSelected ? undefined : cat.slug,
-                  page: 1,
-                },
-              }}
+              href={buildHref(cat.slug)}
               className={`flex items-center justify-between text-xs p-2 rounded-lg transition-colors group ${
                 isSelected
                   ? "bg-emerald-50 text-emerald-700 font-bold"

@@ -7,8 +7,8 @@ interface ShopHeaderProps {
   medicinesCount: number;
 
   search: string;
-  category: string;
-  manufacturer: string;
+  category: string[];
+  manufacturer: string[];
 
   minPrice?: number;
   maxPrice?: number;

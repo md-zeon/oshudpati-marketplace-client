@@ -37,8 +37,10 @@ export function parseShopFilters(params: SearchParams): ParsedShopFilters {
     page,
     limit,
     search: params.search || "",
-    category: params.category || "",
-    manufacturer: params.manufacturer || "",
+    category: params.category ? params.category.split(",").filter(Boolean) : [],
+    manufacturer: params.manufacturer
+      ? params.manufacturer.split(",").filter(Boolean)
+      : [],
     isFeatured: params.isFeatured === "true",
     viewMode: params.viewMode === "list" ? "list" : "grid",
     sortBy: params.sortBy || "createdAt",

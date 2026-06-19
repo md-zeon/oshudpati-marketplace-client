@@ -5,11 +5,21 @@ import { SearchParams } from "@/types";
 interface ActiveFiltersProps {
   params: SearchParams;
   search: string;
-  category: string;
-  manufacturer: string;
+  category: string[];
+  manufacturer: string[];
   minPrice?: number;
   maxPrice?: number;
   isFeatured: boolean;
+}
+
+function removeFromCommaList(
+  currentValue: string | undefined,
+  itemToRemove: string,
+): string | undefined {
+  if (!currentValue) return undefined;
+  const items = currentValue.split(",").filter(Boolean);
+  const nextItems = items.filter((i) => i !== itemToRemove);
+  return nextItems.length > 0 ? nextItems.join(",") : undefined;
 }
 
 export default function ActiveFilters({
@@ -23,8 +33,8 @@ export default function ActiveFilters({
 }: ActiveFiltersProps) {
   const hasActiveFilters = !!(
     search ||
-    category ||
-    manufacturer ||
+    category.length > 0 ||
+    manufacturer.length > 0 ||
     minPrice !== undefined ||
     maxPrice !== undefined ||
     isFeatured
@@ -42,39 +52,41 @@ export default function ActiveFilters({
         </Link>
       )}
 
-      {category && (
+      {category.map((cat) => (
         <Link
+          key={cat}
           href={{
             pathname: "/shop",
             query: {
               ...params,
-              category: undefined,
+              category: removeFromCommaList(params.category, cat),
               page: 1,
             },
           }}
           className="inline-flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
         >
-          Category: {category}
+          Category: {cat}
           <X className="w-3 h-3 text-slate-400" />
         </Link>
-      )}
+      ))}
 
-      {manufacturer && (
+      {manufacturer.map((mfr) => (
         <Link
+          key={mfr}
           href={{
             pathname: "/shop",
             query: {
               ...params,
-              manufacturer: undefined,
+              manufacturer: removeFromCommaList(params.manufacturer, mfr),
               page: 1,
             },
           }}
           className="inline-flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
         >
-          Manufacturer: {manufacturer}
+          Manufacturer: {mfr}
           <X className="w-3 h-3 text-slate-400" />
         </Link>
-      )}
+      ))}
 
       {(minPrice !== undefined || maxPrice !== undefined) && (
         <Link

@@ -17,8 +17,8 @@ export interface ParsedShopFilters {
   page: number;
   limit: number;
   search: string;
-  category: string;
-  manufacturer: string;
+  category: string[];
+  manufacturer: string[];
   isFeatured: boolean;
   viewMode: "grid" | "list";
   sortBy: string;

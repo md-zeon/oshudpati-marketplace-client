@@ -7,7 +7,7 @@ interface ManufacturerFilterProps {
     manufacturerName: string;
   }[];
 
-  selectedManufacturer: string;
+  selectedManufacturer: string[];
   params: SearchParams;
 }
 
@@ -16,6 +16,27 @@ export default function ManufacturerFilter({
   selectedManufacturer,
   params,
 }: ManufacturerFilterProps) {
+  function buildHref(manufacturerName: string) {
+    const isSelected = selectedManufacturer.includes(manufacturerName);
+    let nextManufacturers: string[];
+
+    if (isSelected) {
+      nextManufacturers = selectedManufacturer.filter((m) => m !== manufacturerName);
+    } else {
+      nextManufacturers = [...selectedManufacturer, manufacturerName];
+    }
+
+    return {
+      pathname: "/shop",
+      query: {
+        ...params,
+        manufacturer:
+          nextManufacturers.length > 0 ? nextManufacturers.join(",") : undefined,
+        page: 1,
+      },
+    };
+  }
+
   return (
     <div>
       <h3 className="font-bold text-xs text-slate-900 uppercase tracking-wider mb-2.5">
@@ -24,22 +45,14 @@ export default function ManufacturerFilter({
 
       <div className="space-y-1">
         {manufacturers.map((manufacturer) => {
-          const isSelected =
-            selectedManufacturer === manufacturer.manufacturerName;
+          const isSelected = selectedManufacturer.includes(
+            manufacturer.manufacturerName,
+          );
 
           return (
             <Link
               key={manufacturer.manufacturerName}
-              href={{
-                pathname: "/shop",
-                query: {
-                  ...params,
-                  manufacturer: isSelected
-                    ? undefined
-                    : manufacturer.manufacturerName,
-                  page: 1,
-                },
-              }}
+              href={buildHref(manufacturer.manufacturerName)}
               className={`flex items-center justify-between text-xs p-2 rounded-lg transition-colors group ${
                 isSelected
                   ? "bg-emerald-50 text-emerald-700 font-bold"

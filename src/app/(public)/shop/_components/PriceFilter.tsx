@@ -5,8 +5,8 @@ import { SearchParams } from "@/types";
 interface PriceFilterProps {
   params: SearchParams;
   search: string;
-  selectedCategory: string;
-  selectedManufacturer: string;
+  selectedCategory: string[];
+  selectedManufacturer: string[];
   isFeatured: boolean;
   viewMode: string;
   sortBy: string;
@@ -34,15 +34,19 @@ export default function PriceFilter({
       <form action="/shop" method="GET" className="space-y-3">
         {search && <input type="hidden" name="search" value={search} />}
 
-        {selectedCategory && (
-          <input type="hidden" name="category" value={selectedCategory} />
+        {selectedCategory.length > 0 && (
+          <input
+            type="hidden"
+            name="category"
+            value={selectedCategory.join(",")}
+          />
         )}
 
-        {selectedManufacturer && (
+        {selectedManufacturer.length > 0 && (
           <input
             type="hidden"
             name="manufacturer"
-            value={selectedManufacturer}
+            value={selectedManufacturer.join(",")}
           />
         )}
 
