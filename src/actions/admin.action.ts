@@ -73,12 +73,7 @@ export const getAllOrdersAction = async () => {
 
 export const getCategoriesAction = async () => {
   try {
-    const cookieStore = await cookies();
-    const res = await fetch(`${API_URL}/categories`, {
-      headers: { Cookie: cookieStore.toString() },
-      cache: "no-store",
-    });
-    const data = await res.json();
+    const data = await AdminService.getCategories();
     return data;
   } catch {
     return { success: false, data: [] };

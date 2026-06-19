@@ -60,7 +60,7 @@ export const AdminService = {
   getAllReviews: async () => {
     try {
       const cookieStore = await cookies();
-      const url = new URL(`${API_URL}/reviews`);
+      const url = new URL(`${API_URL}/reviews/all`);
 
       const res = await fetch(url.toString(), {
         method: "GET",
@@ -74,6 +74,25 @@ export const AdminService = {
       return data;
     } catch (error) {
       console.log("Error fetching reviews:", error);
+      return error;
+    }
+  },
+  getCategories: async () => {
+    try {
+      const cookieStore = await cookies();
+      const url = new URL(`${API_URL}/categories`);
+      const res = await fetch(url.toString(), {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      });
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.log("Error fetching categories:", error);
       return error;
     }
   },

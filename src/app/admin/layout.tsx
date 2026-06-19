@@ -85,7 +85,7 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
                 </div>
               </SheetContent>
             </Sheet>
-            <Logo />
+            <Logo color="blue" />
           </div>
           <div className="flex items-center gap-3">
             <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">
