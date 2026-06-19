@@ -3,27 +3,12 @@ import { userService } from "@/services/user.service";
 import { CategoryService } from "@/services/category.service";
 import { Category } from "@/types";
 import { MedicineForm } from "../_components/MedicineForm";
-import { env } from "@/env";
-import { cookies } from "next/headers";
+import { MedicineService } from "@/services/medicine.service";
 
 export const metadata = {
   title: "Edit Medicine",
   description: "Edit medicine details",
 };
-
-async function getMedicine(id: string) {
-  try {
-    const cookieStore = await cookies();
-    const res = await fetch(`${env.API_URL}/medicines/${id}`, {
-      headers: { Cookie: cookieStore.toString() },
-      cache: "no-store",
-    });
-    const data = await res.json();
-    return data.success ? data.data : null;
-  } catch {
-    return null;
-  }
-}
 
 const EditMedicinePage = async ({
   params,
@@ -35,11 +20,13 @@ const EditMedicinePage = async ({
   if (!session?.success || !session.data?.user) return redirect("/signin");
   if (session.data.user.role !== "SELLER") return redirect("/dashboard");
 
-  const [medicine, categoryRes] = await Promise.all([
-    getMedicine(id),
+  const [medicineRes, categoryRes] = await Promise.all([
+    MedicineService.getMedicineById(id, { cache: "no-store" }),
     CategoryService.getCategories({ revalidate: 60 }),
   ]);
+
   const categories: Category[] = categoryRes?.success ? categoryRes.data : [];
+  const medicine = medicineRes?.success ? medicineRes.data : null;
 
   if (!medicine) {
     return (
