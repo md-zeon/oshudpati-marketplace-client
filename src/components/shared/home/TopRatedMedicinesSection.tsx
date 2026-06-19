@@ -4,22 +4,23 @@ import { Medicine } from "@/types";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import MinimalistAddToCart from "./MinimalistAddToCart";
 
-interface FeaturedMedicinesSectionProps {
+interface TopRatedMedicinesSectionProps {
   medicines: Medicine[];
 }
 
-export function FeaturedMedicinesSection({
+export function TopRatedMedicinesSection({
   medicines,
-}: FeaturedMedicinesSectionProps) {
+}: TopRatedMedicinesSectionProps) {
   if (!medicines.length) return null;
 
   return (
     <section className="w-full">
       <SectionHeader
-        title="Featured Medicines"
-        description="Handpicked for your health needs"
-        viewAllHref="/shop?isFeatured=true"
+        title="Top Rated"
+        description="Most popular among our customers"
+        viewAllHref="/shop?sortBy=popular"
       />
+
       <div className="mt-8 divide-y divide-gray-100 border-t border-b border-gray-100 md:border-none md:divide-none md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 lg:gap-8">
         {medicines.slice(0, 6).map((medicine) => {
           const primaryImage =

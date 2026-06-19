@@ -7,7 +7,7 @@ import { Medicine } from "@/types";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 
-const FeaturedAddToCart = ({ medicine }: { medicine: Medicine }) => {
+const MinimalistAddToCart = ({ medicine }: { medicine: Medicine }) => {
   const handleAddToCart = async (quantity: number) => {
     const res = await addToCart(medicine.id, quantity);
     if (res?.success && res?.mode === "database") {
@@ -69,4 +69,4 @@ const FeaturedAddToCart = ({ medicine }: { medicine: Medicine }) => {
   );
 };
 
-export default FeaturedAddToCart;
+export default MinimalistAddToCart;
