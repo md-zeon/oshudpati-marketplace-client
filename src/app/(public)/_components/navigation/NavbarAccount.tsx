@@ -188,7 +188,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
         {user.role === "ADMIN" && (
           <>
             <Link
-              href="/dashboard/users"
+              href="/admin/users"
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
@@ -203,7 +203,7 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
             </Link>
 
             <Link
-              href="/dashboard/categories"
+              href="/admin/categories"
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">

@@ -100,8 +100,6 @@ const CategoriesPage = async () => {
                     width={220}
                     height={220}
                     className="
-                    h-32
-                    w-32
                     object-contain
                     transition-transform
                     duration-300

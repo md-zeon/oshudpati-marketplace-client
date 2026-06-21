@@ -1,5 +1,5 @@
+import { CategoryService } from "@/services/category.service";
 import { CategoryManager } from "./_components/CategoryManager";
-import { AdminService } from "@/services/admin.service";
 
 export const metadata = {
   title: "Manage Categories",
@@ -7,9 +7,21 @@ export const metadata = {
 };
 
 const AdminCategories = async () => {
-  const res = await AdminService.getCategories();
-  const categories = res?.success ? res.data : [];
+  const [categoriesRes, trashCategoriesRes] = await Promise.all([
+    CategoryService.getCategories({ cache: "no-store" }),
+    CategoryService.getInactiveCategories({ cache: "no-store" }),
+  ]);
+  const categories = categoriesRes?.success ? categoriesRes.data : [];
+  const trashCategories = trashCategoriesRes?.success
+    ? trashCategoriesRes.data
+    : [];
 
-  return <CategoryManager initialCategories={categories} />;
+  return (
+    <CategoryManager
+      categories={categories}
+      trashCategories={trashCategories}
+    />
+  );
 };
+
 export default AdminCategories;

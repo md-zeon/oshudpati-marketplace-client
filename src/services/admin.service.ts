@@ -3,7 +3,27 @@ import { cookies } from "next/headers";
 
 const API_URL = env.API_URL;
 
+interface ServiceOptions {
+  cache?: RequestCache;
+  revalidate?: number;
+}
+
 export const AdminService = {
+  getAdminDashboard: async (options?: ServiceOptions) => {
+    try {
+      const cookieStore = await cookies();
+      const res = await fetch(`${API_URL}/dashboard/admin`, {
+        method: "GET",
+        headers: { Cookie: cookieStore.toString() },
+        cache: options?.cache ? options.cache : "no-store",
+      });
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.log("Error fetching admin dashboard:", error);
+      return error;
+    }
+  },
   getAllUsers: async (params?: {
     role?: string;
     accountStatus?: string;
@@ -74,25 +94,6 @@ export const AdminService = {
       return data;
     } catch (error) {
       console.log("Error fetching reviews:", error);
-      return error;
-    }
-  },
-  getCategories: async () => {
-    try {
-      const cookieStore = await cookies();
-      const url = new URL(`${API_URL}/categories`);
-      const res = await fetch(url.toString(), {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: cookieStore.toString(),
-        },
-        cache: "no-store",
-      });
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("Error fetching categories:", error);
       return error;
     }
   },

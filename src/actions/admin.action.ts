@@ -4,17 +4,13 @@ import { updateTag } from "next/cache";
 import { env } from "@/env";
 import { cookies } from "next/headers";
 import { AdminService } from "@/services/admin.service";
+import { CategoryService } from "@/services/category.service";
 
 const API_URL = env.API_URL;
 
 export const getAdminDashboardAction = async () => {
   try {
-    const cookieStore = await cookies();
-    const res = await fetch(`${API_URL}/dashboard/admin`, {
-      headers: { Cookie: cookieStore.toString() },
-      cache: "no-store",
-    });
-    const data = await res.json();
+    const data = await AdminService.getAdminDashboard({ cache: "no-store" });
     return data;
   } catch {
     return { success: false, data: null };
@@ -73,7 +69,7 @@ export const getAllOrdersAction = async () => {
 
 export const getCategoriesAction = async () => {
   try {
-    const data = await AdminService.getCategories();
+    const data = await CategoryService.getCategories();
     return data;
   } catch {
     return { success: false, data: [] };
@@ -152,17 +148,21 @@ export const deleteCategoryAction = async (id: string) => {
 // Recover Category
 export async function recoverCategoryAction(id: string) {
   try {
-    const res = await fetch(
-      `${process.env.BACKEND_URL}/api/categories/${id}/recover`,
-      {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isActive: true }),
-      },
-    );
-    return await res.json();
-  } catch (error) {
+    const data = await CategoryService.recoverCategory(id);
+    if (data.success) updateTag("categories");
+    return data;
+  } catch {
     return { success: false, message: "Failed to recover category" };
+  }
+}
+
+// Get Inactive (soft-deleted) Categories
+export async function getInactiveCategoriesAction() {
+  try {
+    const data = await CategoryService.getInactiveCategories();
+    return data;
+  } catch {
+    return { success: false, data: [] };
   }
 }
 
