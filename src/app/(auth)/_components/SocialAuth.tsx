@@ -13,9 +13,9 @@ const SocialAuth = () => {
     });
   };
 
-  const handleGitHubLogin = async () => {
+  const handleTwitterLogin = async () => {
     await authClient.signIn.social({
-      provider: "github",
+      provider: "twitter",
       callbackURL: `${env.NEXT_PUBLIC_FRONTEND_URL}/auth-callback`,
     });
   };
@@ -47,17 +47,11 @@ const SocialAuth = () => {
         <Button
           variant="outline"
           type="button"
-          onClick={handleGitHubLogin}
+          onClick={handleTwitterLogin}
           className="flex-1 py-5 cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-sm"
         >
-          <Image
-            src="/logo/github.svg"
-            alt="GitHub Icon"
-            width={20}
-            height={20}
-            className="invert"
-          />
-          GitHub
+          <Image src="/logo/x.svg" alt="Twitter Icon" width={20} height={20} />
+          Twitter
         </Button>
       </div>
     </>
