@@ -44,7 +44,7 @@ const MobileNavbarHeader = async () => {
 
   const bottomLinks = [
     { label: "My Wishlist", href: "/wishlist", icon: Heart },
-    { label: "Track Order", href: "/track-order", icon: MapPin },
+    { label: "Track Order", href: "/order-tracking", icon: MapPin },
     { label: "FAQ", href: "/faq", icon: CircleQuestionMark },
     { label: "Contact Support", href: "/contact", icon: Phone },
   ];
@@ -145,61 +145,49 @@ const MobileNavbarHeader = async () => {
 
             {/* Drawer Footer - Social Links & Copyright */}
             <DrawerFooter className="border-t px-4 py-4 bg-muted/30">
-              <div className="flex items-center justify-center gap-4 mb-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-full"
-                  asChild
-                >
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Button variant="ghost" size="icon" asChild>
                   <Link
                     href="https://facebook.com"
                     target="_blank"
                     rel="noreferrer"
                   >
                     <Image
-                      src="/icons/facebook.svg"
+                      src="/logo/facebook.svg"
                       alt="Facebook"
-                      width={16}
-                      height={16}
+                      width={20}
+                      height={20}
+                      className="bg-blue-500 p-0.5"
                     />
                   </Link>
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-full"
-                  asChild
-                >
+                <Button variant="ghost" size="icon" asChild>
                   <Link
                     href="https://www.linkedin.com"
                     target="_blank"
                     rel="noreferrer"
                   >
                     <Image
-                      src="/icons/linkedin.svg"
+                      src="/logo/linkedin.svg"
                       alt="LinkedIn"
-                      width={16}
-                      height={16}
+                      width={20}
+                      height={20}
+                      className="bg-blue-500"
                     />
                   </Link>
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-full"
-                  asChild
-                >
+                <Button variant="ghost" size="icon" asChild>
                   <Link
                     href="https://www.x.com"
                     target="_blank"
                     rel="noreferrer"
                   >
                     <Image
-                      src="/icons/x.svg"
+                      src="/logo/x.svg"
                       alt="X (Twitter)"
-                      width={16}
-                      height={16}
+                      width={24}
+                      height={24}
+                      className="bg-white p-0.5 invert"
                     />
                   </Link>
                 </Button>

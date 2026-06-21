@@ -34,7 +34,7 @@ export function WhyChooseUsSection({ features }: WhyChooseUsSectionProps) {
       </div>
 
       {/* Grid: Flat, responsive, and borderless layout */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 max-sm:text-center">
         {features.map((feature) => (
           <FeatureCard key={feature.title} {...feature} />
         ))}

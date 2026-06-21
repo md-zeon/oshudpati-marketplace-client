@@ -54,21 +54,23 @@ export function ProductCard({
       </div>
 
       {/* Image */}
-      <div
-        className={`bg-slate-50/60 rounded-xl flex items-center justify-center shrink-0 border border-slate-100/80 relative overflow-hidden ${
-          isList ? "w-44 h-44" : "w-full h-48 mb-4"
-        }`}
-      >
-        <Image
-          src={primaryImage}
-          alt={medicine.name}
-          width={300}
-          height={300}
-          className="w-4/5 h-4/5 object-contain transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
-
+      <Link href={`/medicine/${medicine.slug}`}>
+        <div
+          className={`bg-slate-50/60 rounded-xl flex items-center justify-center shrink-0 border border-slate-100/80 relative overflow-hidden ${
+            isList ? "w-44 h-44" : "w-full h-48 mb-4"
+          }`}
+        >
+          <Image
+            src={primaryImage}
+            alt={medicine.name}
+            width={300}
+            height={300}
+            className="w-4/5 h-4/5 object-contain transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+      </Link>
       {/* Content */}
+
       <div className="flex-1 flex flex-col justify-between h-full w-full">
         <div>
           {/* Rating */}

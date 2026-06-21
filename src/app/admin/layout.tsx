@@ -21,6 +21,7 @@ const sidebarLinks = [
   { href: "/admin/users", label: "Users", iconName: "users" },
   { href: "/admin/reviews", label: "Reviews", iconName: "reviews" },
   { href: "/admin/categories", label: "Categories", iconName: "categories" },
+  { href: "/admin/profile", label: "Profile", iconName: "user" },
 ];
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
