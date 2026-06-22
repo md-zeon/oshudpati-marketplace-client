@@ -120,7 +120,7 @@ export function SignInForm({
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
                       placeholder="Enter your email"
-                      className="lowercase py-5 shadow-md"
+                      className="py-5 shadow-md"
                       autoComplete="off"
                     />
                     {isInvalid && (

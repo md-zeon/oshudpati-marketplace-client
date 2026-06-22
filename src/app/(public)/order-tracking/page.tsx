@@ -20,7 +20,7 @@ const OrderTrackingPage = async ({ searchParams }: Props) => {
       order = res.data;
     } else {
       return (
-        <div className="container mx-auto py-10">
+        <div className="py-10 min-h-screen">
           <div className="mx-auto max-w-5xl">
             <div className="mb-8 text-center">
               <h1 className="text-3xl font-bold">Track Your Order</h1>
@@ -44,7 +44,7 @@ const OrderTrackingPage = async ({ searchParams }: Props) => {
   }
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="py-10 min-h-[calc(100vh-180px)]">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold">Track Your Order</h1>

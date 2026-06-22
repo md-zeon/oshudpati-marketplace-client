@@ -153,7 +153,7 @@ export function SignupForm({
                       aria-invalid={isInvalid}
                       placeholder="Enter your email"
                       autoComplete="off"
-                      className="lowercase py-5 shadow-md"
+                      className="py-5 shadow-md"
                     />
                     {isInvalid && (
                       <FieldError errors={field.state.meta.errors} />
@@ -183,7 +183,7 @@ export function SignupForm({
                       />
                       <Label
                         htmlFor="role-customer"
-                        className="flex flex-col items-center justify-between rounded-xl border border-slate-300 hover:border-black bg-popover p-4 text-slate-500 hover:text-black cursor-pointer transition-all shadow-md gap-1 peer-data-[state=checked]:border-black peer-data-[state=checked]:ring-1 peer-data-[state=checked]:ring-black/20 peer-data-[state=checked]:text-black"
+                        className="flex flex-col items-center justify-between rounded-xl border border-slate-300 hover:border-brand hover:outline-none bg-popover p-4 text-slate-500 hover:text-black cursor-pointer transition-all shadow-md gap-1 peer-data-[state=checked]:border-brand peer-data-[state=checked]:ring-1 peer-data-[state=checked]:ring-black/20 peer-data-[state=checked]:text-black peer-data-[state=checked]:bg-brand/5"
                       >
                         <ShoppingBag className="mb-2 h-6 w-6 text-muted-foreground peer-data-[state=checked]:text-primary" />
                         <span className="font-medium text-sm">Customer</span>
@@ -202,7 +202,7 @@ export function SignupForm({
                       />
                       <Label
                         htmlFor="role-seller"
-                        className="flex flex-col items-center justify-between rounded-xl border border-slate-300 hover:border-black bg-popover p-4 text-slate-500 hover:text-black cursor-pointer transition-all shadow-md gap-1 peer-data-[state=checked]:border-black peer-data-[state=checked]:ring-1 peer-data-[state=checked]:ring-black/20 peer-data-[state=checked]:text-black"
+                        className="flex flex-col items-center justify-between rounded-xl border border-slate-300 hover:border-brand hover:outline-none bg-popover p-4 text-slate-500 hover:text-black cursor-pointer transition-all shadow-md gap-1 peer-data-[state=checked]:border-brand peer-data-[state=checked]:ring-1 peer-data-[state=checked]:ring-black/20 peer-data-[state=checked]:text-black peer-data-[state=checked]:bg-brand/5"
                       >
                         <Store className="mb-2 h-6 w-6 text-muted-foreground peer-data-[state=checked]:text-primary" />
                         <span className="font-medium text-sm">Seller</span>
