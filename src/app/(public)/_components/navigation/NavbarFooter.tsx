@@ -17,7 +17,7 @@ const NavbarFooter = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="max-w-360 mx-auto hidden font-medium lg:flex items-center justify-between gap-6 px-4 py-2 sticky top-16 z-50">
+    <nav className="max-w-360 mx-auto hidden font-medium lg:flex items-center justify-between gap-6 px-4 py-2 sticky top-16 z-50 bg-background/95 backdrop-blur">
       <div className="flex items-center gap-6">
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
