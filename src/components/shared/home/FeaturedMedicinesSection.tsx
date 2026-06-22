@@ -37,7 +37,7 @@ export function FeaturedMedicinesSection({
             >
               {/* Left Side: Product Image & Details Link */}
               <Link
-                href={`/shop/${medicine.slug}`}
+                href={`/medicine/${medicine.slug}`}
                 className="flex items-center gap-4 flex-1 min-w-0"
               >
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-50 rounded-xl shrink-0 flex items-center justify-center p-2 border border-gray-50/50">

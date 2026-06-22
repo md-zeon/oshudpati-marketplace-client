@@ -8,6 +8,7 @@ import { CategorySection } from "@/components/shared/home/CategorySection";
 import { FeaturedMedicinesSection } from "@/components/shared/home/FeaturedMedicinesSection";
 import { TopRatedMedicinesSection } from "@/components/shared/home/TopRatedMedicinesSection";
 import { WhyChooseUsSection } from "@/components/shared/home/WhyChooseUsSection";
+import { TrustedBySection } from "@/components/shared/home/TrustedBySection";
 import { CtaBannerSection } from "@/components/shared/home/CtaBannerSection";
 
 export const metadata = {
@@ -104,6 +105,9 @@ const HomePage = async () => {
 
       {/* WHY CHOOSE US */}
       <WhyChooseUsSection features={features} />
+
+      {/* TRUSTED BY / PARTNERS */}
+      <TrustedBySection />
 
       {/* TOP RATED */}
       <TopRatedMedicinesSection medicines={topRatedMedicines} />

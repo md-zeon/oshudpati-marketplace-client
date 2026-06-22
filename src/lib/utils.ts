@@ -43,7 +43,7 @@ export function parseShopFilters(params: SearchParams): ParsedShopFilters {
       : [],
     isFeatured: params.isFeatured === "true",
     viewMode: params.viewMode === "list" ? "list" : "grid",
-    sortBy: params.sortBy || "createdAt",
+    sortBy: params.sortBy || "popular",
     minPrice,
     maxPrice,
     priceValidationError,
@@ -54,7 +54,7 @@ export function getPrimaryImage(medicine: Medicine): string {
   return (
     medicine.images?.find((img) => img.isPrimary)?.imageUrl ||
     medicine.images?.[0]?.imageUrl ||
-    "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=500"
+    "https://res.cloudinary.com/dqidksb5y/image/upload/v1782150010/oshudpati/u121qgv7qmkcqolkjhyy.png"
   );
 }
 

@@ -142,7 +142,7 @@ export function ReviewForm({
               }
               setIsOpen(true);
             }}
-            className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+            className="px-6 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer"
           >
             Write a Review
           </Button>
@@ -164,7 +164,7 @@ export function ReviewForm({
             }
             setIsOpen(true);
           }}
-          className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+          className="px-6 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer"
         >
           Write a Review
         </Button>
@@ -308,7 +308,7 @@ export function ReviewForm({
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium px-6 cursor-pointer"
+                className="text-sm font-medium px-6 cursor-pointer"
               >
                 {isSubmitting ? (
                   <>
