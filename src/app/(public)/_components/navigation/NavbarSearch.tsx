@@ -84,7 +84,7 @@ export const NavbarSearch = ({ medicines = [] }: NavbarSearchProps) => {
 
       {/* AUTOCOMPLETE SUGGESTIONS POPUP */}
       {isOpen && query.trim().length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border rounded-2xl shadow-xl z-50 max-h-95 overflow-y-auto p-2 animate-in fade-in-50 slide-in-from-top-1 duration-150">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white border rounded-2xl shadow-xl z-100 max-h-95 overflow-y-auto p-2 animate-in fade-in-50 slide-in-from-top-1 duration-150">
           {filteredResults.length === 0 ? (
             <div className="text-center py-6 text-sm text-muted-foreground">
               No matching medicines found.
