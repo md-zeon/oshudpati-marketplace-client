@@ -1,6 +1,7 @@
 "use client";
+
 import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";
-import { ShieldCheck } from "lucide-react";
+import { Truck } from "lucide-react";
 import Image from "next/image";
 
 interface Partner {
@@ -10,62 +11,50 @@ interface Partner {
 
 const partners: Partner[] = [
   {
-    name: "Square Pharmaceuticals",
-    logoSrc: "/logo/sauare-pharma.png",
+    name: "Pathao",
+    logoSrc: "/logo/Pathao.svg",
   },
   {
-    name: "Beximco Pharma",
-    logoSrc: "/logo/beximco-pharmaceuticals-ltd.png",
+    name: "Steadfast",
+    logoSrc: "/logo/Steadfast_Courier_Limited.svg",
   },
   {
-    name: "Incepta Pharmaceuticals",
-    logoSrc: "/logo/Incepta_Pharmaceuticals.jpg",
+    name: "eCourier",
+    logoSrc: "/logo/ECourier-com-bd.svg",
   },
   {
-    name: "Renata Limited",
-    logoSrc: "/logo/renata-limited.png",
+    name: "RedX",
+    logoSrc: "/logo/RedX.png",
   },
   {
-    name: "Aci Limited",
-    logoSrc: "/logo/aci-group.png",
+    name: "Paperfly",
+    logoSrc: "/logo/Paperfly.svg",
   },
   {
-    name: "Eskayef Pharmaceuticals",
-    logoSrc: "/logo/Eskayef-Pharmaceuticals-Ltd.png",
+    name: "Sundarban Courier",
+    logoSrc: "/logo/scs-logo.webp",
   },
   {
-    name: "Orion Pharma",
-    logoSrc: "/logo/Orion-Pharma.png",
-  },
-  {
-    name: "Radiant Pharmaceuticals",
-    logoSrc: "/logo/radiant-pharmaceuticals.png",
-  },
-  {
-    name: "Drug International",
-    logoSrc: "/logo/drug-international.png",
-  },
-  {
-    name: "Genex Pharma",
-    logoSrc: "/logo/GenX-Pharma.jpg",
+    name: "Daraz Express",
+    logoSrc: "/logo/Daraz-Express.webp",
   },
 ];
 
-export function TrustedBySection() {
+export function DeliveryPartnersSection() {
   return (
-    <section className="py-12 sm:py-16">
+    <section className="py-10">
       {/* Header */}
       <div className="flex flex-col items-center text-center gap-3 mb-10">
-        <span className="inline-flex items-center gap-1.5 bg-gray-50 text-gray-600 rounded-full px-3 py-1 text-[11px] font-bold tracking-wider uppercase">
-          <ShieldCheck className="w-3.5 h-3.5" />
-          Trusted By
+        <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 rounded-full px-3 py-1 text-[11px] font-bold tracking-wider uppercase">
+          <Truck className="w-3.5 h-3.5" />
+          Delivery Partners
         </span>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-          Partners & Brands We Work With
+          Fast & Reliable Delivery Across Bangladesh
         </h2>
         <p className="text-sm text-gray-500 max-w-xl leading-relaxed">
-          We collaborate with leading pharmaceutical companies and healthcare
-          brands to bring you authentic products.
+          We partner with top courier and logistics companies to ensure your
+          orders reach you quickly and safely.
         </p>
       </div>
 
@@ -93,7 +82,7 @@ export function TrustedBySection() {
                 alt={partner.name}
                 width={100}
                 height={32}
-                className="h-8 w-auto object-contain"
+                className="object-contain"
               />
             </div>
           ))}
