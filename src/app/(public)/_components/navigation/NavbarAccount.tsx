@@ -10,6 +10,7 @@ import {
   LayoutGrid,
   MapPin,
   Plus,
+  Store,
   User,
   UserCog,
 } from "lucide-react";
@@ -153,8 +154,9 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
 
         {user.role === "SELLER" && (
           <>
+            {/*  medicines */}
             <Link
-              href="/dashboard/medicines"
+              href="/seller/medicines"
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
@@ -168,13 +170,30 @@ const NavbarAccount = ({ user }: NavbarAccountProps) => {
               />
             </Link>
 
+            {/* orders */}
             <Link
-              href="/dashboard/orders"
+              href="/seller/orders"
               className="flex items-center justify-between group text-slate-700"
             >
               <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
                 <Box className="text-emerald-600 inline-block" size={20} />
                 Manage Orders
+              </div>
+
+              <ArrowRight
+                className="text-slate-600 inline-block group-hover:text-black -translate-x-2 group-hover:translate-x-0 transition-transform duration-200"
+                size={16}
+              />
+            </Link>
+
+            {/* Shop */}
+            <Link
+              href="/seller/shop"
+              className="flex items-center justify-between group text-slate-700"
+            >
+              <div className="flex items-center gap-2 text-xs group-hover:text-slate-900">
+                <Store className="text-emerald-600 inline-block" size={20} />
+                Manage Shop
               </div>
 
               <ArrowRight
