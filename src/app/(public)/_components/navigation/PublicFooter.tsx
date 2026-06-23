@@ -88,7 +88,7 @@ const socialLinks = [
 
 const PublicFooter = () => {
   return (
-    <footer className="bg-gray-950 text-gray-400 mt-16 border-t border-gray-900">
+    <footer className="bg-gray-950 text-gray-400 border-t border-gray-900">
       <div className="max-w-360 mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
         {/* Main Grid Wrapper */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 lg:gap-8">

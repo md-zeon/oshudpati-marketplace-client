@@ -1,6 +1,8 @@
 import { getOrderByOrderNumber } from "@/actions/order.action";
-import OrderTrackingForm from "./_components/OrderTrackingForm";
 import OrderDetails from "./_components/OrderDetails";
+import OrderTrackingForm from "./_components/OrderTrackingForm";
+
+import { PackageSearch, SearchX } from "lucide-react";
 
 interface Props {
   searchParams: Promise<{
@@ -12,6 +14,7 @@ const OrderTrackingPage = async ({ searchParams }: Props) => {
   const { orderNumber } = await searchParams;
 
   let order = null;
+  let hasError = false;
 
   if (orderNumber) {
     const res = await getOrderByOrderNumber(orderNumber);
@@ -19,46 +22,93 @@ const OrderTrackingPage = async ({ searchParams }: Props) => {
     if (res?.success) {
       order = res.data;
     } else {
-      return (
-        <div className="py-10 min-h-screen">
-          <div className="mx-auto max-w-5xl">
-            <div className="mb-8 text-center">
-              <h1 className="text-3xl font-bold">Track Your Order</h1>
-
-              <p className="mt-2 text-muted-foreground">
-                Enter your order number to view order details and delivery
-                status.
-              </p>
-            </div>
-            <OrderTrackingForm />
-
-            <div className="mt-10 text-center">
-              <p className="text-lg text-red-500">
-                No order found with the number &quot;{orderNumber}&quot;
-              </p>
-            </div>
-          </div>
-        </div>
-      );
+      hasError = true;
     }
   }
 
   return (
-    <div className="py-10 min-h-[calc(100vh-180px)]">
-      <div className="mx-auto max-w-5xl">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold">Track Your Order</h1>
+    <div className="min-h-[calc(100vh-180px)] bg-linear-to-t from-brand-subtle via-background to-background py-12 px-4">
+      <div className="mx-auto max-w-4xl">
+        {/* Hero */}
 
-          <p className="mt-2 text-muted-foreground">
-            Enter your order number to view order details and delivery status.
+        <div className="mb-10 text-center animate-fade-in">
+          <div className="animate-float mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-brand-light">
+            <PackageSearch className="h-10 w-10 text-brand" />
+          </div>
+
+          <h1 className="text-4xl font-bold text-text-primary">
+            Track Your Order
+          </h1>
+
+          <p className="mx-auto mt-3 max-w-2xl text-text-secondary">
+            Enter your order number to view delivery updates, order details and
+            shipment progress.
           </p>
         </div>
 
-        <OrderTrackingForm />
+        {/* Form Card */}
+
+        <div className="animate-fade-in-up p-6">
+          <OrderTrackingForm />
+        </div>
+
+        {/* Error */}
+
+        {hasError && (
+          <div className="animate-fade-in-up mt-10">
+            <div className="rounded-3xl p-5">
+              <div className="flex flex-col items-center text-center">
+                <SearchX className="mb-4 h-14 w-14 text-danger" />
+
+                <h2 className="text-2xl font-bold text-text-primary">
+                  Order Not Found
+                </h2>
+
+                <p className="mt-3 text-text-secondary">
+                  We couldn&apos;t find an order with
+                </p>
+
+                <p className="mt-1 font-semibold text-text-primary">
+                  &quot;{orderNumber}&quot;
+                </p>
+
+                <p className="mt-3 text-sm text-text-muted">
+                  Please double-check your order number and try again.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Success */}
 
         {order && (
-          <div className="mt-10">
-            <OrderDetails order={order} />
+          <div className="animate-fade-in-up mt-10 space-y-6">
+            {/* Tracking banner */}
+
+            <div className="rounded-3xl p-6">
+              <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-text-primary">
+                    Order Found 🎉
+                  </h2>
+
+                  <p className="mt-1 text-text-secondary">
+                    Your order information is available below.
+                  </p>
+                </div>
+
+                <div className="rounded-full bg-brand-light px-5 py-2 font-semibold text-brand">
+                  Tracking Active
+                </div>
+              </div>
+            </div>
+
+            {/* Order Details */}
+
+            <div className="animate-scale-in">
+              <OrderDetails order={order} />
+            </div>
           </div>
         )}
       </div>
