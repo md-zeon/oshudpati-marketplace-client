@@ -62,7 +62,7 @@ export function CategorySection({ categories }: CategorySectionProps) {
               />
 
               {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent" />
 
               {/* Content */}
               <div className="absolute bottom-0 left-0 right-0 p-5">

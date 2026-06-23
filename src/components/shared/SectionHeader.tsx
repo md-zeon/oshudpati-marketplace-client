@@ -17,7 +17,7 @@ export function SectionHeader({
   return (
     <div className="flex items-end justify-between mb-5">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">{title}</h2>
+        <h2 className="text-2xl font-bold text-slate-900">{title}</h2>
         {description && (
           <p className="text-sm text-slate-500 mt-0.5">{description}</p>
         )}
