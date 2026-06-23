@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CategoryCard } from "./CategoryCard";
 import {
   createCategoryAction,
@@ -87,6 +87,16 @@ export function CategoryManager({
   };
 
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  // When the dialog closes with modal={false}, Radix may leave overflow:hidden
+  // on the body, preventing page scroll. This cleans it up explicitly.
+  useEffect(() => {
+    if (!dialogOpen) {
+      document.body.style.overflow = "";
+      document.body.style.pointerEvents = "";
+    }
+  }, [dialogOpen]);
+
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
