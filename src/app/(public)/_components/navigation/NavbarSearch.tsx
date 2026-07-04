@@ -22,7 +22,7 @@ export const NavbarSearch = ({ medicines = [] }: NavbarSearchProps) => {
     return medicines
       .filter((med) => {
         const target =
-          `${med.name} ${med.genericName} ${med.manufacturerName}`.toLowerCase();
+          `${med.name} ${med.genericName} ${med.manufacturerName} ${med.indications}`.toLowerCase();
         return target.includes(query.toLowerCase());
       })
       .slice(0, 6); // Keep it compact for desktop dropdown layout

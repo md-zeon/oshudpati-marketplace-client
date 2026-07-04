@@ -77,7 +77,7 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
     return medicines
       .filter((med) => {
         const targetString =
-          `${med.name} ${med.genericName} ${med.manufacturerName}`.toLowerCase();
+          `${med.name} ${med.genericName} ${med.manufacturerName} ${med.indications}`.toLowerCase();
         return targetString.includes(query.toLowerCase());
       })
       .slice(0, 15);
