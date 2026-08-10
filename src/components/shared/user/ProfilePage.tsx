@@ -23,14 +23,14 @@ const ProfilePage = async () => {
       <div className="max-w-2xl">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 rounded-xl bg-emerald-50">
-            <User className="w-5 h-5 text-emerald-600" />
+          <div className="p-2 rounded-xl bg-brand-subtle">
+            <User className="w-5 h-5 text-brand-700" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-slate-900">
+            <h1 className="text-xl font-bold text-foreground">
               Profile Settings
             </h1>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-muted-foreground">
               Update your personal information and profile picture
             </p>
           </div>
@@ -38,20 +38,20 @@ const ProfilePage = async () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-          <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white">
-            <Mail className="w-4 h-4 text-slate-400" />
+          <div className="flex items-center gap-3 p-4 rounded-xl border border-border-default bg-card">
+            <Mail className="w-4 h-4 text-muted-foreground" />
             <div>
-              <p className="text-xs text-slate-500 font-medium">Email</p>
-              <p className="text-sm font-semibold text-slate-800">
+              <p className="text-xs text-muted-foreground font-medium">Email</p>
+              <p className="text-sm font-semibold text-foreground">
                 {user.email}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white">
-            <Smartphone className="w-4 h-4 text-slate-400" />
+          <div className="flex items-center gap-3 p-4 rounded-xl border border-border-default bg-card">
+            <Smartphone className="w-4 h-4 text-muted-foreground" />
             <div>
-              <p className="text-xs text-slate-500 font-medium">Phone</p>
-              <p className="text-sm font-semibold text-slate-800">
+              <p className="text-xs text-muted-foreground font-medium">Phone</p>
+              <p className="text-sm font-semibold text-foreground">
                 {user.phoneNumber || "Not set"}
               </p>
             </div>
@@ -59,7 +59,7 @@ const ProfilePage = async () => {
         </div>
 
         {/* Profile Form */}
-        <div className="bg-white rounded-xl border border-slate-200 p-6">
+        <div className="bg-card rounded-xl border border-border-default p-6">
           <ProfileForm
             initialData={{
               name: user.name,

@@ -44,7 +44,7 @@ export function OrderList({ orders }: OrderListProps) {
   return (
     <div>
       {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-1 mb-5 bg-slate-100 p-1 rounded-xl w-fit">
+      <div className="flex flex-wrap items-center gap-1 mb-5 bg-muted p-1 rounded-xl w-fit">
         {FILTERS.map((f) => {
           const Icon = f.icon;
           const isActive = activeFilter === f.key;
@@ -52,10 +52,10 @@ export function OrderList({ orders }: OrderListProps) {
             <motion.button
               key={f.key}
               onClick={() => setActiveFilter(f.key)}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 ${
                 isActive
-                  ? "bg-white text-slate-900 shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                  ? "bg-card text-foreground shadow-sm border border-border-default"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
               layout
               layoutId={`filter-${f.key}`}
@@ -63,7 +63,7 @@ export function OrderList({ orders }: OrderListProps) {
               <Icon className="w-3.5 h-3.5" />
               {f.label}
               {isActive && (
-                <span className="text-[10px] text-slate-400 ml-0.5">
+                <span className="text-[10px] text-muted-foreground ml-0.5">
                   ({filteredOrders.length})
                 </span>
               )}
@@ -79,8 +79,8 @@ export function OrderList({ orders }: OrderListProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          <ShoppingBag className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-          <p className="text-sm font-medium text-slate-500">
+          <ShoppingBag className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
+          <p className="text-sm font-medium text-muted-foreground">
             {activeFilter === "all"
               ? "No orders yet"
               : `No ${activeFilter} orders`}

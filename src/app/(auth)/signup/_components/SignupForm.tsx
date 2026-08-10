@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,6 +16,11 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { useForm } from "@tanstack/react-form";
@@ -24,25 +30,38 @@ import Link from "next/link";
 import SocialAuth from "../../_components/SocialAuth";
 import { Roles } from "@/constants/roles";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ShoppingBag, Store } from "lucide-react";
+import {
+  ShoppingBag,
+  Store,
+  Eye,
+  EyeOff,
+  Loader2,
+  ShieldAlert,
+} from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { env } from "@/env";
 
 const SignupSchema = z.object({
-  name: z.string().min(3, "Name is required"),
-  email: z.email("Invalid email address"),
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  email: z.email("Enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   role: z.enum([Roles.CUSTOMER, Roles.SELLER], {
     error: "Please select a role",
   }),
 });
 
+const roleCardClass =
+  "flex flex-col items-center justify-center gap-1 rounded-xl border border-border-default bg-card p-4 text-muted-foreground shadow-sm transition-all cursor-pointer peer-data-[state=checked]:border-brand-700 peer-data-[state=checked]:ring-2 peer-data-[state=checked]:ring-brand-600/30 peer-data-[state=checked]:text-brand-900 peer-data-[state=checked]:bg-brand-50 hover:border-brand-300 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600";
+
 export function SignupForm({
   redirect,
   ...props
 }: React.ComponentProps<typeof Card> & { redirect?: string }) {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -54,10 +73,11 @@ export function SignupForm({
       onSubmit: SignupSchema,
     },
     onSubmit: async ({ value }) => {
+      setIsSubmitting(true);
       const toastId = toast.loading("Creating your account...");
 
       try {
-        const { data, error } = await authClient.signUp.email({
+        const { error } = await authClient.signUp.email({
           ...value,
           callbackURL:
             `${env.NEXT_PUBLIC_FRONTEND_URL}/email-verified` +
@@ -67,6 +87,7 @@ export function SignupForm({
           toast.error(error.message, {
             id: toastId,
           });
+          setIsSubmitting(false);
           return;
         }
         toast.success(
@@ -83,18 +104,22 @@ export function SignupForm({
         toast.error("An unexpected error occurred. Please try again.", {
           id: toastId,
         });
+        setIsSubmitting(false);
       }
     },
   });
+
   return (
-    <Card {...props} className="ring-background bg-transparent">
+    <Card
+      {...props}
+      className="ring-brand-700/10 shadow-lg shadow-brand-900/5 border-border-default"
+    >
       <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-semibold">
-          Create an Account
+        <CardTitle className="text-2xl font-semibold text-brand-900">
+          Create your account
         </CardTitle>
-        <CardDescription className="text-xs">
-          There are many advantages to creating an account: the payment process
-          is faster, shipment tracking is possible and much more.
+        <CardDescription className="text-sm">
+          Join Oshudpati to order medicines faster and track your deliveries.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -104,8 +129,8 @@ export function SignupForm({
             e.preventDefault();
             form.handleSubmit(e);
           }}
+          noValidate
         >
-          {/* Name */}
           <FieldGroup>
             <form.Field name="name">
               {(field) => {
@@ -113,8 +138,11 @@ export function SignupForm({
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel className="font-light" htmlFor={field.name}>
-                      Name *
+                    <FieldLabel
+                      className="font-medium text-sm text-foreground"
+                      htmlFor={field.name}
+                    >
+                      Full name <span className="text-destructive">*</span>
                     </FieldLabel>
                     <Input
                       id={field.name}
@@ -126,30 +154,40 @@ export function SignupForm({
                       aria-describedby={
                         isInvalid ? `${field.name}-error` : undefined
                       }
-                      placeholder="Enter your name"
-                      className="capitalize py-5 shadow-md"
+                      placeholder="Your name"
                       autoComplete="name"
+                      className="h-12 rounded-xl text-base capitalize"
                     />
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        id={`${field.name}-error`}
+                        errors={field.state.meta.errors}
+                        className="flex items-center gap-1.5"
+                      >
+                        <ShieldAlert className="size-3.5 shrink-0" aria-hidden="true" />
+                        {field.state.meta.errors[0]?.message}
+                      </FieldError>
                     )}
                   </Field>
                 );
               }}
             </form.Field>
-            {/* Email */}
             <form.Field name="email">
               {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel className="font-light" htmlFor={field.name}>
-                      Email Address *
+                    <FieldLabel
+                      className="font-medium text-sm text-foreground"
+                      htmlFor={field.name}
+                    >
+                      Email address <span className="text-destructive">*</span>
                     </FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
+                      type="email"
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
@@ -157,52 +195,56 @@ export function SignupForm({
                       aria-describedby={
                         isInvalid ? `${field.name}-error` : undefined
                       }
-                      placeholder="Enter your email"
+                      placeholder="you@example.com"
                       autoComplete="email"
-                      className="py-5 shadow-md"
+                      className="h-12 rounded-xl text-base"
                     />
                     {isInvalid && (
                       <FieldError
                         id={`${field.name}-error`}
                         errors={field.state.meta.errors}
-                      />
+                        className="flex items-center gap-1.5"
+                      >
+                        <ShieldAlert className="size-3.5 shrink-0" aria-hidden="true" />
+                        {field.state.meta.errors[0]?.message}
+                      </FieldError>
                     )}
                   </Field>
                 );
               }}
             </form.Field>
-            {/* Role */}
             <form.Field name="role">
               {(field) => (
                 <Field>
-                  <FieldLabel className="font-light mb-2 block">
-                    Register as *
+                  <FieldLabel className="font-medium text-sm mb-2 block text-foreground">
+                    Register as <span className="text-destructive">*</span>
                   </FieldLabel>
                   <RadioGroup
                     value={field.state.value}
                     onValueChange={(val) => field.handleChange(val as string)}
-                    className="grid grid-cols-2 gap-4"
+                    className="grid grid-cols-2 gap-3"
                   >
-                    {/* Customer Card */}
                     <div>
                       <RadioGroupItem
                         value={Roles.CUSTOMER}
                         id="role-customer"
-                        className="peer sr-only" // Hide the default radio button
+                        className="peer sr-only"
                       />
                       <Label
                         htmlFor="role-customer"
-                        className="flex flex-col items-center justify-between rounded-xl border border-slate-300 hover:border-brand hover:outline-none bg-popover p-4 text-slate-500 hover:text-black cursor-pointer transition-all shadow-md gap-1 peer-data-[state=checked]:border-brand peer-data-[state=checked]:ring-1 peer-data-[state=checked]:ring-black/20 peer-data-[state=checked]:text-black peer-data-[state=checked]:bg-brand/5"
+                        className={roleCardClass}
                       >
-                        <ShoppingBag className="mb-2 h-6 w-6 text-muted-foreground peer-data-[state=checked]:text-primary" />
+                        <ShoppingBag
+                          className="mb-2 h-6 w-6 peer-data-[state=checked]:text-brand-700"
+                          aria-hidden="true"
+                        />
                         <span className="font-medium text-sm">Customer</span>
-                        <span className="text-[10px] text-muted-foreground text-center mt-1">
+                        <span className="text-xs text-muted-foreground text-center">
                           I want to buy products
                         </span>
                       </Label>
                     </div>
 
-                    {/* Seller Card */}
                     <div>
                       <RadioGroupItem
                         value={Roles.SELLER}
@@ -211,11 +253,14 @@ export function SignupForm({
                       />
                       <Label
                         htmlFor="role-seller"
-                        className="flex flex-col items-center justify-between rounded-xl border border-slate-300 hover:border-brand hover:outline-none bg-popover p-4 text-slate-500 hover:text-black cursor-pointer transition-all shadow-md gap-1 peer-data-[state=checked]:border-brand peer-data-[state=checked]:ring-1 peer-data-[state=checked]:ring-black/20 peer-data-[state=checked]:text-black peer-data-[state=checked]:bg-brand/5"
+                        className={roleCardClass}
                       >
-                        <Store className="mb-2 h-6 w-6 text-muted-foreground peer-data-[state=checked]:text-primary" />
+                        <Store
+                          className="mb-2 h-6 w-6 peer-data-[state=checked]:text-brand-700"
+                          aria-hidden="true"
+                        />
                         <span className="font-medium text-sm">Seller</span>
-                        <span className="text-[10px] text-muted-foreground text-center mt-1">
+                        <span className="text-xs text-muted-foreground text-center">
                           I want to sell products
                         </span>
                       </Label>
@@ -224,36 +269,62 @@ export function SignupForm({
                 </Field>
               )}
             </form.Field>
-            {/* Password */}
             <form.Field name="password">
               {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel className="font-light" htmlFor={field.name}>
-                      Password *
+                    <FieldLabel
+                      className="font-medium text-sm text-foreground"
+                      htmlFor={field.name}
+                    >
+                      Password <span className="text-destructive">*</span>
                     </FieldLabel>
-                    <Input
-                      id={field.name}
-                      name={field.name}
-                      type="password"
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={isInvalid}
-                      aria-describedby={
-                        isInvalid ? `${field.name}-error` : undefined
-                      }
-                      placeholder="Enter your password"
-                      autoComplete="new-password"
-                      className="py-5 shadow-md"
-                    />
+                    <InputGroup className="h-12">
+                      <InputGroupInput
+                        id={field.name}
+                        name={field.name}
+                        type={showPassword ? "text" : "password"}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        aria-invalid={isInvalid}
+                        aria-describedby={
+                          isInvalid ? `${field.name}-error` : undefined
+                        }
+                        placeholder="At least 6 characters"
+                        autoComplete="new-password"
+                        className="h-12 rounded-xl text-base"
+                      />
+                      <InputGroupButton
+                        type="button"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
+                        aria-pressed={showPassword}
+                        className="mr-1 size-9 cursor-pointer text-muted-foreground hover:text-foreground"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="size-4" aria-hidden="true" />
+                        ) : (
+                          <Eye className="size-4" aria-hidden="true" />
+                        )}
+                      </InputGroupButton>
+                    </InputGroup>
+                    <p className="text-xs text-muted-foreground">
+                      Use at least 6 characters.
+                    </p>
                     {isInvalid && (
                       <FieldError
                         id={`${field.name}-error`}
                         errors={field.state.meta.errors}
-                      />
+                        className="flex items-center gap-1.5"
+                      >
+                        <ShieldAlert className="size-3.5 shrink-0" aria-hidden="true" />
+                        {field.state.meta.errors[0]?.message}
+                      </FieldError>
                     )}
                   </Field>
                 );
@@ -263,13 +334,31 @@ export function SignupForm({
               <Button
                 form="signup-form"
                 type="submit"
-                className="w-full py-5 cursor-pointer"
+                disabled={isSubmitting}
+                className="w-full h-12 rounded-xl bg-brand-700 text-white font-semibold cursor-pointer hover:bg-brand-600 active:bg-brand-800"
               >
-                Sign Up
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                    Creating account...
+                  </>
+                ) : (
+                  "Create Account"
+                )}
               </Button>
               <SocialAuth />
-              <FieldDescription className="text-center">
-                Already have an account? <Link href="/signin">Sign in</Link>
+              <FieldDescription className="text-center text-sm">
+                Already have an account?{" "}
+                <Link
+                  href={
+                    redirect
+                      ? `/signin?redirect=${encodeURIComponent(redirect)}`
+                      : "/signin"
+                  }
+                  className="font-semibold text-brand-700 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 rounded-sm"
+                >
+                  Sign in
+                </Link>
               </FieldDescription>
             </Field>
           </FieldGroup>

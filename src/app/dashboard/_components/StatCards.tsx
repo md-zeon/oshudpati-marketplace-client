@@ -71,7 +71,7 @@ export function StatCards({ stats }: StatCardsProps) {
               <p className={`text-2xl font-bold ${card.color}`}>
                 {card.format(value)}
               </p>
-              <p className="text-xs text-slate-500 mt-0.5 font-medium">
+              <p className="text-xs text-muted-foreground mt-0.5 font-medium">
                 {card.label}
               </p>
             </motion.div>

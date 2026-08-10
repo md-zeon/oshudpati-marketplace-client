@@ -58,7 +58,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Avatar */}
       <div>
-        <Label className="text-xs font-bold text-slate-700 mb-3 block">
+        <Label className="text-xs font-bold text-foreground mb-3 block">
           Profile Picture
         </Label>
         <ImageUpload
@@ -70,7 +70,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
 
       {/* Name */}
       <div className="space-y-1.5">
-        <Label htmlFor="name" className="text-xs font-bold text-slate-700">
+        <Label htmlFor="name" className="text-xs font-bold text-foreground">
           Full Name
         </Label>
         <Input
@@ -85,23 +85,25 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
 
       {/* Email (disabled) */}
       <div className="space-y-1.5">
-        <Label htmlFor="email" className="text-xs font-bold text-slate-700">
+        <Label htmlFor="email" className="text-xs font-bold text-foreground">
           Email
         </Label>
         <Input
           id="email"
           value={initialData.email}
           disabled
-          className="rounded-lg text-sm bg-slate-50"
+          className="rounded-lg text-sm bg-muted"
         />
-        <p className="text-[10px] text-slate-400">Email cannot be changed</p>
+        <p className="text-[10px] text-muted-foreground">
+          Email cannot be changed
+        </p>
       </div>
 
       {/* Phone */}
       <div className="space-y-1.5">
         <Label
           htmlFor="phoneNumber"
-          className="text-xs font-bold text-slate-700"
+          className="text-xs font-bold text-foreground"
         >
           Phone Number
         </Label>
@@ -117,7 +119,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg px-6 cursor-pointer"
+        className="font-semibold rounded-lg px-6 cursor-pointer"
       >
         {isSubmitting ? (
           <>

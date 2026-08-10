@@ -55,12 +55,12 @@ const OrdersPage = async () => {
     <div>
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 rounded-xl bg-emerald-50">
-          <ShoppingBag className="w-5 h-5 text-emerald-600" />
+        <div className="p-2 rounded-xl bg-brand-subtle">
+          <ShoppingBag className="w-5 h-5 text-brand-700" />
         </div>
         <div>
-          <h1 className="text-xl font-bold text-slate-900">My Orders</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="text-xl font-bold text-foreground">My Orders</h1>
+          <p className="text-sm text-muted-foreground">
             {orders.length} {orders.length === 1 ? "order" : "orders"} total
           </p>
         </div>

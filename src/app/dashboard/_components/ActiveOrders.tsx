@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import { DashboardRecentOrder } from "@/types";
-import { Package, ChevronRight, ShoppingBag } from "lucide-react";
+import { Package, ChevronRight } from "lucide-react";
 import { PageSection } from "@/components/shared/PageSection";
 
 interface ActiveOrdersProps {
@@ -38,11 +38,11 @@ export function ActiveOrders({ orders }: ActiveOrdersProps) {
 
   return (
     <PageSection>
-      <div className="bg-white rounded-xl border border-slate-200 p-5">
+      <div className="bg-card rounded-xl border border-border-default p-5">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Package className="w-4 h-4 text-emerald-600" />
-            <h2 className="font-bold text-slate-900">Active Orders</h2>
+            <h2 className="font-bold text-foreground">Active Orders</h2>
           </div>
           <Link
             href="/dashboard/orders"
@@ -72,18 +72,18 @@ export function ActiveOrders({ orders }: ActiveOrdersProps) {
               >
                 <Link
                   href={`/order-tracking?orderNumber=${order.orderNumber}`}
-                  className="block p-4 rounded-xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all"
+                  className="block p-4 rounded-xl border border-border-default/60 hover:border-border-default hover:shadow-sm transition-all"
                 >
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-mono font-semibold text-slate-500">
+                    <span className="text-xs font-mono font-semibold text-muted-foreground">
                       #{order.orderNumber.slice(-10)}
                     </span>
-                    <span className="text-xs font-bold text-slate-800">
+                    <span className="text-xs font-bold text-foreground">
                       ৳{order.totalAmount.toFixed(0)}
                     </span>
                   </div>
 
-                  <div className="relative h-1.5 bg-slate-100 rounded-full overflow-hidden mb-2">
+                  <div className="relative h-1.5 bg-muted rounded-full overflow-hidden mb-2">
                     <motion.div
                       className={`h-full rounded-full ${statusColor}`}
                       initial={{ width: 0 }}
@@ -92,7 +92,7 @@ export function ActiveOrders({ orders }: ActiveOrdersProps) {
                     />
                   </div>
 
-                  <div className="flex justify-between text-[10px] text-slate-500 font-medium">
+                  <div className="flex justify-between text-[10px] text-muted-foreground font-medium">
                     <span>{earliestStatus}</span>
                     <span>
                       {new Date(order.placedAt).toLocaleDateString("en-BD", {

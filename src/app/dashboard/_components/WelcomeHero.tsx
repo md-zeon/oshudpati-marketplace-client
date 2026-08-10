@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, Package, TrendingDown, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { DashboardStats, DashboardDefaultAddress } from "@/types";
 import { motion } from "motion/react";
 
@@ -25,12 +25,13 @@ export function WelcomeHero({
   const greeting = getGreeting();
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-emerald-600 via-emerald-500 to-teal-500 p-6 md:p-8 text-white">
+    <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-brand-800 via-brand-700 to-brand-500 p-6 md:p-8 text-white">
       {/* Decorative circles */}
       <motion.div
         className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5"
         animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.8, 0.5] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        aria-hidden="true"
       />
       <motion.div
         className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-white/5"
@@ -41,6 +42,7 @@ export function WelcomeHero({
           ease: "easeInOut",
           delay: 1,
         }}
+        aria-hidden="true"
       />
 
       <motion.div
@@ -98,7 +100,7 @@ export function WelcomeHero({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.35 }}
           >
-            <MapPin className="w-3.5 h-3.5 text-white/70" />
+            <MapPin className="w-3.5 h-3.5 text-white/70" aria-hidden="true" />
             <span className="text-white/90 text-xs">
               {defaultAddress.area}, {defaultAddress.district}
               {defaultAddress.addressLabel && (

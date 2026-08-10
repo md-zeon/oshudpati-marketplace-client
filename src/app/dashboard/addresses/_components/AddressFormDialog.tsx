@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -38,26 +38,21 @@ export function AddressFormDialog({
   editingAddress,
   onSuccess,
 }: AddressFormDialogProps) {
-  const [formData, setFormData] = useState(initialFormState);
+  const [formData, setFormData] = useState(() =>
+    editingAddress
+      ? {
+          fullName: editingAddress.fullName,
+          phoneNumber: editingAddress.phoneNumber,
+          division: editingAddress.division,
+          district: editingAddress.district,
+          area: editingAddress.area,
+          streetAddress: editingAddress.streetAddress,
+          postalCode: editingAddress.postalCode || "",
+          addressLabel: editingAddress.addressLabel || "Home",
+        }
+      : initialFormState,
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Reset form when dialog opens or editingAddress changes
-  useEffect(() => {
-    if (editingAddress) {
-      setFormData({
-        fullName: editingAddress.fullName,
-        phoneNumber: editingAddress.phoneNumber,
-        division: editingAddress.division,
-        district: editingAddress.district,
-        area: editingAddress.area,
-        streetAddress: editingAddress.streetAddress,
-        postalCode: editingAddress.postalCode || "",
-        addressLabel: editingAddress.addressLabel || "Home",
-      });
-    } else {
-      setFormData(initialFormState);
-    }
-  }, [editingAddress, isOpen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -97,9 +92,9 @@ export function AddressFormDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-125 rounded-2xl bg-white p-6 shadow-xl">
+      <DialogContent className="sm:max-w-125 rounded-2xl bg-card p-6 shadow-xl">
         <DialogHeader>
-          <DialogTitle className="text-base font-bold text-slate-900">
+          <DialogTitle className="text-base font-bold text-foreground">
             {editingAddress ? "Edit Address Details" : "Add Delivery Address"}
           </DialogTitle>
         </DialogHeader>
@@ -108,7 +103,7 @@ export function AddressFormDialog({
           <div className="space-y-1">
             <Label
               htmlFor="fullName"
-              className="text-xs font-bold text-slate-700"
+              className="text-xs font-bold text-foreground"
             >
               Full Name
             </Label>
@@ -126,7 +121,7 @@ export function AddressFormDialog({
           <div className="space-y-1">
             <Label
               htmlFor="phoneNumber"
-              className="text-xs font-bold text-slate-700"
+              className="text-xs font-bold text-foreground"
             >
               Phone Number
             </Label>
@@ -145,7 +140,7 @@ export function AddressFormDialog({
             <div className="space-y-1">
               <Label
                 htmlFor="division"
-                className="text-xs font-bold text-slate-700"
+                className="text-xs font-bold text-foreground"
               >
                 Division
               </Label>
@@ -162,7 +157,7 @@ export function AddressFormDialog({
             <div className="space-y-1">
               <Label
                 htmlFor="district"
-                className="text-xs font-bold text-slate-700"
+                className="text-xs font-bold text-foreground"
               >
                 District
               </Label>
@@ -182,7 +177,7 @@ export function AddressFormDialog({
             <div className="space-y-1">
               <Label
                 htmlFor="area"
-                className="text-xs font-bold text-slate-700"
+                className="text-xs font-bold text-foreground"
               >
                 Area
               </Label>
@@ -199,7 +194,7 @@ export function AddressFormDialog({
             <div className="space-y-1">
               <Label
                 htmlFor="postalCode"
-                className="text-xs font-bold text-slate-700"
+                className="text-xs font-bold text-foreground"
               >
                 Postal Code (Optional)
               </Label>
@@ -217,7 +212,7 @@ export function AddressFormDialog({
           <div className="space-y-1">
             <Label
               htmlFor="streetAddress"
-              className="text-xs font-bold text-slate-700"
+              className="text-xs font-bold text-foreground"
             >
               Street Address
             </Label>
@@ -235,7 +230,7 @@ export function AddressFormDialog({
           <div className="space-y-1">
             <Label
               htmlFor="addressLabel"
-              className="text-xs font-bold text-slate-700"
+              className="text-xs font-bold text-foreground"
             >
               Address Label
             </Label>
@@ -249,7 +244,7 @@ export function AddressFormDialog({
             />
           </div>
 
-          <div className="flex gap-2 justify-end pt-4 border-t border-slate-100">
+          <div className="flex gap-2 justify-end pt-4 border-t border-border-default">
             <Button
               type="button"
               variant="outline"
@@ -261,7 +256,7 @@ export function AddressFormDialog({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg px-5 cursor-pointer"
+              className="text-xs font-semibold rounded-lg px-5 cursor-pointer"
             >
               {isSubmitting ? "Saving changes..." : "Save Address"}
             </Button>

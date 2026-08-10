@@ -16,13 +16,13 @@ export function QuickReorder({ items }: QuickReorderProps) {
 
   return (
     <PageSection>
-      <div className="bg-white rounded-xl border border-slate-200 p-5">
+      <div className="bg-card rounded-xl border border-border-default p-5">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Package className="w-4 h-4 text-emerald-600" />
-            <h2 className="font-bold text-slate-900">Quick Reorder</h2>
+            <h2 className="font-bold text-foreground">Quick Reorder</h2>
           </div>
-          <span className="text-[11px] text-slate-400 font-medium">
+          <span className="text-[11px] text-muted-foreground font-medium">
             Previously ordered
           </span>
         </div>
@@ -39,9 +39,9 @@ export function QuickReorder({ items }: QuickReorderProps) {
               >
                 <Link
                   href={`/medicine/${item.slug}`}
-                  className="group flex flex-col items-center text-center p-3 rounded-xl border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/30 transition-all"
+                  className="group flex flex-col items-center text-center p-3 rounded-xl border border-border-default/60 hover:border-brand-200 hover:bg-brand-subtle/40 transition-all"
                 >
-                  <div className="relative w-12 h-12 mb-2 bg-slate-50 rounded-lg overflow-hidden flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="relative w-12 h-12 mb-2 bg-muted rounded-lg overflow-hidden flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     {item.image ? (
                       <Image
                         src={item.image}
@@ -51,13 +51,13 @@ export function QuickReorder({ items }: QuickReorderProps) {
                         className="object-contain p-1"
                       />
                     ) : (
-                      <ShoppingBag className="w-5 h-5 text-slate-300" />
+                      <ShoppingBag className="w-5 h-5 text-muted-foreground/50" />
                     )}
                   </div>
-                  <p className="text-[11px] font-medium text-slate-700 line-clamp-2 leading-tight">
+                  <p className="text-[11px] font-medium text-foreground/80 line-clamp-2 leading-tight">
                     {item.name}
                   </p>
-                  <p className="text-xs font-bold text-emerald-600 mt-1">
+                  <p className="text-xs font-bold text-brand-700 mt-1">
                     ৳{price.toFixed(0)}
                   </p>
                 </Link>

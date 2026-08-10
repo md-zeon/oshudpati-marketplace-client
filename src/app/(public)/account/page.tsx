@@ -26,9 +26,9 @@ export const metadata = {
 };
 
 const ROLE_BADGES: Record<string, string> = {
-  ADMIN: "bg-red-50 text-red-700 border-red-200",
-  SELLER: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  CUSTOMER: "bg-blue-50 text-blue-700 border-blue-200",
+  ADMIN: "bg-danger/10 text-danger border-danger/20",
+  SELLER: "bg-brand-subtle text-brand-700 border-brand-200",
+  CUSTOMER: "bg-info/10 text-info border-info/20",
 };
 
 const ROLE_ICONS: Record<string, typeof Shield> = {
@@ -56,8 +56,7 @@ const AccountPage = async () => {
       .slice(0, 2) || "U";
 
   const RoleIcon = ROLE_ICONS[role] || User;
-  const roleBadge =
-    ROLE_BADGES[role] || "bg-slate-50 text-slate-600 border-slate-200";
+  const roleBadge = ROLE_BADGES[role] || "bg-muted text-muted-foreground border-border-default";
 
   const quickLinks = [
     ...(role === "ADMIN"
@@ -146,15 +145,15 @@ const AccountPage = async () => {
     <div className="py-8 max-w-3xl mx-auto">
       {/* ============ HEADER ============ */}
       <div className="flex items-center gap-4 mb-8">
-        <Avatar className="w-16 h-16 border-2 border-emerald-200">
+        <Avatar className="w-16 h-16 border-2 border-brand-200">
           <AvatarImage src={user.image || ""} alt={user.name} />
-          <AvatarFallback className="bg-emerald-50 text-emerald-700 text-lg font-bold">
+          <AvatarFallback className="bg-brand-subtle text-brand-700 text-lg font-bold">
             {initials}
           </AvatarFallback>
         </Avatar>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-slate-900">{user.name}</h1>
+            <h1 className="text-2xl font-bold text-foreground">{user.name}</h1>
             <Badge
               className={`${roleBadge} border text-[10px] font-bold uppercase px-2 py-0.5`}
             >
@@ -162,67 +161,71 @@ const AccountPage = async () => {
               {role}
             </Badge>
           </div>
-          <p className="text-sm text-slate-500">{user.email}</p>
+          <p className="text-sm text-muted-foreground">{user.email}</p>
         </div>
       </div>
 
       {/* ============ INFO CARDS ============ */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
-        <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white">
-          <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
-            <Mail className="w-5 h-5 text-emerald-600" />
+        <div className="flex items-center gap-3 p-4 rounded-xl border border-border-default bg-card">
+          <div className="w-10 h-10 rounded-lg bg-brand-subtle flex items-center justify-center shrink-0">
+            <Mail className="w-5 h-5 text-brand-700" />
           </div>
           <div>
-            <p className="text-xs text-slate-500 font-medium">Email</p>
-            <p className="text-sm font-semibold text-slate-800 truncate">
+            <p className="text-xs text-muted-foreground font-medium">Email</p>
+            <p className="text-sm font-semibold text-foreground truncate">
               {user.email}
             </p>
             {user.emailVerified && (
-              <span className="text-[10px] text-emerald-600 font-semibold">
+              <span className="text-[10px] text-brand-700 font-semibold">
                 ✓ Verified
               </span>
             )}
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white">
-          <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
-            <Smartphone className="w-5 h-5 text-emerald-600" />
+        <div className="flex items-center gap-3 p-4 rounded-xl border border-border-default bg-card">
+          <div className="w-10 h-10 rounded-lg bg-brand-subtle flex items-center justify-center shrink-0">
+            <Smartphone className="w-5 h-5 text-brand-700" />
           </div>
           <div>
-            <p className="text-xs text-slate-500 font-medium">Phone</p>
-            <p className="text-sm font-semibold text-slate-800">
+            <p className="text-xs text-muted-foreground font-medium">Phone</p>
+            <p className="text-sm font-semibold text-foreground">
               {user.phoneNumber || "Not set"}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white">
-          <div className="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center shrink-0">
-            <Shield className="w-5 h-5 text-purple-600" />
+        <div className="flex items-center gap-3 p-4 rounded-xl border border-border-default bg-card">
+          <div className="w-10 h-10 rounded-lg bg-brand-subtle flex items-center justify-center shrink-0">
+            <Shield className="w-5 h-5 text-brand-700" />
           </div>
           <div>
-            <p className="text-xs text-slate-500 font-medium">Account Type</p>
-            <p className="text-sm font-semibold text-slate-800 capitalize">
+            <p className="text-xs text-muted-foreground font-medium">
+              Account Type
+            </p>
+            <p className="text-sm font-semibold text-foreground capitalize">
               {role.toLowerCase()}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white">
-          <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
-            <Calendar className="w-5 h-5 text-amber-600" />
+        <div className="flex items-center gap-3 p-4 rounded-xl border border-border-default bg-card">
+          <div className="w-10 h-10 rounded-lg bg-brand-subtle flex items-center justify-center shrink-0">
+            <Calendar className="w-5 h-5 text-brand-700" />
           </div>
           <div>
-            <p className="text-xs text-slate-500 font-medium">Joined</p>
-            <p className="text-sm font-semibold text-slate-800">{joinedDate}</p>
+            <p className="text-xs text-muted-foreground font-medium">Joined</p>
+            <p className="text-sm font-semibold text-foreground">
+              {joinedDate}
+            </p>
           </div>
         </div>
       </div>
 
       {/* ============ QUICK LINKS ============ */}
       <div className="mb-8">
-        <h2 className="text-lg font-bold text-slate-900 mb-4">Quick Links</h2>
+        <h2 className="text-lg font-bold text-foreground mb-4">Quick Links</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {quickLinks.map((link) => {
             const Icon = link.icon;
@@ -230,20 +233,22 @@ const AccountPage = async () => {
               <Link
                 key={link.href}
                 href={link.href}
-                className="group flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-emerald-200 hover:shadow-sm transition-all"
+                className="group flex items-center justify-between p-4 rounded-xl border border-border-default bg-card hover:border-brand-200 hover:shadow-sm transition-all"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 group-hover:bg-emerald-100 transition-colors">
-                    <Icon className="w-5 h-5 text-emerald-600" />
+                  <div className="w-10 h-10 rounded-lg bg-brand-subtle flex items-center justify-center shrink-0 group-hover:bg-brand-100 transition-colors">
+                    <Icon className="w-5 h-5 text-brand-700" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-slate-800 group-hover:text-emerald-700 transition-colors">
+                    <p className="text-sm font-semibold text-foreground group-hover:text-brand-700 transition-colors">
                       {link.label}
                     </p>
-                    <p className="text-xs text-slate-400">{link.desc}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {link.desc}
+                    </p>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all shrink-0" />
+                <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:text-brand-500 group-hover:translate-x-0.5 transition-all shrink-0" />
               </Link>
             );
           })}
@@ -252,27 +257,27 @@ const AccountPage = async () => {
 
       {/* ============ PROFILE EDIT ============ */}
       <div>
-        <h2 className="text-lg font-bold text-slate-900 mb-4">
+        <h2 className="text-lg font-bold text-foreground mb-4">
           Account Settings
         </h2>
         <Link
           href="/dashboard/profile"
-          className="group flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-emerald-200 hover:shadow-sm transition-all"
+          className="group flex items-center justify-between p-4 rounded-xl border border-border-default bg-card hover:border-brand-200 hover:shadow-sm transition-all"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 group-hover:bg-emerald-100 transition-colors">
-              <User className="w-5 h-5 text-emerald-600" />
+            <div className="w-10 h-10 rounded-lg bg-brand-subtle flex items-center justify-center shrink-0 group-hover:bg-brand-100 transition-colors">
+              <User className="w-5 h-5 text-brand-700" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-slate-800 group-hover:text-emerald-700 transition-colors">
+              <p className="text-sm font-semibold text-foreground group-hover:text-brand-700 transition-colors">
                 Edit Profile
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted-foreground">
                 Update your name, photo, and contact information
               </p>
             </div>
           </div>
-          <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all shrink-0" />
+          <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:text-brand-500 group-hover:translate-x-0.5 transition-all shrink-0" />
         </Link>
       </div>
 
