@@ -23,9 +23,9 @@ const cards = [
     key: "activeOrders" as const,
     label: "Active Orders",
     icon: Package,
-    color: "text-emerald-600",
-    bg: "bg-emerald-50",
-    ring: "ring-emerald-500/10",
+    color: "text-brand-600",
+    bg: "bg-brand-50",
+    ring: "ring-brand-500/10",
     format: (v: number) => v.toString(),
   },
   {

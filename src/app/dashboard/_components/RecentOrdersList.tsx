@@ -14,7 +14,7 @@ const STATUS_BADGES: Record<string, string> = {
   PLACED: "bg-blue-50 text-blue-700 border-blue-200",
   PROCESSING: "bg-amber-50 text-amber-700 border-amber-200",
   SHIPPED: "bg-violet-50 text-violet-700 border-violet-200",
-  DELIVERED: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  DELIVERED: "bg-status-delivered/10 text-status-delivered border-status-delivered/20",
   CANCELLED: "bg-status-cancelled/10 text-status-cancelled border-status-cancelled/20",
 };
 
@@ -24,7 +24,7 @@ export function RecentOrdersList({ orders }: RecentOrdersListProps) {
       <PageSection>
         <div className="bg-card rounded-xl border border-border-default p-5">
           <div className="flex items-center gap-2 mb-4">
-            <ShoppingBag className="w-4 h-4 text-emerald-600" />
+            <ShoppingBag className="w-4 h-4 text-brand-600" />
             <h2 className="font-bold text-foreground">Recent Orders</h2>
           </div>
 
@@ -56,7 +56,7 @@ export function RecentOrdersList({ orders }: RecentOrdersListProps) {
       <div className="bg-card rounded-xl border border-border-default p-5">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <ShoppingBag className="w-4 h-4 text-emerald-600" />
+            <ShoppingBag className="w-4 h-4 text-brand-600" />
             <h2 className="font-bold text-foreground">Recent Orders</h2>
           </div>
           <Link

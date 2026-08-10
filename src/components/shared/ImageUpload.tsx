@@ -68,7 +68,7 @@ export function ImageUpload({
               type="button"
               onClick={() => open()}
               disabled={isUploading}
-              className="flex flex-col items-center justify-center w-32 h-32 rounded-xl border-2 border-dashed border-slate-300 hover:border-emerald-400 hover:bg-emerald-50/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="flex flex-col items-center justify-center w-32 h-32 rounded-xl border-2 border-dashed border-slate-300 hover:border-brand-400 hover:bg-brand-50/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {isUploading ? (
                 <Loader2 className="w-6 h-6 text-slate-400 animate-spin" />

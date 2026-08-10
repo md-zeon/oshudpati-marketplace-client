@@ -21,7 +21,7 @@ const STATUS_COLORS: Record<string, string> = {
   PLACED: "bg-blue-500",
   PROCESSING: "bg-amber-500",
   SHIPPED: "bg-violet-500",
-  DELIVERED: "bg-emerald-500",
+  DELIVERED: "bg-status-delivered",
   CANCELLED: "bg-red-500",
 };
 
@@ -41,12 +41,12 @@ export function ActiveOrders({ orders }: ActiveOrdersProps) {
       <div className="bg-card rounded-xl border border-border-default p-5">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Package className="w-4 h-4 text-emerald-600" />
+            <Package className="w-4 h-4 text-brand-600" />
             <h2 className="font-bold text-foreground">Active Orders</h2>
           </div>
           <Link
             href="/dashboard/orders"
-            className="text-xs font-medium text-emerald-600 hover:text-emerald-700 flex items-center gap-0.5"
+            className="text-xs font-medium text-brand-600 hover:text-brand-700 flex items-center gap-0.5"
           >
             View all <ChevronRight className="w-3 h-3" />
           </Link>

@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 const COLOR_MAP = {
   blue: "text-trust-600",
   brand: "text-brand-700",
-  emerald: "text-emerald-600",
 } as const;
 
 type LogoProps = {

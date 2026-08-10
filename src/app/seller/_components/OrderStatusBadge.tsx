@@ -32,7 +32,7 @@ const STATUS_CONFIG: Record<
   DELIVERED: {
     label: "Delivered",
     icon: PackageCheck,
-    className: "bg-emerald-50 text-status-delivered border-emerald-200",
+    className: "bg-status-delivered/10 text-status-delivered border-status-delivered/20",
   },
   CANCELLED: {
     label: "Cancelled",

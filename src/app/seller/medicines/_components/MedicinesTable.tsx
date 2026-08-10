@@ -100,7 +100,7 @@ function StockBadge({ quantity }: { quantity: number }) {
     );
   }
   return (
-    <Badge className="gap-1 border bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-status-delivered border-emerald-200">
+    <Badge className="gap-1 border bg-status-delivered/10 px-2 py-0.5 text-[11px] font-semibold text-status-delivered border-status-delivered/20">
       <PackageCheck className="size-3" aria-hidden />
       In stock · {quantity}
     </Badge>

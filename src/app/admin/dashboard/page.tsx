@@ -60,7 +60,7 @@ const PAYMENT_BADGE: Record<
   },
   PAID: {
     label: "Paid",
-    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    className: "bg-status-delivered/10 text-status-delivered border-status-delivered/20",
     Icon: CheckCircle2,
   },
   REFUNDED: {
@@ -103,8 +103,8 @@ const AdminDashboard = async () => {
       hint: "Active pharmacy vendors",
       value: stats.totalSellers.toLocaleString(),
       icon: Store,
-      chip: "bg-emerald-50 text-emerald-600",
-      valueClass: "text-emerald-700",
+      chip: "bg-brand-50 text-brand-600",
+      valueClass: "text-brand-700",
     },
     {
       label: "Medicines",

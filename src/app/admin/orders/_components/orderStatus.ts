@@ -39,7 +39,7 @@ export const ORDER_STATUS_BADGE: Record<
   },
   DELIVERED: {
     label: "Delivered",
-    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    className: "bg-status-delivered/10 text-status-delivered border-status-delivered/20",
     Icon: PackageCheck,
   },
   CANCELLED: {
@@ -60,7 +60,7 @@ export const PAYMENT_BADGE: Record<
   },
   PAID: {
     label: "Paid",
-    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    className: "bg-status-delivered/10 text-status-delivered border-status-delivered/20",
     Icon: CheckCircle2,
   },
   REFUNDED: {

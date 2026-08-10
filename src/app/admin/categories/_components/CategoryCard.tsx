@@ -83,7 +83,7 @@ export function CategoryCard({
                   size="sm"
                   variant="outline"
                   onClick={() => onRecover(cat.id)}
-                  className="h-8 gap-1 rounded-lg border-emerald-200 bg-emerald-50 text-xs font-semibold text-emerald-700 hover:bg-emerald-100"
+                  className="h-8 gap-1 rounded-lg border-brand-200 bg-brand-50 text-xs font-semibold text-brand-700 hover:bg-brand-100"
                 >
                   <ArrowLeftToLine className="h-3.5 w-3.5" aria-hidden />
                   Restore
@@ -144,7 +144,7 @@ export function CategoryCard({
               Deleted
             </span>
           ) : cat.isActive ? (
-            <span className="text-[10px] font-semibold text-emerald-600">
+            <span className="text-[10px] font-semibold text-status-delivered">
               Active
             </span>
           ) : (

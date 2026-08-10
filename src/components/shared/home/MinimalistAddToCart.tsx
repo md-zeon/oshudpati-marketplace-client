@@ -57,7 +57,7 @@ const MinimalistAddToCart = ({ medicine }: { medicine: Medicine }) => {
   return (
     <div>
       <Button
-        className="flex items-center border-brand text-brand cursor-pointer justify-center hover:bg-emerald-600 hover:text-white rounded-full p-2 md:px-3 md:py-1.5 md:rounded-xl transition-all duration-200 active:scale-95 group/btn"
+        className="flex items-center border-brand text-brand cursor-pointer justify-center hover:bg-brand-600 hover:text-white rounded-full p-2 md:px-3 md:py-1.5 md:rounded-xl transition-all duration-200 active:scale-95 group/btn"
         variant="outline"
         aria-label={`Add ${medicine.name} to cart`}
         onClick={() => handleAddToCart(1)}

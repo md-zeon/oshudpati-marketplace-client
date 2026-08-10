@@ -34,7 +34,7 @@ const ROLE_BADGE: Record<string, { label: string; className: string; Icon: typeo
   },
   SELLER: {
     label: "Seller",
-    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    className: "bg-brand-50 text-brand-700 border-brand-200",
     Icon: Store,
   },
   CUSTOMER: {
@@ -47,7 +47,7 @@ const ROLE_BADGE: Record<string, { label: string; className: string; Icon: typeo
 const STATUS_BADGE: Record<string, { label: string; className: string; Icon: typeof User }> = {
   ACTIVE: {
     label: "Active",
-    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    className: "bg-status-delivered/10 text-status-delivered border-status-delivered/20",
     Icon: CheckCircle2,
   },
   BANNED: {
@@ -259,7 +259,7 @@ const AdminUsers = async ({
                           </td>
                           <td className="px-4 py-3 text-center">
                             {u.emailVerified ? (
-                              <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600">
+                              <span className="inline-flex items-center gap-1 text-xs font-semibold text-status-delivered">
                                 <BadgeCheck className="h-3.5 w-3.5" aria-hidden />
                                 Verified
                               </span>
@@ -347,7 +347,7 @@ const AdminUsers = async ({
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
                         <span>
                           {u.emailVerified ? (
-                            <span className="inline-flex items-center gap-1 font-semibold text-emerald-600">
+                            <span className="inline-flex items-center gap-1 font-semibold text-status-delivered">
                               <BadgeCheck className="h-3.5 w-3.5" aria-hidden />
                               Verified
                             </span>

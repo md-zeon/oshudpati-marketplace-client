@@ -83,7 +83,7 @@ export function BanButton({
         className={`cursor-pointer gap-1.5 rounded-lg ${
           isActive
             ? "bg-red-50 text-red-600 hover:bg-red-100 border-red-200"
-            : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border-emerald-200"
+            : "bg-status-delivered/10 text-status-delivered hover:bg-status-delivered/20 border-status-delivered/20"
         }`}
       >
         {isPending ? (
@@ -141,7 +141,7 @@ export function BanButton({
               className={`cursor-pointer rounded-lg ${
                 isActive
                   ? "bg-red-600 hover:bg-red-700 text-white"
-                  : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                  : "bg-brand-600 hover:bg-brand-700 text-white"
               }`}
             >
               {isPending && (

@@ -148,7 +148,7 @@ export function ReviewManager({ initialReviews }: ReviewManagerProps) {
             </TabsTrigger>
             <TabsTrigger value="active" className="text-sm">
               Active
-              <Badge className="ml-1.5 bg-emerald-600 px-1.5 py-0 text-[10px] text-white">
+              <Badge className="ml-1.5 bg-brand-700 px-1.5 py-0 text-[10px] text-white">
                 {activeCount}
               </Badge>
             </TabsTrigger>
@@ -207,7 +207,7 @@ export function ReviewManager({ initialReviews }: ReviewManagerProps) {
                           <Badge
                             className={`ml-auto border px-2 py-0.5 text-[10px] font-bold uppercase ${
                               review.isActive
-                                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                                ? "bg-status-delivered/10 text-status-delivered border-status-delivered/20"
                                 : "bg-red-50 text-red-700 border-red-200"
                             }`}
                           >
@@ -346,7 +346,7 @@ export function ReviewManager({ initialReviews }: ReviewManagerProps) {
                           className={`h-8 w-8 ${
                             review.isActive
                               ? "text-admin-text/60 hover:bg-red-50 hover:text-red-500"
-                              : "text-emerald-500 hover:bg-emerald-50 hover:text-emerald-600"
+                              : "text-brand-500 hover:bg-brand-50 hover:text-brand-600"
                           }`}
                         >
                           {review.isActive ? (
@@ -412,7 +412,7 @@ export function ReviewManager({ initialReviews }: ReviewManagerProps) {
               className={`cursor-pointer rounded-lg ${
                 confirmTarget?.isActive
                   ? "bg-red-600 text-white hover:bg-red-700"
-                  : "bg-emerald-600 text-white hover:bg-emerald-700"
+                  : "bg-brand-600 text-white hover:bg-brand-700"
               }`}
             >
               {busyId === confirmTarget?.id && (

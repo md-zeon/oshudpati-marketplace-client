@@ -170,7 +170,7 @@ export default function AboutPage() {
                   </div>
 
                   <div className="flex gap-3">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" />
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-600" />
                     <div>
                       <h4 className="text-sm font-semibold text-foreground">
                         Strict Cold-Chain and Handling Integrity

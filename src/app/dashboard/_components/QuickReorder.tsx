@@ -19,7 +19,7 @@ export function QuickReorder({ items }: QuickReorderProps) {
       <div className="bg-card rounded-xl border border-border-default p-5">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Package className="w-4 h-4 text-emerald-600" />
+            <Package className="w-4 h-4 text-brand-600" />
             <h2 className="font-bold text-foreground">Quick Reorder</h2>
           </div>
           <span className="text-[11px] text-muted-foreground font-medium">
