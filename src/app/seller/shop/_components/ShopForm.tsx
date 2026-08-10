@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { ImageUpload } from "@/components/shared/ImageUpload";
 import { toast } from "sonner";
 import { Loader2, Store } from "lucide-react";
@@ -113,15 +113,14 @@ const ShopForm = ({
         </p>
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="desc" className="text-sm font-semibold text-foreground">
+        <Label className="text-sm font-semibold text-foreground">
           Description
         </Label>
-        <Textarea
-          id="desc"
+        <RichTextEditor
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={setDescription}
+          className="focus-visible:ring-brand-600/40 focus-visible:border-brand-600"
           placeholder="Tell customers about your shop"
-          className="min-h-28 focus-visible:ring-brand-600/40 focus-visible:border-brand-600"
         />
         <p className="text-xs text-muted-foreground">
           A short summary of what your shop offers.

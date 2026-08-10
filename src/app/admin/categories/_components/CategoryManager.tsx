@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   AlertDialog,
@@ -337,10 +337,10 @@ export function CategoryManager({
               <Label className="text-xs font-bold text-slate-700">
                 Description
               </Label>
-              <Textarea
+              <RichTextEditor
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="min-h-20 rounded-lg"
+                onChange={setDescription}
+                className="rounded-lg"
                 placeholder="Optional description"
               />
             </div>

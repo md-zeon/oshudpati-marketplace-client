@@ -172,12 +172,20 @@ function RichTextEditor({
   const isEditable = editable && !disabled;
 
   const onChangeRef = React.useRef(onChange);
-  onChangeRef.current = onChange;
   const onFocusRef = React.useRef(onFocus);
-  onFocusRef.current = onFocus;
   const onBlurRef = React.useRef(onBlur);
-  onBlurRef.current = onBlur;
-  const placeholderRef = React.useRef(placeholder);
+
+  React.useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+
+  React.useEffect(() => {
+    onFocusRef.current = onFocus;
+  }, [onFocus]);
+
+  React.useEffect(() => {
+    onBlurRef.current = onBlur;
+  }, [onBlur]);
 
   const editor = useEditor({
     extensions: [
@@ -198,7 +206,7 @@ function RichTextEditor({
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Highlight.configure({ multicolor: false }),
       Placeholder.configure({
-        placeholder: () => placeholderRef.current,
+        placeholder: () => placeholder,
         emptyEditorClass: "is-editor-empty",
       }),
       SelectionHighlight,
@@ -229,12 +237,6 @@ function RichTextEditor({
       editor.setEditable(isEditable);
     }
   }, [isEditable, editor]);
-
-  React.useEffect(() => {
-    if (placeholderRef.current === placeholder) return;
-    placeholderRef.current = placeholder;
-    if (editor) editor.view.dispatch(editor.state.tr);
-  }, [placeholder, editor]);
 
   if (!editor) {
     return (

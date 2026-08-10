@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { Switch } from "@/components/ui/switch";
 import {
   Tabs,
@@ -604,14 +605,13 @@ export function MedicineForm({
           <form.Field name="description">
             {(field) => (
               <div className="space-y-1.5">
-                <Label htmlFor={field.name} className="text-sm font-semibold text-foreground">
+                <Label className="text-sm font-semibold text-foreground">
                   Full Description
                 </Label>
-                <Textarea
-                  id={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  className="min-h-28 focus-visible:ring-brand-600/40 focus-visible:border-brand-600"
+                <RichTextEditor
+                  value={field.state.value ?? ""}
+                  onChange={(html) => field.handleChange(html)}
+                  className="focus-visible:ring-brand-600/40 focus-visible:border-brand-600"
                   placeholder="Detailed description..."
                 />
               </div>

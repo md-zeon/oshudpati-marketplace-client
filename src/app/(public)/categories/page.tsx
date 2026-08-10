@@ -1,5 +1,6 @@
 import { CategoryService } from "@/services/category.service";
 import { Category } from "@/types";
+import { SanitizedHtml } from "@/components/shared/SanitizedHtml";
 import { Grid3X3, Pill, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -83,9 +84,10 @@ const CategoriesPage = async () => {
               </h3>
 
               {category.description && (
-                <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-                  {category.description}
-                </p>
+                <SanitizedHtml
+                  html={category.description}
+                  className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground"
+                />
               )}
 
               {/* Footer */}

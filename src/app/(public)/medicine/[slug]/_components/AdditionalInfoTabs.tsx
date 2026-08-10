@@ -1,4 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SanitizedHtml } from "@/components/shared/SanitizedHtml";
 import { Medicine, Review } from "@/types";
 import { ReviewList } from "./ReviewList";
 import { ReviewFormWrapper } from "./ReviewFormWrapper";
@@ -62,9 +63,10 @@ const AdditionalInfoTabs = async ({ medicine }: AdditionalInfoTabsProps) => {
             <h3 className="mb-4 text-lg font-bold text-brand-900">
               Product Overview
             </h3>
-            <p className="mb-6 text-sm leading-relaxed text-muted-foreground sm:text-base">
-              {medicine.description}
-            </p>
+            <SanitizedHtml
+              html={medicine.description}
+              className="mb-6 text-sm leading-relaxed text-muted-foreground sm:text-base"
+            />
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="rounded-lg border border-brand-100 bg-brand-50 p-4">
