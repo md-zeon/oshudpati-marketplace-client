@@ -10,7 +10,10 @@ import {
   User,
   LucideIcon,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 
 const iconMap: Record<string, LucideIcon> = {
   dashboard: LayoutDashboard,
@@ -28,28 +31,18 @@ interface SellerSidebarProps {
 
 export function SellerSidebar({ href, label, iconName }: SellerSidebarProps) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive =
+    pathname === href || (href !== "/seller/dashboard" && pathname.startsWith(`${href}/`));
   const Icon = iconMap[iconName] || LayoutDashboard;
 
   return (
-    <Link
-      href={href}
-      aria-current={isActive ? "page" : undefined}
-      className={cn(
-        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600",
-        isActive
-          ? "bg-brand-50 text-brand-900 font-semibold shadow-sm ring-1 ring-brand-100"
-          : "text-muted-foreground hover:bg-brand-50/60 hover:text-brand-900",
-      )}
-    >
-      <Icon
-        className={cn(
-          "size-4 shrink-0",
-          isActive ? "text-brand-700" : "text-muted-foreground",
-        )}
-        aria-hidden
-      />
-      {label}
-    </Link>
+    <SidebarMenuItem>
+      <SidebarMenuButton asChild isActive={isActive} size="lg">
+        <Link href={href} aria-current={isActive ? "page" : undefined}>
+          <Icon aria-hidden="true" />
+          <span>{label}</span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
   );
 }

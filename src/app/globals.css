@@ -130,6 +130,16 @@
   --secondary: #f1f5f9;
   --secondary-foreground: #0f172a;
   --ring: #059669;
+
+  /* ===== SIDEBAR TOKENS (shadcn Sidebar — brand tinted) ===== */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #0c7865;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #edfcf5;
+  --sidebar-accent-foreground: #0a5049;
+  --sidebar-border: #d6f7e9;
+  --sidebar-ring: #129078;
 }
 
 @theme inline {
@@ -221,6 +231,16 @@
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-ring: var(--ring);
+
+  /* Sidebar tokens (shadcn Sidebar) */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 
   /* Font tokens */
   --font-sans: var(--font-geist-sans);
@@ -412,4 +432,13 @@ html {
 }
 .stagger-children > *:nth-child(12) {
   animation-delay: 880ms;
+}
+
+/* Hide scrollbars on sidebar content (shadcn Sidebar requirement) */
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

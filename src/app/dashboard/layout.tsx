@@ -1,15 +1,25 @@
 import React from "react";
 import Link from "next/link";
-import { Menu, Pill, Store } from "lucide-react";
+import { Store } from "lucide-react";
 import { userService } from "@/services/user.service";
 import { redirect } from "next/navigation";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetTitle,
-} from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarProvider,
+  SidebarRail,
+  SidebarSeparator,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { DashboardSidebar } from "./_components/DashboardSidebar";
 import { MobileDashboardNav } from "./_components/MobileDashboardNav";
 import Signout from "../../components/shared/Signout";
@@ -39,78 +49,77 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
       .slice(0, 2) || "U";
 
   return (
-    <div className="min-h-screen bg-surface-card">
-      {/* ==================== TOP HEADER ==================== */}
-      <header className="bg-card/80 backdrop-blur-md border-b border-border-default sticky top-0 z-40">
-        <div className="max-w-360 mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {/* Mobile Menu Trigger */}
-            <Sheet>
-              <SheetTrigger asChild>
-                <button
-                  className="md:hidden p-2.5 rounded-lg text-muted-foreground hover:bg-brand-50 hover:text-brand-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
-                  aria-label="Open navigation menu"
-                >
-                  <Menu className="w-5 h-5" />
-                </button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-72 p-0">
-                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                <div className="flex flex-col h-full">
-                  <div className="p-4 border-b border-border-default bg-linear-to-r from-brand-50 to-trust-50">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="w-10 h-10 border-2 border-brand-200">
-                        <AvatarImage src={user.image || ""} alt={user.name} />
-                        <AvatarFallback className="bg-brand-100 text-brand-800 text-sm font-bold">
-                          {initials}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="min-w-0">
-                        <p className="font-bold text-foreground text-sm truncate">
-                          {user.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {user.email}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-                    {sidebarLinks.map((link) => (
-                      <DashboardSidebar key={link.href} {...link} />
-                    ))}
-                  </nav>
-                  <div className="p-3 border-t border-border-default space-y-1">
-                    <Link
-                      href="/"
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-brand-50 hover:text-brand-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
-                    >
-                      <Pill className="w-4 h-4" />
-                      Back to Store
-                    </Link>
-                    <div className="rounded-lg">
-                      <Signout />
-                    </div>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
-
-            <Logo />
+    <SidebarProvider>
+      <Sidebar collapsible="offcanvas">
+        {/* ==================== SIDEBAR HEADER ==================== */}
+        <SidebarHeader>
+          <div className="flex items-center gap-3 px-1 py-1">
+            <Avatar className="size-9 border-2 border-brand-200">
+              <AvatarImage src={user.image || ""} alt={user.name} />
+              <AvatarFallback className="bg-brand-100 text-brand-800 text-xs font-bold">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid gap-0.5 min-w-0">
+              <p className="truncate text-sm font-semibold text-foreground">
+                {user.name}
+              </p>
+              <p className="truncate text-xs text-muted-foreground">
+                {user.email}
+              </p>
+            </div>
           </div>
+        </SidebarHeader>
 
-          <div className="flex items-center gap-3">
-            <Link
-              href="/shop"
-              className="hidden sm:block text-sm text-muted-foreground hover:text-brand-800 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 rounded-sm"
-            >
-              Shop
-            </Link>
-            <div className="flex items-center gap-2.5">
+        {/* ==================== SIDEBAR NAV ==================== */}
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Account</SidebarGroupLabel>
+            <SidebarMenu>
+              {sidebarLinks.map((link) => (
+                <DashboardSidebar key={link.href} {...link} />
+              ))}
+            </SidebarMenu>
+          </SidebarGroup>
+        </SidebarContent>
+
+        {/* ==================== SIDEBAR FOOTER ==================== */}
+        <SidebarFooter>
+          <SidebarSeparator />
+          <div className="space-y-1 p-2">
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild size="lg">
+                  <Link href="/">
+                    <Store aria-hidden="true" />
+                    <span>Back to Store</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+            <Signout />
+          </div>
+        </SidebarFooter>
+        <SidebarRail />
+      </Sidebar>
+
+      <SidebarInset style={{ backgroundColor: "var(--surface-card)" }}>
+        {/* ==================== TOP HEADER ==================== */}
+        <header className="sticky top-0 z-40 border-b border-border-default bg-card/80 backdrop-blur-md">
+          <div className="flex h-16 items-center gap-3 px-4 md:px-6">
+            <SidebarTrigger />
+            <Logo className="text-xl md:text-2xl" />
+            <div className="ml-auto flex items-center gap-3">
+              <Link
+                href="/shop"
+                className="hidden sm:block text-sm text-muted-foreground hover:text-brand-800 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 rounded-sm"
+              >
+                Shop
+              </Link>
               <span className="hidden sm:block text-sm text-foreground font-medium">
                 {user.name}
               </span>
-              <Avatar className="w-8 h-8 border-2 border-brand-100">
+              <Avatar className="size-8 border-2 border-brand-100">
                 <AvatarImage src={user.image || ""} alt={user.name} />
                 <AvatarFallback className="bg-brand-50 text-brand-800 text-xs font-bold">
                   {initials}
@@ -118,37 +127,15 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
               </Avatar>
             </div>
           </div>
-        </div>
-      </header>
-
-      <div className="max-w-360 mx-auto flex">
-        {/* ==================== DESKTOP SIDEBAR ==================== */}
-        <aside className="hidden md:flex flex-col w-64 bg-card/80 backdrop-blur-md border-r border-border-default min-h-[calc(100vh-4rem)] p-4 sticky top-16">
-          <nav className="space-y-1 flex-1">
-            {sidebarLinks.map((link) => (
-              <DashboardSidebar key={link.href} {...link} />
-            ))}
-          </nav>
-
-          <div className="pt-4 border-t border-border-default space-y-1">
-            <Link
-              href="/"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-brand-50 hover:text-brand-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600"
-            >
-              <Store className="w-4 h-4" />
-              Back to Store
-            </Link>
-            <Signout />
-          </div>
-        </aside>
+        </header>
 
         {/* ==================== MAIN CONTENT ==================== */}
-        <main className="flex-1 p-4 md:p-6 pb-24 md:pb-6">{children}</main>
-      </div>
+        <div className="flex-1 p-4 pb-24 md:p-6 md:pb-6">{children}</div>
+      </SidebarInset>
 
       {/* ==================== MOBILE BOTTOM NAV ==================== */}
       <MobileDashboardNav sidebarLinks={sidebarLinks} />
-    </div>
+    </SidebarProvider>
   );
 };
 
