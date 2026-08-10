@@ -56,10 +56,15 @@ export async function MedicineCard({
         <p className="text-sm font-semibold text-slate-900 line-clamp-2 leading-tight">
           {medicine.name}
         </p>
-        <div className="flex items-center gap-1 mt-1.5">
+        <div
+          className="flex items-center gap-1 mt-1.5"
+          role="img"
+          aria-label={`Rated ${medicine.averageRating} out of 5 from ${medicine.reviewCount} reviews`}
+        >
           {[...Array(5)].map((_, i) => (
             <Star
               key={i}
+              aria-hidden="true"
               className={`w-3 h-3 ${
                 i < Math.round(medicine.averageRating)
                   ? "text-amber-400 fill-amber-400"

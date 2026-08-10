@@ -56,10 +56,15 @@ export function ReviewList({ reviews }: ReviewListProps) {
                 </div>
 
                 {/* Star rating */}
-                <div className="flex items-center gap-0.5 mt-1">
+                <div
+                  className="flex items-center gap-0.5 mt-1"
+                  role="img"
+                  aria-label={`Rated ${review.rating} out of 5`}
+                >
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
+                      aria-hidden="true"
                       className={`w-3.5 h-3.5 ${
                         star <= review.rating
                           ? "text-amber-400 fill-amber-400"

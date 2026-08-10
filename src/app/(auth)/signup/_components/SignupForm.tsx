@@ -123,9 +123,12 @@ export function SignupForm({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      aria-describedby={
+                        isInvalid ? `${field.name}-error` : undefined
+                      }
                       placeholder="Enter your name"
                       className="capitalize py-5 shadow-md"
-                      autoComplete="off"
+                      autoComplete="name"
                     />
                     {isInvalid && (
                       <FieldError errors={field.state.meta.errors} />
@@ -151,12 +154,18 @@ export function SignupForm({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      aria-describedby={
+                        isInvalid ? `${field.name}-error` : undefined
+                      }
                       placeholder="Enter your email"
-                      autoComplete="off"
+                      autoComplete="email"
                       className="py-5 shadow-md"
                     />
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        id={`${field.name}-error`}
+                        errors={field.state.meta.errors}
+                      />
                     )}
                   </Field>
                 );
@@ -233,12 +242,18 @@ export function SignupForm({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      aria-describedby={
+                        isInvalid ? `${field.name}-error` : undefined
+                      }
                       placeholder="Enter your password"
-                      autoComplete="off"
+                      autoComplete="new-password"
                       className="py-5 shadow-md"
                     />
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        id={`${field.name}-error`}
+                        errors={field.state.meta.errors}
+                      />
                     )}
                   </Field>
                 );

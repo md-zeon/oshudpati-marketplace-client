@@ -27,7 +27,7 @@ export default function FullCart({
 }: FullCartProps) {
   const [cart, setCart] = useState<CartItem[]>(initialCart ?? []);
   const [address, setAddress] = useState<Address | null>(null);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   // Fetch default address for shipping cost estimation and display in totals summary
   useEffect(() => {
@@ -81,7 +81,7 @@ export default function FullCart({
     if (newQty < 1 || newQty > (item.medicine.stockQuantity || 999)) return;
 
     if (isLoggedIn) {
-      setButtonDisabled(true);
+      setUpdatingId(item.id);
       try {
         const res = await addToCart(item.medicineId, newQty - item.quantity);
 
@@ -101,7 +101,7 @@ export default function FullCart({
           e instanceof Error ? e.message : "Server error updating quantity",
         );
       } finally {
-        setButtonDisabled(false);
+        setUpdatingId(null);
       }
     } else {
       const updated = cart.map((it) =>
@@ -116,13 +116,20 @@ export default function FullCart({
 
   const handleRemove = async (item: CartItem) => {
     if (isLoggedIn) {
-      const res = await removeFromCart(item.id);
+      setUpdatingId(item.id);
+      try {
+        const res = await removeFromCart(item.id);
 
-      if (res?.success) {
-        setCart((prev) => prev.filter((it) => it.id !== item.id));
-        toast.success("Item removed from cart");
-      } else {
-        toast.error(res?.message || "Failed to remove item");
+        if (res?.success) {
+          setCart((prev) => prev.filter((it) => it.id !== item.id));
+          toast.success("Item removed from cart");
+        } else {
+          toast.error(res?.message || "Failed to remove item");
+        }
+      } catch {
+        toast.error("Failed to remove item");
+      } finally {
+        setUpdatingId(null);
       }
     } else {
       const updated = cart.filter((it) => it.medicineId !== item.medicineId);
@@ -143,17 +150,17 @@ export default function FullCart({
           <div
             className={`border rounded-xl p-5 mb-6 transition-all duration-300 ${
               isShippingFree
-                ? "bg-[#f4fbf7] border-[#e2f3e9]"
+                ? "bg-brand-subtle border-brand-light"
                 : "bg-slate-50 border-slate-200"
             }`}
           >
             <div className="flex items-center gap-2 text-sm font-semibold text-slate-800 mb-3">
               <ShoppingBag
-                className={`w-5 h-5 ${isShippingFree ? "text-[#10b981]" : "text-slate-500"}`}
+                className={`w-5 h-5 ${isShippingFree ? "text-brand-accent" : "text-slate-500"}`}
               />
               <span>
                 {isShippingFree ? (
-                  <span className="text-[#0f172a] font-bold">
+                  <span className="text-text-primary font-bold">
                     Your order qualifies for free shipping!
                   </span>
                 ) : (
@@ -169,7 +176,7 @@ export default function FullCart({
             </div>
             <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
               <div
-                className={`h-full transition-all duration-500 rounded-full ${isShippingFree ? "bg-[#10b981]" : "bg-slate-900"}`}
+                className={`h-full transition-all duration-500 rounded-full ${isShippingFree ? "bg-brand-accent" : "bg-slate-900"}`}
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>
@@ -241,7 +248,9 @@ export default function FullCart({
                     <div className="flex items-center border border-slate-300 rounded-lg bg-white overflow-hidden shadow-sm">
                       <button
                         onClick={() => changeQuantity(item, item.quantity - 1)}
-                        disabled={item.quantity <= 1 || buttonDisabled}
+                        disabled={
+                          item.quantity <= 1 || updatingId === item.id
+                        }
                         className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 disabled:opacity-30 disabled:hover:bg-transparent transition"
                       >
                         <Minus className="w-3.5 h-3.5" />
@@ -254,7 +263,7 @@ export default function FullCart({
                         disabled={
                           item.quantity >=
                             (item.medicine.stockQuantity || 999) ||
-                          buttonDisabled
+                          updatingId === item.id
                         }
                         className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 disabled:opacity-30 disabled:hover:bg-transparent transition"
                       >
@@ -273,11 +282,11 @@ export default function FullCart({
                         ৳{(price * item.quantity).toFixed(2)}
                       </span>
                     </div>
-                    <button
-                      onClick={() => handleRemove(item)}
-                      disabled={buttonDisabled}
-                      className="text-slate-400 hover:text-rose-500 border border-slate-200 hover:border-rose-100 rounded-lg p-1.5 transition bg-white hover:bg-rose-50/40 cursor-pointer"
-                    >
+                      <button
+                        onClick={() => handleRemove(item)}
+                        disabled={updatingId === item.id}
+                        className="text-slate-400 hover:text-rose-500 border border-slate-200 hover:border-rose-100 rounded-lg p-1.5 transition bg-white hover:bg-rose-50/40 cursor-pointer"
+                      >
                       <X className="w-4 h-4" />
                     </button>
                   </div>
@@ -307,7 +316,7 @@ export default function FullCart({
             <span className="text-slate-500 font-medium pt-0.5">Shipment</span>
             <div className="text-right">
               {isShippingFree ? (
-                <span className="text-sm font-bold text-[#10b981] block">
+                <span className="text-sm font-bold text-brand-accent block">
                   Free shipping
                 </span>
               ) : (

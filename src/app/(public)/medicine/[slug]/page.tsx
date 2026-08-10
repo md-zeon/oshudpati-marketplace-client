@@ -85,10 +85,15 @@ const MedicineDetails = async ({ params }: Props) => {
           </div>
 
           {/* Rating */}
-          <div className="flex items-center gap-1 bg-slate-50 max-w-fit px-2.5 py-1 rounded-md border border-slate-100">
+          <div
+            className="flex items-center gap-1 bg-slate-50 max-w-fit px-2.5 py-1 rounded-md border border-slate-100"
+            role="img"
+            aria-label={`Rated ${medicine.averageRating.toFixed(1)} out of 5 from ${medicine.reviewCount} reviews`}
+          >
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
+                aria-hidden="true"
                 className={`w-4 h-4 ${medicine.averageRating >= i + 1 ? "text-amber-400 fill-amber-400" : "text-slate-200"}`}
               />
             ))}

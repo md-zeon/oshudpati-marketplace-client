@@ -119,12 +119,18 @@ export function SignInForm({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      aria-describedby={
+                        isInvalid ? `${field.name}-error` : undefined
+                      }
                       placeholder="Enter your email"
                       className="py-5 shadow-md"
-                      autoComplete="off"
+                      autoComplete="email"
                     />
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        id={`${field.name}-error`}
+                        errors={field.state.meta.errors}
+                      />
                     )}
                   </Field>
                 );
@@ -147,12 +153,18 @@ export function SignInForm({
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
+                      aria-describedby={
+                        isInvalid ? `${field.name}-error` : undefined
+                      }
                       placeholder="Enter your password"
                       className="py-5 shadow-md"
-                      autoComplete="off"
+                      autoComplete="current-password"
                     />
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        id={`${field.name}-error`}
+                        errors={field.state.meta.errors}
+                      />
                     )}
                   </Field>
                 );

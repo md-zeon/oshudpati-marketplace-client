@@ -20,10 +20,15 @@ export function StarRating({
   showCount = true,
 }: StarRatingProps) {
   return (
-    <div className="flex items-center gap-1">
+    <div
+      className="flex items-center gap-1"
+      role="img"
+      aria-label={`Rated ${rating} out of 5${reviewCount !== undefined ? ` from ${reviewCount} reviews` : ""}`}
+    >
       {[...Array(5)].map((_, i) => (
         <Star
           key={i}
+          aria-hidden="true"
           className={`${sizeMap[size]} ${
             i < Math.round(rating)
               ? "text-amber-400 fill-amber-400"
