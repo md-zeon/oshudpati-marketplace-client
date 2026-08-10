@@ -5,15 +5,15 @@ interface PriceDisplayProps {
 }
 
 const currentSizeMap = {
-  sm: "text-sm font-bold text-slate-800",
-  md: "text-base font-bold text-slate-800",
-  lg: "text-3xl font-black text-slate-900",
+  sm: "text-sm font-bold text-foreground",
+  md: "text-base font-bold text-foreground",
+  lg: "text-3xl font-black text-brand-900",
 };
 
 const originalSizeMap = {
-  sm: "text-xs text-slate-400 line-through",
-  md: "text-sm text-slate-400 line-through",
-  lg: "text-base text-slate-400 line-through",
+  sm: "text-xs text-muted-foreground/70 line-through",
+  md: "text-sm text-muted-foreground/70 line-through",
+  lg: "text-base text-muted-foreground/70 line-through",
 };
 
 export function PriceDisplay({

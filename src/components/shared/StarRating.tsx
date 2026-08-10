@@ -31,13 +31,15 @@ export function StarRating({
           aria-hidden="true"
           className={`${sizeMap[size]} ${
             i < Math.round(rating)
-              ? "text-amber-400 fill-amber-400"
-              : "text-slate-200"
+              ? "fill-accent-500 text-accent-500"
+              : "text-muted"
           }`}
         />
       ))}
       {showCount && reviewCount !== undefined && (
-        <span className="text-[10px] text-slate-400 ml-1">({reviewCount})</span>
+        <span className="ml-1 text-[10px] text-muted-foreground">
+          ({reviewCount})
+        </span>
       )}
     </div>
   );

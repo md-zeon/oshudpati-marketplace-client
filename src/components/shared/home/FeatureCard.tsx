@@ -26,10 +26,10 @@ export function FeatureCard({
 
       {/* Typography Layout: Left-aligned and spacious */}
       <div className="space-y-1">
-        <h3 className="font-bold text-gray-900 text-2xl sm:text-base group-hover:text-emerald-700 transition-colors">
+        <h3 className="font-bold text-foreground text-2xl sm:text-base group-hover:text-brand-700 transition-colors">
           {title}
         </h3>
-        <p className="text-sm text-gray-500 leading-relaxed font-medium">
+        <p className="text-sm text-muted-foreground leading-relaxed font-medium">
           {description}
         </p>
       </div>

@@ -84,12 +84,12 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
   if (!mounted) {
     return (
       <div className="flex items-center gap-1 opacity-50 select-none py-1">
-        <div className="rounded-full border-2 p-1 border-slate-200">
-          <ShoppingCart className="text-slate-600" size={24} />
+        <div className="rounded-full border-2 p-1 border-border-default">
+          <ShoppingCart className="text-muted-foreground" size={24} />
         </div>
         <div className="font-medium leading-tight">
-          <p className="text-sm font-medium text-slate-600">Cart Total</p>
-          <span className="text-base font-bold text-slate-900">৳ 0.00</span>
+          <p className="text-sm font-medium text-muted-foreground">Cart Total</p>
+          <span className="text-base font-bold text-foreground">৳ 0.00</span>
         </div>
       </div>
     );
@@ -101,17 +101,17 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
         <div aria-label="Cart" className="cursor-pointer">
           <Link href="/cart" suppressHydrationWarning>
             <div className="flex items-center gap-1 cursor-pointer group select-none py-1">
-              <div className="rounded-full border-2 p-1 border-slate-200 group-hover:border-emerald-600 transition-colors">
+              <div className="rounded-full border-2 p-1 border-border-default group-hover:border-brand-600 transition-colors">
                 <ShoppingCart
-                  className="text-slate-600 group-hover:text-emerald-600 transition-colors"
+                  className="text-muted-foreground group-hover:text-brand-600 transition-colors"
                   size={24}
                 />
               </div>
               <div className="font-medium leading-tight">
-                <p className="text-sm leading-tight font-medium text-slate-600 group-hover:text-emerald-600 transition-colors">
+                <p className="text-sm leading-tight font-medium text-muted-foreground group-hover:text-brand-600 transition-colors">
                   Cart Total
                 </p>
-                <span className="text-base leading-tight font-bold text-slate-900">
+                <span className="text-base leading-tight font-bold text-foreground">
                   ৳ {subtotal.toFixed(2)}
                 </span>
               </div>
@@ -124,31 +124,31 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
       <HoverCardContent
         align="end"
         sideOffset={12}
-        className="w-95 p-5 bg-white rounded-2xl shadow-xl border border-slate-100 flex flex-col gap-4 animate-in fade-in-50 slide-in-from-top-2 duration-200"
+        className="w-95 p-5 bg-card rounded-2xl shadow-xl border border-border-default flex flex-col gap-4 animate-in fade-in-50 slide-in-from-top-2 duration-200"
       >
         {isCartEmpty ? (
           /* ================= EMPTY CART VIEW ================= */
           <div className="flex flex-col items-center justify-center text-center py-6">
-            <div className="relative w-20 h-20 mb-4 flex items-center justify-center bg-amber-50 rounded-full border border-amber-100">
-              <span className="text-3xl text-amber-500 font-serif font-bold">
+            <div className="relative w-20 h-20 mb-4 flex items-center justify-center bg-accent-50 rounded-full border border-accent-200">
+              <span className="text-3xl text-accent-500 font-serif font-bold">
                 ?
               </span>
             </div>
-            <h3 className="text-base font-bold text-slate-900 mb-5">
+            <h3 className="text-base font-bold text-foreground mb-5">
               No products in the cart.
             </h3>
 
             {/* Dynamic Free Shipping Counter */}
-            <div className="w-full bg-slate-50 border border-slate-100 rounded-xl p-3.5">
-              <p className="text-xs font-medium text-slate-700 mb-2">
+            <div className="w-full bg-muted border border-border-default rounded-xl p-3.5">
+              <p className="text-xs font-medium text-muted-foreground mb-2">
                 Add{" "}
-                <span className="font-bold text-slate-900">
+                <span className="font-bold text-foreground">
                   ৳{FREE_SHIPPING_THRESHOLD.toFixed(2)}
                 </span>{" "}
                 to cart and get free shipping!
               </p>
-              <div className="w-full bg-slate-200/70 h-2 rounded-full overflow-hidden">
-                <div className="bg-slate-400 h-full w-0 transition-all duration-500" />
+              <div className="w-full bg-border-default/70 h-2 rounded-full overflow-hidden">
+                <div className="bg-muted-foreground h-full w-0 transition-all duration-500" />
               </div>
             </div>
           </div>
@@ -169,20 +169,20 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
                 return (
                   <div
                     key={item.id}
-                    className="flex gap-3 items-start pb-3.5 border-b border-slate-100 last:border-0 last:pb-0 group"
+                    className="flex gap-3 items-start pb-3.5 border-b border-border-default last:border-0 last:pb-0 group"
                   >
                     {/* Delete Item Interaction */}
                     <Button
                       onClick={() =>
                         handleRemoveItemFromCart(item.id, item.medicineId)
                       }
-                      className="mt-1 w-fit h-fit p-0.5 rounded-full bg-rose-50 text-rose-500 hover:text-rose-500 transition-colors cursor-pointer"
+                      className="mt-1 w-fit h-fit p-0.5 rounded-full bg-danger/10 text-danger hover:text-danger transition-colors cursor-pointer"
                     >
                       <X className="w-3.5 h-3.5" />
                     </Button>
 
                     {/* Product Miniature Image Thumbnail */}
-                    <div className="relative w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0 flex items-center justify-center overflow-hidden">
+                    <div className="relative w-12 h-12 rounded-lg bg-muted border border-border-default p-1 shrink-0 flex items-center justify-center overflow-hidden">
                       <Image
                         src={primaryImage}
                         alt={item.medicine.name}
@@ -196,15 +196,15 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
                     <div className="flex-1 min-w-0">
                       <Link
                         href={`/medicine/${item.medicine.slug}`}
-                        className="text-xs font-semibold text-slate-800 leading-tight line-clamp-2 group-hover:text-emerald-600 transition-colors block"
+                        className="text-xs font-semibold text-foreground leading-tight line-clamp-2 group-hover:text-brand-600 transition-colors block"
                       >
                         {item.medicine.name}
                       </Link>
-                      <p className="text-xs font-bold mt-1 text-slate-500">
-                        <span className="text-amber-600 font-extrabold">
+                      <p className="text-xs font-bold mt-1 text-muted-foreground">
+                        <span className="text-accent-600 font-extrabold">
                           {item.quantity}
                         </span>
-                        <span className="text-slate-400 font-normal px-1">
+                        <span className="text-muted-foreground font-normal px-1">
                           x
                         </span>
                         ৳{itemPrice.toFixed(2)}
@@ -216,11 +216,11 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
             </div>
 
             {/* Total Block Panel */}
-            <div className="flex items-center justify-between border-t border-slate-100 pt-3.5">
-              <span className="text-sm font-bold text-slate-900">
+            <div className="flex items-center justify-between border-t border-border-default pt-3.5">
+              <span className="text-sm font-bold text-foreground">
                 Subtotal:
               </span>
-              <span className="text-base font-black text-slate-900">
+              <span className="text-base font-black text-foreground">
                 ৳{subtotal.toFixed(2)}
               </span>
             </div>
@@ -229,13 +229,13 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
             <div className="grid grid-cols-2 gap-3.5">
               <Button
                 variant="outline"
-                className="w-full border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-bold text-xs h-10 rounded-xl"
+                className="w-full border-border-default hover:bg-muted hover:text-foreground font-bold text-xs h-10 rounded-xl"
                 asChild
               >
                 <Link href="/cart">View cart</Link>
               </Button>
               <Button
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs h-10 rounded-xl shadow-md shadow-emerald-100 transition-all"
+                className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs h-10 rounded-xl shadow-md shadow-brand-100 transition-all"
                 asChild
               >
                 <Link href="/checkout">Checkout</Link>
@@ -243,29 +243,29 @@ const Cart = ({ cart = [], isLoggedIn = false }: CartProps) => {
             </div>
 
             {/* Dynamic Shipping Threshold Tracker */}
-            <div className="bg-slate-50 border border-slate-100 rounded-xl p-3.5">
-              <p className="text-xs font-medium text-slate-700 mb-2">
+            <div className="bg-muted border border-border-default rounded-xl p-3.5">
+              <p className="text-xs font-medium text-muted-foreground mb-2">
                 {remainingForFreeShipping > 0 ? (
                   <>
                     Add{" "}
-                    <span className="font-bold text-slate-900">
+                    <span className="font-bold text-foreground">
                       ৳{remainingForFreeShipping.toFixed(2)}
                     </span>{" "}
                     to cart and get free shipping!
                   </>
                 ) : (
-                  <span className="text-emerald-600 font-bold">
+                  <span className="text-brand-600 font-bold">
                     🎉 Your order qualifies for Free Shipping!
                   </span>
                 )}
               </p>
-              <div className="w-full bg-slate-200/70 h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-border-default/70 h-2 rounded-full overflow-hidden">
                 <div
                   className={cn(
                     "h-full transition-all duration-500 rounded-full",
                     remainingForFreeShipping > 0
-                      ? "bg-slate-900"
-                      : "bg-emerald-500",
+                      ? "bg-muted-foreground"
+                      : "bg-brand-500",
                   )}
                   style={{ width: `${progressPercentage}%` }}
                 />

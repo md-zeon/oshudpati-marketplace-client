@@ -1,24 +1,31 @@
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-const Logo = ({ className, color }: { className?: string; color?: string }) => {
+const COLOR_MAP = {
+  blue: "text-trust-600",
+  brand: "text-brand-700",
+  emerald: "text-emerald-600",
+} as const;
+
+type LogoProps = {
+  className?: string;
+  color?: keyof typeof COLOR_MAP;
+};
+
+const Logo = ({ className, color = "brand" }: LogoProps) => {
   return (
-    <div className="relative flex items-center gap-1 cursor-pointer shrink-0 w-fit">
-      <Link
-        href="/"
-        className={`text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight ${color ? `text-${color}-600` : "text-emerald-600"} ${className || ""}`}
-      >
-        Oshudpati
-      </Link>
-      <span
-        className={`absolute top-1.5 left-[37%] text-xs md:w-0.5 md:h-0.75 h-0.5 rotate-70 ${color ? `bg-${color}-600` : "bg-emerald-600"} rounded-full px-1`}
-      ></span>
-      <span
-        className={`absolute top-1.5 left-[41%] text-xs md:w-0.5 md:h-0.75 h-0.5 rotate-90 ${color ? `bg-${color}-600` : "bg-emerald-600"} rounded-full px-1`}
-      ></span>
-      <span
-        className={`absolute top-1.5 left-[46%] text-xs md:w-0.5 md:h-0.75 h-0.5 rotate-110 ${color ? `bg-${color}-600` : "bg-emerald-600"} rounded-full px-1`}
-      ></span>
-    </div>
+    <Link
+      href="/"
+      aria-label="Oshudpati — Home"
+      className={cn(
+        "shrink-0 text-2xl font-semibold tracking-tight md:text-3xl lg:text-4xl",
+        COLOR_MAP[color] ?? COLOR_MAP.brand,
+        "hover:opacity-80 transition-opacity",
+        className,
+      )}
+    >
+      Oshudpati
+    </Link>
   );
 };
 

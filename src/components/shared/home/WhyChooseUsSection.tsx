@@ -17,17 +17,17 @@ export function WhyChooseUsSection({ features }: WhyChooseUsSectionProps) {
   return (
     <section className="py-12 sm:py-16">
       {/* Header Container: Perfectly left-aligned on desktop for a premium feel */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-gray-100">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-border-default">
         <div className="space-y-2">
-          <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 rounded-full px-3 py-1 text-[11px] font-bold tracking-wider uppercase">
+          <span className="inline-flex items-center gap-1.5 bg-brand-50 text-brand-700 rounded-full px-3 py-1 text-[11px] font-bold tracking-wider uppercase">
             <ShieldCheck className="w-3.5 h-3.5" />
             Why Oshudpati
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
             Your Trusted Healthcare Partner
           </h2>
         </div>
-        <p className="text-sm text-gray-500 max-w-md md:text-left leading-relaxed">
+        <p className="text-sm text-muted-foreground max-w-md md:text-left leading-relaxed">
           We make healthcare accessible, authentic, and affordable for everyone
           in Bangladesh.
         </p>

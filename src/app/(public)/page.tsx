@@ -64,32 +64,32 @@ const HomePage = async () => {
       title: "100% Authentic",
       description:
         "All medicines are sourced from verified pharmacies and authorized distributors.",
-      color: "text-emerald-600",
-      bg: "bg-emerald-50",
+      color: "text-brand-600",
+      bg: "bg-brand-50",
     },
     {
       icon: Truck,
       title: "Free Delivery",
       description:
         "Free shipping on orders above ৳300. Fast delivery across all districts in Bangladesh.",
-      color: "text-blue-600",
-      bg: "bg-blue-50",
+      color: "text-trust-600",
+      bg: "bg-trust-50",
     },
     {
       icon: HeadphonesIcon,
       title: "24/7 Support",
       description:
         "Our customer support team is always ready to help with your orders and queries.",
-      color: "text-violet-600",
-      bg: "bg-violet-50",
+      color: "text-status-shipped",
+      bg: "bg-status-shipped/10",
     },
     {
       icon: Star,
       title: "Best Prices",
       description:
         "Competitive pricing with regular discounts and special offers on top brands.",
-      color: "text-amber-600",
-      bg: "bg-amber-50",
+      color: "text-accent-600",
+      bg: "bg-accent-50",
     },
   ];
 

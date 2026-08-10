@@ -20,13 +20,13 @@ export function AppBreadcrumb() {
   }
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className="mb-4">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link
               href="/"
-              className="text-slate-500 hover:text-slate-700 transition-colors"
+              className="text-sm text-muted-foreground transition-colors hover:text-brand-700"
             >
               Home
             </Link>
@@ -51,13 +51,13 @@ export function AppBreadcrumb() {
                   <BreadcrumbLink asChild>
                     <Link
                       href={href}
-                      className="text-slate-500 hover:text-slate-700 transition-colors"
+                      className="text-sm text-muted-foreground transition-colors hover:text-brand-700"
                     >
                       {formattedSegment}
                     </Link>
                   </BreadcrumbLink>
                 ) : (
-                  <span className="font-semibold text-slate-900 pointer-events-none">
+                  <span className="pointer-events-none text-sm font-semibold text-foreground">
                     {formattedSegment}
                   </span>
                 )}

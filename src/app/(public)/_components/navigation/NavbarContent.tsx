@@ -18,31 +18,29 @@ const NavbarContent = async ({ medicines = [] }: { medicines: Medicine[] }) => {
 
   return (
     // Desktop Navigation
-    <nav className="max-w-360 mx-auto max-lg:hidden sticky top-0 z-50 w-full bg-background/95 backdrop-blur">
+    <nav className="sticky top-0 z-50 mx-auto hidden w-full max-w-360 border-b border-border-default bg-background/95 backdrop-blur lg:block">
       <div className="flex h-16 items-center justify-between gap-4 px-4">
         {/* Logo */}
         <Logo />
 
         {/* Search Area  */}
-        <div className="flex-1 max-w-xl mx-2 md:mx-8">
+        <div className="mx-2 max-w-xl flex-1 md:mx-8">
           <NavbarSearch medicines={medicines} />
         </div>
 
         {/* Navigation */}
-        <div className="flex items-center gap-2 md:gap-4 shrink-0">
+        <div className="flex shrink-0 items-center gap-2 md:gap-4">
           {/* Track Your Order */}
-          <Link
-            href="/order-tracking"
-            className="flex items-center gap-1 group"
-          >
-            <div className="border-2 rounded-full p-0.75 group-hover:border-emerald-600 transition-colors duration-200">
+          <Link href="/order-tracking" className="group flex items-center gap-2">
+            <div className="rounded-full border-2 border-border-default p-0.5 transition-colors duration-200 group-hover:border-brand-600">
               <Truck
-                className="text-slate-600 inline-block group-hover:text-emerald-600 transition-colors duration-200"
+                aria-hidden="true"
+                className="text-muted-foreground transition-colors duration-200 group-hover:text-brand-600"
                 size={24}
               />
             </div>
-            <div className="font-medium leading-tight">
-              <p className="text-sm leading-tight font-medium text-slate-600 group-hover:text-emerald-600 cursor-pointer">
+            <div className="leading-tight">
+              <p className="text-sm font-medium leading-tight text-muted-foreground transition-colors group-hover:text-brand-700">
                 Track
               </p>
               <span className="text-base leading-tight">Your Order</span>

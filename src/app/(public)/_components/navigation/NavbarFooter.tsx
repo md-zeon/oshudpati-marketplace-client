@@ -3,6 +3,7 @@
 import { Heart, MapPin } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -17,7 +18,7 @@ const NavbarFooter = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="max-w-360 mx-auto hidden font-medium lg:flex items-center justify-between gap-6 px-4 py-2 sticky top-16 z-40 bg-background/95 backdrop-blur">
+    <nav className="sticky top-16 z-40 mx-auto hidden max-w-360 items-center justify-between gap-6 border-b border-border-default bg-background/95 px-4 py-2 font-medium backdrop-blur lg:flex">
       <div className="flex items-center gap-6">
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
@@ -25,11 +26,21 @@ const NavbarFooter = () => {
             <Link
               key={link.href}
               href={link.href}
-              className={`hover:text-brand transition-colors ${
-                isActive ? "text-brand font-semibold" : "text-slate-600"
-              }`}
+              aria-current={isActive ? "page" : undefined}
+              className={cn(
+                "relative inline-flex min-h-10 items-center rounded-sm px-0.5 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600",
+                isActive
+                  ? "font-semibold text-brand-700"
+                  : "text-muted-foreground hover:text-brand-700",
+              )}
             >
               {link.name}
+              {isActive && (
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 -bottom-1.5 h-0.5 rounded-full bg-brand-600"
+                />
+              )}
             </Link>
           );
         })}
@@ -38,17 +49,29 @@ const NavbarFooter = () => {
       <div className="flex items-center gap-6">
         <Link
           href="/wishlist"
-          className={`flex items-center text-xs font-semibold gap-1 ${pathname === "/wishlist" ? "text-brand" : ""}`}
+          aria-current={pathname === "/wishlist" ? "page" : undefined}
+          className={cn(
+            "flex min-h-10 items-center gap-1 rounded-sm text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600",
+            pathname === "/wishlist"
+              ? "text-brand-700"
+              : "text-muted-foreground hover:text-brand-700",
+          )}
         >
-          <Heart className="inline-block text-red-600" size={14} />
+          <Heart aria-hidden="true" className="text-danger" size={14} />
           <span>Wishlist</span>
         </Link>
 
         <Link
           href="/faq"
-          className={`flex items-center text-xs font-semibold gap-1 ${pathname === "/faq" ? "text-brand" : ""}`}
+          aria-current={pathname === "/faq" ? "page" : undefined}
+          className={cn(
+            "flex min-h-10 items-center gap-1 rounded-sm text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600",
+            pathname === "/faq"
+              ? "text-brand-700"
+              : "text-muted-foreground hover:text-brand-700",
+          )}
         >
-          <MapPin className="inline-block text-emerald-600" size={14} />
+          <MapPin aria-hidden="true" className="text-brand-600" size={14} />
           <span>FAQ</span>
         </Link>
       </div>

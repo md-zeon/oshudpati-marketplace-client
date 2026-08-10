@@ -88,14 +88,14 @@ const socialLinks = [
 
 const PublicFooter = () => {
   return (
-    <footer className="bg-gray-950 text-gray-400 border-t border-gray-900">
+    <footer className="bg-foreground text-white/70 border-t border-white/10">
       <div className="max-w-360 mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
         {/* Main Grid Wrapper */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 lg:gap-8">
           {/* Brand/Social Box */}
-          <div className="flex flex-col items-center text-center md:items-start md:text-left md:col-span-2 space-y-4 pb-6 md:pb-0 border-b border-gray-900/60 md:border-none">
+          <div className="flex flex-col items-center text-center md:items-start md:text-left md:col-span-2 space-y-4 pb-6 md:pb-0 border-b border-white/10 md:border-none">
             <Logo />
-            <p className="text-sm text-gray-400 leading-relaxed max-w-sm">
+            <p className="text-sm text-white/70 leading-relaxed max-w-sm">
               Bangladesh&apos;s trusted online medicine and healthcare
               marketplace. We make healthcare accessible, authentic, and
               affordable.
@@ -107,7 +107,7 @@ const PublicFooter = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-xl bg-gray-900 hover:bg-emerald-600 flex items-center justify-center transition-all text-gray-400 hover:text-white"
+                  className="w-9 h-9 rounded-xl bg-white/10 hover:bg-brand-500 flex items-center justify-center transition-all text-white/70 hover:text-white"
                   aria-label={social.label}
                 >
                   {social.icon()}
@@ -129,9 +129,9 @@ const PublicFooter = () => {
                   <AccordionItem
                     value={key}
                     key={key}
-                    className="border-gray-900/60"
+                    className="border-white/10"
                   >
-                    <AccordionTrigger className="text-gray-200 text-xs font-bold uppercase tracking-wider hover:no-underline hover:text-emerald-400 py-3">
+                    <AccordionTrigger className="text-white text-xs font-bold uppercase tracking-wider hover:no-underline hover:text-brand-300 py-3">
                       {label}
                     </AccordionTrigger>
                     <AccordionContent className="pb-4">
@@ -140,7 +140,7 @@ const PublicFooter = () => {
                           <li key={link.label}>
                             <Link
                               href={link.href}
-                              className="text-sm text-gray-400 hover:text-emerald-400 transition-colors block py-0.5"
+                              className="text-sm text-white/70 hover:text-brand-300 transition-colors block py-0.5"
                             >
                               {link.label}
                             </Link>
@@ -164,7 +164,7 @@ const PublicFooter = () => {
                   key={key}
                   className="hidden md:block md:col-span-1 lg:col-span-1"
                 >
-                  <h3 className="text-gray-200 text-xs font-bold uppercase tracking-wider mb-4">
+                  <h3 className="text-white text-xs font-bold uppercase tracking-wider mb-4">
                     {label}
                   </h3>
                   <ul className="space-y-3">
@@ -172,7 +172,7 @@ const PublicFooter = () => {
                       <li key={link.label}>
                         <Link
                           href={link.href}
-                          className="text-sm hover:text-emerald-400 transition-colors block text-gray-400"
+                          className="text-sm hover:text-brand-300 transition-colors block text-white/70"
                         >
                           {link.label}
                         </Link>
@@ -186,26 +186,26 @@ const PublicFooter = () => {
         </div>
 
         {/* Contact Strip */}
-        <div className="mt-10 md:mt-12 pt-8 border-t border-gray-900 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-          <div className="flex items-center gap-3 bg-gray-900/30 p-3.5 rounded-xl border border-gray-900/60 lg:border-none lg:bg-transparent lg:p-0">
-            <div className="w-8 h-8 rounded-lg bg-gray-900 flex items-center justify-center text-emerald-400 shrink-0">
+        <div className="mt-10 md:mt-12 pt-8 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+          <div className="flex items-center gap-3 bg-white/5 p-3.5 rounded-xl border border-white/10 lg:border-none lg:bg-transparent lg:p-0">
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-brand-400 shrink-0">
               <MapPin className="w-4 h-4" />
             </div>
-            <span className="text-gray-300 font-medium">Dhaka, Bangladesh</span>
+            <span className="text-white/90 font-medium">Dhaka, Bangladesh</span>
           </div>
 
-          <div className="flex items-center gap-3 bg-gray-900/30 p-3.5 rounded-xl border border-gray-900/60 lg:border-none lg:bg-transparent lg:p-0">
-            <div className="w-8 h-8 rounded-lg bg-gray-900 flex items-center justify-center text-emerald-400 shrink-0">
+          <div className="flex items-center gap-3 bg-white/5 p-3.5 rounded-xl border border-white/10 lg:border-none lg:bg-transparent lg:p-0">
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-brand-400 shrink-0">
               <Phone className="w-4 h-4" />
             </div>
-            <span className="text-gray-300 font-medium">+880 1234-567890</span>
+            <span className="text-white/90 font-medium">+880 1234-567890</span>
           </div>
 
-          <div className="flex items-center gap-3 bg-gray-900/30 p-3.5 rounded-xl border border-gray-900/60 lg:border-none lg:bg-transparent lg:p-0 sm:col-span-2 lg:col-span-1">
-            <div className="w-8 h-8 rounded-lg bg-gray-900 flex items-center justify-center text-emerald-400 shrink-0">
+          <div className="flex items-center gap-3 bg-white/5 p-3.5 rounded-xl border border-white/10 lg:border-none lg:bg-transparent lg:p-0 sm:col-span-2 lg:col-span-1">
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-brand-400 shrink-0">
               <Mail className="w-4 h-4" />
             </div>
-            <span className="text-gray-300 font-medium">
+            <span className="text-white/90 font-medium">
               support@oshudpati.com
             </span>
           </div>
@@ -213,21 +213,21 @@ const PublicFooter = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-900 bg-black/20">
-        <div className="max-w-360 mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col-reverse sm:flex-row items-center justify-between gap-4 text-xs text-gray-500 font-medium">
+      <div className="border-t border-white/10 bg-black/30">
+        <div className="max-w-360 mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col-reverse sm:flex-row items-center justify-between gap-4 text-xs text-white/50 font-medium">
           <p className="text-center sm:text-left">
             &copy; {new Date().getFullYear()} Oshudpati. All rights reserved.
           </p>
           <div className="flex items-center justify-center gap-6 sm:gap-5">
             <Link
               href="/privacy"
-              className="hover:text-gray-300 transition-colors"
+              className="hover:text-white/90 transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
               href="/terms"
-              className="hover:text-gray-300 transition-colors"
+              className="hover:text-white/90 transition-colors"
             >
               Terms of Service
             </Link>

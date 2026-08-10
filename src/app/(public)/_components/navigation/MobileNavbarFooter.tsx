@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
-  Store,
+  Home,
   Search,
-  Heart,
+  ShoppingCart,
   User,
   LayoutGrid,
   Pill,
@@ -24,6 +24,10 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { authClient } from "@/lib/auth-client";
+import { getCartItems } from "@/actions/cart.action";
+import { getLocalCart } from "@/lib/local-cart";
+import { cn } from "@/lib/utils";
 
 interface MobileNavbarFooterProps {
   medicines: Medicine[];
@@ -35,6 +39,28 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [cartCount, setCartCount] = useState(0);
+
+  // Live cart count for the bottom-navigation badge
+  useEffect(() => {
+    const updateCount = async () => {
+      try {
+        const session = await authClient.getSession();
+        if (session.data?.user) {
+          const res = await getCartItems({ cache: "no-store" });
+          setCartCount(res.success ? res.data.length : 0);
+        } else {
+          setCartCount(getLocalCart().length);
+        }
+      } catch {
+        setCartCount(getLocalCart().length);
+      }
+    };
+    updateCount();
+    const sync = () => setCartCount(getLocalCart().length);
+    window.addEventListener("local-cart-updated", sync);
+    return () => window.removeEventListener("local-cart-updated", sync);
+  }, []);
 
   const dashboardData = useMemo(() => {
     // Popular Medicines: Sorted by high sales volume or marked featured
@@ -90,17 +116,17 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
   };
 
   const navItems = [
-    { label: "Store", icon: Store, href: "/" },
+    { label: "Home", icon: Home, href: "/" },
     { label: "Categories", icon: LayoutGrid, href: "/categories" },
     { label: "Search", icon: Search, isSearchTrigger: true },
-    { label: "Wishlist", icon: Heart, href: "/wishlist", badge: 0 },
+    { label: "Cart", icon: ShoppingCart, href: "/cart", badge: cartCount },
     { label: "Account", icon: User, href: "/account" },
   ];
 
   return (
     <Command className="lg:hidden">
       {/* ================= BOTTOM NAVIGATION TABS ================= */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 h-16 border-t bg-background/95 backdrop-blur pb-safe">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 h-16 border-t border-border-default bg-background/95 pb-safe backdrop-blur">
         <div className="grid h-full grid-cols-5 px-2">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -111,7 +137,8 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
                   key={item.label}
                   type="button"
                   onClick={() => setMobileOpen(true)}
-                  className="flex flex-col items-center justify-center gap-1 text-center text-muted-foreground hover:text-foreground relative bg-transparent border-none outline-none w-full h-full cursor-pointer"
+                  aria-label="Search medicines"
+                  className="relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 border-none bg-transparent text-center text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-brand-600"
                 >
                   <Icon className="h-5 w-5" />
                   <span className="text-[10px] tracking-wide select-none">
@@ -127,13 +154,29 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
               <Link
                 key={item.label}
                 href={item.href || "/"}
-                className={`flex flex-col items-center justify-center gap-1 text-center transition-colors relative
-                  ${isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"}`}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "relative flex flex-col items-center justify-center gap-1 text-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-brand-600",
+                  isActive
+                    ? "font-semibold text-brand-700"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
               >
+                {isActive && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-0 h-1 w-10 rounded-b-full bg-brand-600"
+                  />
+                )}
                 <Icon className="h-5 w-5" />
                 <span className="text-[10px] tracking-wide select-none">
                   {item.label}
                 </span>
+                {item.badge && item.badge > 0 ? (
+                  <span className="absolute right-1/2 top-1.5 flex h-4 min-w-4 translate-x-[18px] items-center justify-center rounded-full bg-brand-600 px-1 text-[9px] font-bold text-white">
+                    {item.badge > 9 ? "9+" : item.badge}
+                  </span>
+                ) : null}
               </Link>
             );
           })}
@@ -147,19 +190,19 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
           value={query}
           onValueChange={setQuery}
         />
-        <CommandList className="max-h-[80vh] overflow-y-auto p-3 space-y-4">
+        <CommandList className="max-h-[80vh] space-y-4 overflow-y-auto p-3">
           <CommandEmpty>
             No medical entries matched your parameters.
           </CommandEmpty>
 
           {/* STATE A: SHOW DISCOVERY DASHBOARD WHEN COMPONENT INPUT IS EMPTY */}
           {!query.trim() && (
-            <div className="space-y-5 animate-in fade-in-50 duration-200">
+            <div className="animate-in fade-in-50 space-y-5 duration-200">
               {/* 1. POPULAR MEDICINES */}
               {dashboardData.popular.length > 0 && (
                 <div className="space-y-2">
-                  <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1">
-                    <Flame className="h-3.5 w-3.5 text-orange-500 fill-orange-500" />
+                  <div className="flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    <Flame className="h-3.5 w-3.5 fill-accent-500 text-accent-500" />
                     Popular Medicines
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -167,7 +210,7 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
                       <Badge
                         key={med.id}
                         variant="secondary"
-                        className="px-3 py-1.5 rounded-full text-xs font-medium cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+                        className="cursor-pointer rounded-full px-3 py-1.5 text-xs font-medium transition-colors hover:bg-brand-700 hover:text-white"
                         onClick={() =>
                           handleActionRoute(`/medicine/${med.slug}`)
                         }
@@ -185,7 +228,7 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
                   <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                     Search by Generics
                   </div>
-                  <div className="divide-y border rounded-xl overflow-hidden bg-card">
+                  <div className="divide-y divide-border-default overflow-hidden rounded-xl border border-border-default bg-card">
                     {dashboardData.generics.map((gen) => (
                       <button
                         key={gen.name}
@@ -194,10 +237,10 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
                             `/shop?search=${encodeURIComponent(gen.name)}`,
                           )
                         }
-                        className="w-full flex items-center justify-between p-3 text-left hover:bg-slate-50/80 transition-colors group cursor-pointer"
+                        className="group flex w-full cursor-pointer items-center justify-between p-3 text-left transition-colors hover:bg-muted"
                       >
                         <div className="flex items-center gap-2">
-                          <Pill className="h-4 w-4 text-primary opacity-70" />
+                          <Pill className="h-4 w-4 text-brand-600" />
                           <span className="text-sm font-medium text-foreground">
                             {gen.name}
                           </span>
@@ -225,14 +268,13 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
                         onClick={() =>
                           handleActionRoute(`/shop?category=${cat.slug}`)
                         }
-                        className="p-3 border rounded-xl text-left bg-card hover:border-primary hover:bg-primary/5 transition-all cursor-pointer flex flex-col justify-between h-16 group"
+                        className="group flex h-16 cursor-pointer flex-col justify-between rounded-xl border border-border-default bg-card p-3 text-left transition-all hover:border-brand-300 hover:bg-brand-50"
                       >
-                        <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                        <span className="text-sm font-semibold text-foreground transition-colors group-hover:text-brand-700">
                           {cat.name}
                         </span>
-                        <span className="text-[10px] text-muted-foreground flex items-center gap-0.5">
-                          Explore Products{" "}
-                          <ChevronRight className="h-2.5 w-2.5" />
+                        <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground">
+                          Explore Products <ChevronRight className="h-2.5 w-2.5" />
                         </span>
                       </button>
                     ))}
@@ -254,24 +296,24 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
                   onSelect={() =>
                     handleActionRoute(`/medicine/${medicine.slug}`)
                   }
-                  className="cursor-pointer flex items-center justify-between p-3 rounded-xl data-[selected=true]:bg-slate-50 border border-transparent data-[selected=true]:border-slate-100 my-0.5"
+                  className="my-0.5 flex cursor-pointer items-center justify-between rounded-xl border border-transparent p-3 data-[selected=true]:border-border-default data-[selected=true]:bg-muted"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-primary/10 rounded-lg shrink-0">
-                      <Pill className="h-4 w-4 text-primary" />
+                    <div className="shrink-0 rounded-lg bg-brand-50 p-2">
+                      <Pill className="h-4 w-4 text-brand-700" />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-sm font-bold text-slate-800">
+                      <span className="text-sm font-bold text-foreground">
                         {medicine.name}
                       </span>
-                      <span className="text-xs text-muted-foreground font-normal italic">
+                      <span className="text-xs font-normal italic text-muted-foreground">
                         {medicine.genericName} • {medicine.strength}
                       </span>
                     </div>
                   </div>
                   <Badge
                     variant="outline"
-                    className="text-[10px] uppercase font-bold tracking-wider opacity-80 shrink-0"
+                    className="shrink-0 text-[10px] font-bold uppercase tracking-wider opacity-80"
                   >
                     {medicine.manufacturerName}
                   </Badge>
@@ -286,7 +328,7 @@ const MobileNavbarFooter = ({ medicines = [] }: MobileNavbarFooterProps) => {
               onSelect={() =>
                 handleActionRoute(`/shop?search=${encodeURIComponent(query)}`)
               }
-              className="mt-4 text-center text-xs text-primary justify-center font-bold bg-primary/5 hover:bg-primary/10 rounded-xl py-2.5 cursor-pointer border border-primary/10"
+              className="mt-4 cursor-pointer justify-center rounded-xl border border-brand-200 bg-brand-50 py-2.5 text-center text-xs font-bold text-brand-700 transition-colors hover:bg-brand-100"
             >
               See all medical inventory results for &quot;{query}&quot;
             </CommandItem>

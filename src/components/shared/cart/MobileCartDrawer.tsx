@@ -114,7 +114,7 @@ export function MobileCartDrawer() {
         <Button variant="ghost" size="icon" className="relative cursor-pointer">
           <ShoppingCart className="h-6 w-6" />
           {itemCount > 0 && (
-            <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-bold text-white">
+            <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-600 text-[10px] font-bold text-white">
               {itemCount > 9 ? "9+" : itemCount}
             </span>
           )}
@@ -122,9 +122,9 @@ export function MobileCartDrawer() {
       </DrawerTrigger>
 
       <DrawerContent className="max-h-[85vh] rounded-t-2xl">
-        <DrawerHeader className="border-b border-slate-100 px-4 py-3">
+        <DrawerHeader className="border-b border-border-default px-4 py-3">
           <div className="flex items-center justify-between">
-            <DrawerTitle className="text-base font-bold text-slate-900">
+            <DrawerTitle className="text-base font-bold text-foreground">
               Cart ({itemCount} {itemCount === 1 ? "item" : "items"})
             </DrawerTitle>
             <DrawerClose asChild>
@@ -141,19 +141,19 @@ export function MobileCartDrawer() {
 
         {isCartEmpty ? (
           <div className="flex flex-col items-center justify-center py-12 px-4">
-            <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mb-4 border border-amber-100">
-              <ShoppingBag className="w-7 h-7 text-amber-500" />
+            <div className="w-16 h-16 rounded-full bg-accent-50 flex items-center justify-center mb-4 border border-accent-200">
+              <ShoppingBag className="w-7 h-7 text-accent-500" />
             </div>
-            <p className="text-sm font-semibold text-slate-800 mb-1">
+            <p className="text-sm font-semibold text-foreground mb-1">
               Your cart is empty
             </p>
-            <p className="text-xs text-slate-400 mb-6 text-center">
+            <p className="text-xs text-muted-foreground mb-6 text-center">
               Browse medicines and add items to your cart
             </p>
             <DrawerClose asChild>
               <Button
                 asChild
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl"
+                className="bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl"
               >
                 <Link href="/shop">Start Shopping</Link>
               </Button>
@@ -174,9 +174,9 @@ export function MobileCartDrawer() {
                 return (
                   <div
                     key={item.id}
-                    className="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-100"
+                    className="flex items-center gap-3 bg-muted rounded-xl p-3 border border-border-default"
                   >
-                    <div className="relative w-14 h-14 rounded-lg bg-white border border-slate-100 p-1 shrink-0 flex items-center justify-center overflow-hidden">
+                    <div className="relative w-14 h-14 rounded-lg bg-card border border-border-default p-1 shrink-0 flex items-center justify-center overflow-hidden">
                       {primaryImage ? (
                         <Image
                           src={primaryImage}
@@ -186,7 +186,7 @@ export function MobileCartDrawer() {
                           className="object-contain max-h-full max-w-full"
                         />
                       ) : (
-                        <ShoppingBag className="w-5 h-5 text-slate-300" />
+                        <ShoppingBag className="w-5 h-5 text-muted-foreground" />
                       )}
                     </div>
 
@@ -194,22 +194,22 @@ export function MobileCartDrawer() {
                       <Link
                         href={`/medicine/${item.medicine.slug}`}
                         onClick={() => setOpen(false)}
-                        className="text-xs font-semibold text-slate-800 leading-tight line-clamp-2 block"
+                        className="text-xs font-semibold text-foreground leading-tight line-clamp-2 block"
                       >
                         {item.medicine.name}
                       </Link>
-                      <p className="text-xs text-slate-500 mt-1">
-                        <span className="font-bold text-slate-700">
+                      <p className="text-xs text-muted-foreground mt-1">
+                        <span className="font-bold text-foreground">
                           {item.quantity}
                         </span>
-                        <span className="text-slate-300 mx-1">×</span>৳
+                        <span className="text-muted-foreground mx-1">×</span>৳
                         {itemPrice.toFixed(2)}
                       </p>
                     </div>
 
                     <button
                       onClick={() => handleRemoveItem(item.id, item.medicineId)}
-                      className="shrink-0 p-1.5 rounded-full bg-white border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-200 transition-colors"
+                      className="shrink-0 p-1.5 rounded-full bg-card border border-border-default text-muted-foreground hover:text-danger hover:border-danger/40 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -218,39 +218,39 @@ export function MobileCartDrawer() {
               })}
             </div>
 
-            <div className="border-t border-slate-100 px-4 py-4 space-y-3 bg-white">
+            <div className="border-t border-border-default px-4 py-4 space-y-3 bg-card">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-slate-700">
+                <span className="text-sm font-semibold text-muted-foreground">
                   Subtotal
                 </span>
-                <span className="text-base font-black text-slate-900">
+                <span className="text-base font-black text-foreground">
                   ৳{subtotal.toFixed(2)}
                 </span>
               </div>
 
-              <div className="bg-slate-50 border border-slate-100 rounded-xl p-3">
-                <p className="text-xs font-medium text-slate-700 mb-2">
+              <div className="bg-muted border border-border-default rounded-xl p-3">
+                <p className="text-xs font-medium text-muted-foreground mb-2">
                   {remainingForFreeShipping > 0 ? (
                     <>
                       Add{" "}
-                      <span className="font-bold text-slate-900">
+                      <span className="font-bold text-foreground">
                         ৳{remainingForFreeShipping.toFixed(2)}
                       </span>{" "}
                       more for free shipping!
                     </>
                   ) : (
-                    <span className="text-emerald-600 font-bold">
+                    <span className="text-brand-600 font-bold">
                       🎉 You qualify for Free Shipping!
                     </span>
                   )}
                 </p>
-                <div className="w-full bg-slate-200/70 h-1.5 rounded-full overflow-hidden">
+                <div className="w-full bg-border-default/70 h-1.5 rounded-full overflow-hidden">
                   <div
                     className={cn(
                       "h-full transition-all duration-500 rounded-full",
                       remainingForFreeShipping > 0
-                        ? "bg-slate-900"
-                        : "bg-emerald-500",
+                        ? "bg-muted-foreground"
+                        : "bg-brand-500",
                     )}
                     style={{ width: `${progressPercentage}%` }}
                   />
@@ -261,7 +261,7 @@ export function MobileCartDrawer() {
                 <DrawerClose asChild>
                   <Button
                     variant="outline"
-                    className="w-full border-slate-200 hover:bg-slate-50 font-semibold text-xs h-11 rounded-xl"
+                    className="w-full border-border-default hover:bg-muted font-semibold text-xs h-11 rounded-xl"
                     asChild
                   >
                     <Link href="/cart">View Cart</Link>
@@ -269,7 +269,7 @@ export function MobileCartDrawer() {
                 </DrawerClose>
                 <DrawerClose asChild>
                   <Button
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-11 rounded-xl shadow-sm"
+                    className="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs h-11 rounded-xl shadow-sm"
                     asChild
                   >
                     <Link href="/checkout">Checkout</Link>
