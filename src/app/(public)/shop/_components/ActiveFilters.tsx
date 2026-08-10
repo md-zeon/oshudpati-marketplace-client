@@ -1,6 +1,9 @@
 import Link from "next/link";
+import type { ComponentProps } from "react";
 import { X } from "lucide-react";
 import { SearchParams } from "@/types";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface ActiveFiltersProps {
   params: SearchParams;
@@ -20,6 +23,39 @@ function removeFromCommaList(
   const items = currentValue.split(",").filter(Boolean);
   const nextItems = items.filter((i) => i !== itemToRemove);
   return nextItems.length > 0 ? nextItems.join(",") : undefined;
+}
+
+function FilterChip({
+  href,
+  label,
+  tone = "brand",
+}: {
+  href: ComponentProps<typeof Link>["href"];
+  label: string;
+  tone?: "brand" | "accent" | "trust";
+}) {
+  const toneClasses = {
+    brand: "border-brand-200 bg-brand-50 text-brand-800 hover:bg-brand-100",
+    accent:
+      "border-accent-200 bg-accent-50 text-accent-600 hover:bg-accent-100",
+    trust: "border-trust-200 bg-trust-50 text-trust-700 hover:bg-trust-100",
+  }[tone];
+
+  return (
+    <Badge
+      variant="outline"
+      asChild
+      className={`h-8 gap-1.5 border px-2.5 text-xs font-semibold transition-colors ${toneClasses}`}
+    >
+      <Link href={href}>
+        {label}
+        <X
+          className="h-3.5 w-3.5 opacity-60 transition-opacity hover:opacity-100"
+          aria-hidden="true"
+        />
+      </Link>
+    </Badge>
+  );
 }
 
 export default function ActiveFilters({
@@ -43,17 +79,21 @@ export default function ActiveFilters({
   return (
     <div className="flex flex-wrap items-center gap-2">
       {hasActiveFilters && (
-        <Link
-          href="/shop"
-          className="inline-flex items-center gap-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors border border-rose-100"
+        <Button
+          asChild
+          variant="ghost"
+          size="sm"
+          className="h-8 cursor-pointer gap-1.5 border border-danger/20 bg-danger/5 px-2.5 text-xs font-semibold text-danger hover:bg-danger/10 hover:text-danger"
         >
-          <X className="w-3.5 h-3.5" />
-          Clear filters
-        </Link>
+          <Link href="/shop">
+            <X className="h-3.5 w-3.5" />
+            Clear all
+          </Link>
+        </Button>
       )}
 
       {category.map((cat) => (
-        <Link
+        <FilterChip
           key={cat}
           href={{
             pathname: "/shop",
@@ -63,15 +103,13 @@ export default function ActiveFilters({
               page: 1,
             },
           }}
-          className="inline-flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-        >
-          Category: {cat}
-          <X className="w-3 h-3 text-slate-400" />
-        </Link>
+          label={`Category: ${cat}`}
+          tone="brand"
+        />
       ))}
 
       {manufacturer.map((mfr) => (
-        <Link
+        <FilterChip
           key={mfr}
           href={{
             pathname: "/shop",
@@ -81,15 +119,13 @@ export default function ActiveFilters({
               page: 1,
             },
           }}
-          className="inline-flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-        >
-          Manufacturer: {mfr}
-          <X className="w-3 h-3 text-slate-400" />
-        </Link>
+          label={mfr}
+          tone="brand"
+        />
       ))}
 
       {(minPrice !== undefined || maxPrice !== undefined) && (
-        <Link
+        <FilterChip
           href={{
             pathname: "/shop",
             query: {
@@ -99,15 +135,13 @@ export default function ActiveFilters({
               page: 1,
             },
           }}
-          className="inline-flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-        >
-          Price: ৳{minPrice || 0} - ৳{maxPrice || "Max"}
-          <X className="w-3 h-3 text-slate-400" />
-        </Link>
+          label={`Price: ৳${minPrice || 0} - ৳${maxPrice || "Max"}`}
+          tone="trust"
+        />
       )}
 
       {isFeatured && (
-        <Link
+        <FilterChip
           href={{
             pathname: "/shop",
             query: {
@@ -116,15 +150,13 @@ export default function ActiveFilters({
               page: 1,
             },
           }}
-          className="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 hover:bg-amber-100 px-3 py-1.5 rounded-lg text-xs font-medium border border-amber-100"
-        >
-          Featured
-          <X className="w-3 h-3 text-amber-400" />
-        </Link>
+          label="Featured"
+          tone="accent"
+        />
       )}
 
       {search && (
-        <Link
+        <FilterChip
           href={{
             pathname: "/shop",
             query: {
@@ -133,15 +165,13 @@ export default function ActiveFilters({
               page: 1,
             },
           }}
-          className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 px-3 py-1.5 rounded-lg text-xs font-medium border border-emerald-100"
-        >
-          &quot;{search}&quot;
-          <X className="w-3 h-3 text-emerald-400" />
-        </Link>
+          label={`"${search}"`}
+          tone="trust"
+        />
       )}
 
       {!hasActiveFilters && (
-        <p className="text-xs text-slate-400 italic">
+        <p className="text-xs italic text-muted-foreground">
           No active filters applied
         </p>
       )}

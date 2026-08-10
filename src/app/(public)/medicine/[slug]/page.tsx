@@ -1,12 +1,14 @@
 import { MedicineService } from "@/services/medicine.service";
-import { getPrimaryImage, getPrices, getDiscountPercentage } from "@/lib/utils";
+import { getPrices, getDiscountPercentage } from "@/lib/utils";
 import { Medicine } from "@/types";
-import { Star } from "lucide-react";
+import { BadgeCheck, ShieldCheck, Truck } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 import { MedicineActions } from "./_components/MedicineActions";
 import { WishlistButton } from "@/components/shared/wishlist/WishlistButton";
 import AdditionalInfoTabs from "./_components/AdditionalInfoTabs";
+import { MedicineGallery } from "./_components/MedicineGallery";
+import { StarRating } from "@/components/shared/StarRating";
+import { Badge } from "@/components/ui/badge";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -23,13 +25,13 @@ const MedicineDetails = async ({ params }: Props) => {
 
   if (!medicine) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-4">
-        <p className="text-xl font-semibold text-slate-700">
+      <div className="flex min-h-[60vh] flex-col items-center justify-center p-4 text-center">
+        <p className="text-xl font-semibold text-brand-900">
           Medicine not found
         </p>
         <Link
           href="/shop"
-          className="mt-4 text-sm font-medium text-emerald-600 hover:text-emerald-700 hover:underline transition-all"
+          className="mt-4 text-sm font-medium text-brand-700 hover:text-brand-800 hover:underline"
         >
           Go back to shop
         </Link>
@@ -37,131 +39,147 @@ const MedicineDetails = async ({ params }: Props) => {
     );
   }
 
-  const primaryImage = getPrimaryImage(medicine);
   const { regularPrice, salePrice } = getPrices(medicine);
   const discount = getDiscountPercentage(regularPrice, salePrice);
+  const isInStock = medicine.stockQuantity > 0;
+
+  const savings = salePrice ? regularPrice - salePrice : 0;
 
   return (
-    <div className="py-10 tracking-tight">
-      {/* Main Container */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 bg-white p-6 shadow-sm">
+    <div className="py-8">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
         {/* IMAGE SECTION */}
-        <div className="bg-slate-50 rounded-xl flex items-center justify-center p-8 relative min-h-87.5 ">
+        <div className="relative rounded-2xl border border-border-default bg-card p-5">
           {discount && discount > 0 && (
-            <span className="absolute top-4 left-4 bg-red-500 text-white text-xs px-2.5 py-1 rounded-full font-bold shadow-sm">
+            <Badge
+              className="absolute top-4 left-4 z-10 bg-accent-500 px-2.5 py-1 text-xs font-bold text-white shadow-sm"
+              aria-label={`${discount}% discount`}
+            >
               {discount}% OFF
-            </span>
+            </Badge>
           )}
 
-          {/* Wishlist Button */}
           <div className="absolute top-4 right-4 z-10">
             <WishlistButton medicineId={medicine.id} size="md" />
           </div>
 
-          <div className="relative w-full h-64">
-            <Image
-              src={primaryImage || "/placeholder-medicine.png"}
-              alt={medicine.name}
-              fill
-              sizes="(max-w-768px) 100vw, 400px"
-              className="object-contain mix-blend-multiply"
-              priority
-            />
-          </div>
+          <MedicineGallery images={medicine.images} name={medicine.name} />
         </div>
 
         {/* DETAILS SECTION */}
         <div className="flex flex-col gap-4">
           <div>
-            <p className="text-xs text-emerald-600 font-bold uppercase tracking-wider mb-1">
+            <p className="mb-1 text-xs font-bold uppercase tracking-wider text-brand-700">
               {medicine.genericName}
             </p>
-            <h1 className="text-3xl font-extrabold text-slate-900">
+            <h1 className="text-2xl font-extrabold leading-tight text-brand-900 sm:text-3xl">
               {medicine.name}{" "}
-              <span className="text-xl font-medium text-slate-500">
-                {medicine.strength}
-              </span>
+              {medicine.strength && (
+                <span className="text-lg font-medium text-muted-foreground sm:text-xl">
+                  {medicine.strength}
+                </span>
+              )}
             </h1>
           </div>
 
-          {/* Rating */}
-          <div
-            className="flex items-center gap-1 bg-slate-50 max-w-fit px-2.5 py-1 rounded-md border border-slate-100"
-            role="img"
-            aria-label={`Rated ${medicine.averageRating.toFixed(1)} out of 5 from ${medicine.reviewCount} reviews`}
-          >
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                aria-hidden="true"
-                className={`w-4 h-4 ${medicine.averageRating >= i + 1 ? "text-amber-400 fill-amber-400" : "text-slate-200"}`}
+          <div className="flex items-center gap-2">
+            <span className="flex items-center gap-1.5 rounded-md border border-border-default bg-surface-card px-2.5 py-1.5">
+              <StarRating
+                rating={Math.round(medicine.averageRating || 0)}
+                size="md"
+                showCount={false}
               />
-            ))}
-            <span className="text-xs font-semibold text-slate-600 ml-1.5">
-              {medicine.averageRating.toFixed(1)} ({medicine.reviewCount}{" "}
-              reviews)
+              <span className="text-xs font-semibold text-foreground">
+                {medicine.averageRating.toFixed(1)}
+              </span>
+              <span className="text-xs text-muted-foreground">
+                ({medicine.reviewCount} reviews)
+              </span>
             </span>
           </div>
 
-          <p className="text-sm text-slate-600 leading-relaxed font-normal">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {medicine.shortDescription}
           </p>
 
-          <div className="h-px bg-slate-100 my-1" />
+          <div className="h-px bg-border-default" />
 
           {/* Price Layout */}
-          <div>
-            <div className="flex items-baseline gap-3">
-              <p className="text-3xl font-black text-slate-900">
+          <div className="rounded-xl border border-accent-200 bg-accent-50 p-4">
+            <div className="flex flex-wrap items-baseline gap-3">
+              <p className="text-3xl font-black text-brand-900">
                 ৳{(salePrice || regularPrice).toFixed(2)}
               </p>
               {salePrice && salePrice < regularPrice && (
-                <p className="text-base text-slate-400 line-through font-medium">
+                <p className="text-base font-medium text-muted-foreground line-through">
                   ৳{regularPrice.toFixed(2)}
                 </p>
               )}
+              {savings > 0 && (
+                <span className="text-sm font-bold text-accent-600">
+                  You save ৳{savings.toFixed(2)}
+                </span>
+              )}
             </div>
-            <p className="text-xs text-slate-400 font-medium mt-1">
+            <p className="mt-1 text-xs font-medium text-muted-foreground">
               Price per pack ({medicine.unitPresentation})
             </p>
           </div>
 
           {/* Core Metadata Grid */}
-          <div className="grid grid-cols-2 gap-y-2 gap-x-4 bg-slate-50/70 p-4 rounded-xl text-xs text-slate-600 border border-slate-100">
-            <p>
-              <span className="font-semibold text-slate-500 block mb-0.5">
-                MANUFACTURER
-              </span>{" "}
-              <span className="text-slate-900 font-medium">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 rounded-xl border border-border-default bg-surface-card p-4 text-xs text-muted-foreground">
+            <div>
+              <span className="mb-0.5 block font-semibold uppercase tracking-wide text-text-muted">
+                Manufacturer
+              </span>
+              <span className="font-medium text-foreground">
                 {medicine.manufacturerName}
               </span>
-            </p>
-            <p>
-              <span className="font-semibold text-slate-500 block mb-0.5">
-                SKU
-              </span>{" "}
-              <span className="text-slate-900 font-medium">{medicine.sku}</span>
-            </p>
-            <p>
-              <span className="font-semibold text-slate-500 block mb-0.5">
-                DOSAGE FORM
-              </span>{" "}
-              <span className="text-slate-900 font-medium capitalize">
+            </div>
+            <div>
+              <span className="mb-0.5 block font-semibold uppercase tracking-wide text-text-muted">
+                Dosage form
+              </span>
+              <span className="font-medium capitalize text-foreground">
                 {medicine.dosageForm.toLowerCase()}
               </span>
-            </p>
-            <p>
-              <span className="font-semibold text-slate-500 block mb-0.5">
-                AVAILABILITY
+            </div>
+            <div className="col-span-2">
+              <span className="mb-0.5 block font-semibold uppercase tracking-wide text-text-muted">
+                Availability
               </span>
-              <span
-                className={`font-bold ${medicine.stockQuantity > 0 ? "text-emerald-600" : "text-rose-600"}`}
-              >
-                {medicine.stockQuantity > 0
-                  ? `${medicine.stockQuantity} Packs Left`
-                  : "Out of Stock"}
-              </span>
-            </p>
+              {isInStock ? (
+                <span className="flex items-center gap-1.5 font-semibold text-success">
+                  <BadgeCheck
+                    className="h-4 w-4"
+                    aria-hidden="true"
+                  />
+                  In stock — {medicine.stockQuantity}{" "}
+                  {medicine.stockQuantity === 1 ? "pack" : "packs"} available
+                </span>
+              ) : (
+                <span className="flex items-center gap-1.5 font-semibold text-danger">
+                  <BadgeCheck className="h-4 w-4" aria-hidden="true" />
+                  Out of stock
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Trust signals */}
+          <div className="grid grid-cols-1 gap-2 text-xs text-muted-foreground sm:grid-cols-3">
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="h-4 w-4 text-brand-700" aria-hidden="true" />
+              Genuine & approved
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Truck className="h-4 w-4 text-brand-700" aria-hidden="true" />
+              Fast delivery in BD
+            </span>
+            <span className="flex items-center gap-1.5">
+              <BadgeCheck className="h-4 w-4 text-brand-700" aria-hidden="true" />
+              Cash on delivery
+            </span>
           </div>
 
           {/* Dynamic Client Actions */}

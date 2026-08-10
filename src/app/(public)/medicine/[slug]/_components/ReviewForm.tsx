@@ -128,10 +128,10 @@ export function ReviewForm({
       return (
         <div className="text-center py-10">
           <div className="flex justify-center mb-4">
-            <Star className="w-12 h-12 text-slate-200" />
+            <Star className="w-12 h-12 text-muted" />
           </div>
-          <h3 className="text-lg font-bold text-slate-900">No reviews yet</h3>
-          <p className="text-slate-500 text-sm mb-6">
+          <h3 className="text-lg font-bold text-brand-900">No reviews yet</h3>
+          <p className="text-muted-foreground text-sm mb-6">
             Be the first to review &quot;{medicineName}&quot;
           </p>
           <Button
@@ -142,7 +142,7 @@ export function ReviewForm({
               }
               setIsOpen(true);
             }}
-            className="px-6 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+            className="cursor-pointer bg-brand-700 px-6 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-brand-600 active:bg-brand-800"
           >
             Write a Review
           </Button>
@@ -153,7 +153,7 @@ export function ReviewForm({
     // There are other reviews, just show the "Write a Review" button
     return (
       <div className="text-center py-6 border-t border-slate-100">
-        <p className="text-sm text-slate-500 mb-4">
+        <p className="text-sm text-muted-foreground mb-4">
           Share your experience with this medicine
         </p>
         <Button
@@ -164,7 +164,7 @@ export function ReviewForm({
             }
             setIsOpen(true);
           }}
-          className="px-6 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+            className="cursor-pointer bg-brand-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-brand-600 active:bg-brand-800"
         >
           Write a Review
         </Button>
@@ -174,8 +174,8 @@ export function ReviewForm({
 
   if (!isOpen && isEditing) {
     return (
-      <div className="text-center py-8 border border-dashed border-slate-200 rounded-xl">
-        <p className="text-sm text-slate-600 mb-3">
+      <div className="text-center py-8 border border-dashed border-border-default rounded-xl">
+        <p className="text-sm text-muted-foreground mb-3">
           You have already reviewed this medicine.
         </p>
         <div className="flex items-center justify-center gap-2">
@@ -183,7 +183,7 @@ export function ReviewForm({
             onClick={() => setIsOpen(true)}
             variant="outline"
             size="sm"
-            className="text-xs cursor-pointer text-brand hover:bg-brand hover:text-white transition-colors duration-200"
+            className="text-xs cursor-pointer text-brand-700 border-brand-200 hover:bg-brand-700 hover:text-white transition-colors duration-200"
           >
             Edit Your Review
           </Button>
@@ -192,7 +192,7 @@ export function ReviewForm({
             disabled={isDeleting}
             variant="outline"
             size="sm"
-            className="text-xs text-red-500 border-red-200 hover:bg-red-500 hover:text-white cursor-pointer"
+            className="text-xs text-danger border-danger/30 hover:bg-danger hover:text-white cursor-pointer"
           >
             {isDeleting ? (
               <Loader2 className="w-3 h-3 animate-spin" />
@@ -209,14 +209,14 @@ export function ReviewForm({
               key={star}
               className={`w-4 h-4 ${
                 star <= (existingReview?.rating || 0)
-                  ? "text-amber-400 fill-amber-400"
-                  : "text-slate-200"
+                  ? "text-accent-500 fill-accent-500"
+                  : "text-muted"
               }`}
             />
           ))}
         </div>
         {existingReview?.comment && (
-          <p className="mt-2 text-sm text-slate-500 max-w-md mx-auto">
+          <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
             &quot;{existingReview.comment}&quot;
           </p>
         )}
@@ -225,8 +225,8 @@ export function ReviewForm({
   }
 
   return (
-    <div className="border border-slate-200 rounded-xl p-6 bg-white">
-      <h3 className="text-lg font-bold text-slate-900 mb-4">
+    <div className="border border-border-default rounded-xl p-6 bg-card">
+      <h3 className="text-lg font-bold text-brand-900 mb-4">
         {isEditing ? "Edit Your Review" : "Write a Review"}
       </h3>
 
@@ -241,7 +241,7 @@ export function ReviewForm({
         <form.Field name="rating">
           {(field) => (
             <div>
-              <p className="text-sm font-medium text-slate-700 mb-2">
+              <p className="text-sm font-medium text-foreground mb-2">
                 Your Rating *
               </p>
               <div className="flex items-center gap-1">
@@ -257,8 +257,8 @@ export function ReviewForm({
                     <Star
                       className={`w-8 h-8 ${
                         star <= (hoveredStar || field.state.value)
-                          ? "text-amber-400 fill-amber-400"
-                          : "text-slate-200"
+                          ? "text-accent-500 fill-accent-500"
+                          : "text-muted"
                       }`}
                     />
                   </button>
@@ -277,7 +277,7 @@ export function ReviewForm({
         <form.Field name="comment">
           {(field) => (
             <div>
-              <p className="text-sm font-medium text-slate-700 mb-2">
+              <p className="text-sm font-medium text-foreground mb-2">
                 Your Review (optional)
               </p>
               <Textarea

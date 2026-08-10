@@ -1,10 +1,11 @@
 import { Medicine } from "@/types";
-import { Pill, Star } from "lucide-react";
+import { Pill, Star, CircleCheck, CircleX } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { WishlistButton } from "@/components/shared/wishlist/WishlistButton";
 import { getPrimaryImage, getPrices, getDiscountPercentage } from "@/lib/utils";
 import { PriceDisplay } from "@/components/shared/PriceDisplay";
+import { Badge } from "@/components/ui/badge";
 
 interface MedicineCardProps {
   medicine: Medicine;
@@ -20,9 +21,10 @@ export async function MedicineCard({
   const image = getPrimaryImage(medicine);
   const { regularPrice, salePrice } = getPrices(medicine);
   const discount = getDiscountPercentage(regularPrice, salePrice);
+  const isInStock = medicine.stockQuantity > 0;
 
   return (
-    <div className="relative group bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+    <div className="relative group flex flex-col rounded-xl border border-border-default bg-card p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-md">
       {showWishlist && (
         <div className="absolute top-3 right-3 z-10">
           <WishlistButton
@@ -31,33 +33,49 @@ export async function MedicineCard({
           />
         </div>
       )}
-      <Link href={`/medicine/${medicine.slug}`}>
-        <div className="relative w-full h-36 bg-slate-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
+      <Link href={`/medicine/${medicine.slug}`} className="flex flex-1 flex-col">
+        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-lg border border-border-default/60 bg-surface-card p-3">
           {image ? (
             <Image
               src={image}
               alt={medicine.name}
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
-              className="object-contain p-3 group-hover:scale-105 transition-transform duration-300"
+              className="object-contain transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
-            <Pill className="w-10 h-10 text-slate-300" />
+            <Pill className="h-10 w-10 text-muted-foreground" />
           )}
           {discount && discount > 0 && (
-            <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+            <Badge
+              className="absolute top-1.5 left-1.5 bg-accent-500 px-2 py-0.5 text-[10px] font-bold text-white"
+              aria-label={`${discount}% discount`}
+            >
               -{discount}%
+            </Badge>
+          )}
+          {!isInStock && (
+            <span className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-[1px]">
+              <span className="flex items-center gap-1.5 rounded-full border border-border-default bg-card px-2.5 py-1 text-[10px] font-bold text-muted-foreground shadow-xs">
+                <CircleX className="h-3 w-3 text-danger" aria-hidden="true" />
+                Out of stock
+              </span>
             </span>
           )}
         </div>
-        <p className="text-[11px] text-emerald-600 font-semibold uppercase mb-0.5">
+        <p className="mt-3 text-[11px] font-bold uppercase tracking-wider text-brand-700">
           {medicine.genericName}
         </p>
-        <p className="text-sm font-semibold text-slate-900 line-clamp-2 leading-tight">
+        <p className="mt-0.5 text-sm font-semibold leading-tight text-brand-900 line-clamp-2">
           {medicine.name}
         </p>
+        {medicine.strength && (
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            {medicine.strength} · {medicine.dosageForm}
+          </p>
+        )}
         <div
-          className="flex items-center gap-1 mt-1.5"
+          className="mt-1.5 flex items-center gap-1"
           role="img"
           aria-label={`Rated ${medicine.averageRating} out of 5 from ${medicine.reviewCount} reviews`}
         >
@@ -65,22 +83,30 @@ export async function MedicineCard({
             <Star
               key={i}
               aria-hidden="true"
-              className={`w-3 h-3 ${
+              className={`h-3 w-3 ${
                 i < Math.round(medicine.averageRating)
-                  ? "text-amber-400 fill-amber-400"
-                  : "text-slate-200"
+                  ? "fill-accent-500 text-accent-500"
+                  : "fill-muted text-muted"
               }`}
             />
           ))}
-          <span className="text-[10px] text-slate-400 ml-1">
+          <span className="ml-1 text-[10px] text-muted-foreground">
             ({medicine.reviewCount})
           </span>
         </div>
-        <div className="mt-2">
-          <PriceDisplay
-            current={salePrice || regularPrice}
-            original={discount ? regularPrice : null}
-          />
+        <div className="mt-auto pt-2.5">
+          <div className="flex items-center justify-between gap-2">
+            <PriceDisplay
+              current={salePrice || regularPrice}
+              original={discount ? regularPrice : null}
+            />
+            {isInStock ? (
+              <span className="flex items-center gap-1 text-[10px] font-semibold text-success">
+                <CircleCheck className="h-3 w-3" aria-hidden="true" />
+                In stock
+              </span>
+            ) : null}
+          </div>
         </div>
       </Link>
     </div>

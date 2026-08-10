@@ -27,8 +27,8 @@ export default function PriceFilter({
 }: PriceFilterProps) {
   return (
     <div>
-      <h3 className="font-bold text-xs text-slate-900 uppercase tracking-wider mb-2.5">
-        Price Filter
+      <h3 className="mb-2.5 text-xs font-bold uppercase tracking-wider text-brand-900">
+        Price (৳)
       </h3>
 
       <form action="/shop" method="GET" className="space-y-3">
@@ -58,52 +58,73 @@ export default function PriceFilter({
 
         <input type="hidden" name="limit" value={limit} />
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-end gap-2">
           <div className="flex-1">
-            <label className="text-[10px] text-slate-400 font-semibold uppercase block mb-1">
-              Min Price
+            <label
+              htmlFor="min_price"
+              className="mb-1 block text-xs font-semibold text-muted-foreground"
+            >
+              Min
             </label>
 
             <Input
+              id="min_price"
               type="number"
               name="min_price"
               min={0}
+              inputMode="numeric"
               defaultValue={params.min_price || ""}
               placeholder="0"
-              className={`text-xs ${
-                priceValidationError ? "border-rose-400" : ""
+              className={`h-10 text-sm ${
+                priceValidationError ? "border-danger focus-visible:ring-danger/40" : ""
               }`}
             />
           </div>
 
-          <div className="mt-4 text-slate-400">-</div>
+          <span
+            className="pb-2.5 text-muted-foreground"
+            aria-hidden="true"
+          >
+            -
+          </span>
 
           <div className="flex-1">
-            <label className="text-[10px] text-slate-400 font-semibold uppercase block mb-1">
-              Max Price
+            <label
+              htmlFor="max_price"
+              className="mb-1 block text-xs font-semibold text-muted-foreground"
+            >
+              Max
             </label>
 
             <Input
+              id="max_price"
               type="number"
               name="max_price"
               min={params.min_price ? Number(params.min_price) : 0}
+              inputMode="numeric"
               defaultValue={params.max_price || ""}
               placeholder="2000"
-              className={`text-xs ${
-                priceValidationError ? "border-rose-400" : ""
+              className={`h-10 text-sm ${
+                priceValidationError ? "border-danger focus-visible:ring-danger/40" : ""
               }`}
             />
           </div>
         </div>
 
         {priceValidationError && (
-          <p className="text-[11px] font-medium text-rose-500 bg-rose-50 border border-rose-100 rounded-md p-1.5 text-center">
+          <p
+            role="alert"
+            className="rounded-md border border-danger/20 bg-danger/5 p-2 text-center text-xs font-medium text-danger"
+          >
             {priceValidationError}
           </p>
         )}
 
-        <Button type="submit" className="w-full">
-          Filter
+        <Button
+          type="submit"
+          className="w-full cursor-pointer bg-brand-700 hover:bg-brand-600 active:bg-brand-800"
+        >
+          Apply price
         </Button>
       </form>
     </div>

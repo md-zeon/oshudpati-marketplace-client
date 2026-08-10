@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Minus, Plus, ShoppingBag } from "lucide-react";
+import { CircleX, Minus, Plus, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Medicine } from "@/types";
 import { toast } from "sonner";
@@ -14,6 +14,8 @@ interface MedicineActionsProps {
 
 export function MedicineActions({ medicine }: MedicineActionsProps) {
   const [quantity, setQuantity] = useState(1);
+
+  const isInStock = medicine.stockQuantity > 0;
 
   const incrementQuantity = () => {
     if (quantity < medicine.stockQuantity) {
@@ -42,7 +44,6 @@ export function MedicineActions({ medicine }: MedicineActionsProps) {
         (item) => item.medicineId === medicine.id,
       );
 
-      // If item already exists in cart, update quantity (ensuring it doesn't exceed stock), otherwise add new item
       if (existingItemIndex > -1) {
         currentCart[existingItemIndex].quantity = Math.min(
           currentCart[existingItemIndex].quantity + quantity,
@@ -50,7 +51,7 @@ export function MedicineActions({ medicine }: MedicineActionsProps) {
         );
       } else {
         currentCart.push({
-          id: medicine.id, // Using medicine ID directly as item index layout fallback
+          id: medicine.id,
           userId: "guest",
           medicineId: medicine.id,
           quantity,
@@ -73,40 +74,87 @@ export function MedicineActions({ medicine }: MedicineActionsProps) {
     }
   };
 
-  return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-center mt-4">
-      <div className="flex items-center border border-slate-200 rounded-lg max-w-fit bg-white shadow-sm">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-10 w-10 rounded-l-lg hover:bg-slate-50 text-slate-600 transition-colors"
-          onClick={decrementQuantity}
-          disabled={quantity <= 1}
-        >
-          <Minus className="w-4 h-4" />
-        </Button>
-        <span className="w-12 text-center font-semibold text-slate-800 select-none">
-          {quantity}
-        </span>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-10 w-10 rounded-r-lg hover:bg-slate-50 text-slate-600 transition-colors"
-          onClick={incrementQuantity}
-          disabled={quantity >= medicine.stockQuantity}
-        >
-          <Plus className="w-4 h-4" />
-        </Button>
-      </div>
-
+  const stepper = (
+    <div className="flex items-center rounded-lg border border-border-default bg-card shadow-sm">
       <Button
-        className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium flex items-center gap-2 shadow-sm transition-colors py-5"
-        onClick={handleAddToCart}
-        disabled={medicine.stockQuantity <= 0}
+        variant="ghost"
+        size="icon"
+        className="h-10 w-10 cursor-pointer rounded-l-lg text-muted-foreground transition-colors hover:bg-brand-50 hover:text-brand-700"
+        onClick={decrementQuantity}
+        disabled={quantity <= 1}
+        aria-label="Decrease quantity"
       >
-        <ShoppingBag className="w-4 h-4" />
-        {medicine.stockQuantity > 0 ? "Add to Cart" : "Out of Stock"}
+        <Minus className="h-4 w-4" />
+      </Button>
+      <span
+        className="w-12 select-none text-center font-semibold text-foreground"
+        aria-live="polite"
+      >
+        {quantity}
+      </span>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-10 w-10 cursor-pointer rounded-r-lg text-muted-foreground transition-colors hover:bg-brand-50 hover:text-brand-700"
+        onClick={incrementQuantity}
+        disabled={quantity >= medicine.stockQuantity}
+        aria-label="Increase quantity"
+      >
+        <Plus className="h-4 w-4" />
       </Button>
     </div>
+  );
+
+  const addButton = isInStock ? (
+    <Button
+      className="cursor-pointer bg-brand-700 py-5 font-medium text-white shadow-sm transition-colors hover:bg-brand-600 active:bg-brand-800"
+      onClick={handleAddToCart}
+    >
+      <ShoppingBag className="h-4 w-4" aria-hidden="true" />
+      Add to Cart
+    </Button>
+  ) : (
+    <Button
+      className="cursor-not-allowed"
+      variant="outline"
+      disabled
+      aria-label={`${medicine.name} is out of stock`}
+    >
+      <CircleX className="h-4 w-4" aria-hidden="true" />
+      Out of Stock
+    </Button>
+  );
+
+  return (
+    <>
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+        {isInStock && stepper}
+        {addButton}
+      </div>
+
+      {/* Mobile sticky purchase bar (above fixed bottom nav) */}
+      <div className="fixed inset-x-0 bottom-16 z-30 border-t border-border-default bg-card/95 px-4 py-3 backdrop-blur-sm lg:hidden">
+        <div className="mx-auto flex max-w-360 items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="text-base font-black text-brand-900">
+              ৳{medicine.discountPrice ? Number(medicine.discountPrice).toFixed(2) : Number(medicine.price).toFixed(2)}
+            </p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              {isInStock ? "In stock" : "Out of stock"}
+            </p>
+          </div>
+          {isInStock && stepper}
+          <Button
+            className="shrink-0 cursor-pointer bg-brand-700 hover:bg-brand-600 active:bg-brand-800"
+            onClick={handleAddToCart}
+            disabled={!isInStock}
+            aria-label={`Add ${quantity} to cart`}
+          >
+            <ShoppingBag className="h-4 w-4" aria-hidden="true" />
+            Add
+          </Button>
+        </div>
+      </div>
+    </>
   );
 }

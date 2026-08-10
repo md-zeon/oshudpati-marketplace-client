@@ -43,10 +43,8 @@ export default function SortControls({
   };
 
   return (
-    <div className="flex items-center justify-between sm:justify-end gap-4 w-full text-gray-900">
-      {/* Unified Minimal Capsule Bar */}
-      <div className="flex items-center h-9 bg-gray-50/60 border border-gray-200/80 rounded-lg px-1 text-xs font-medium w-full sm:w-auto">
-        {/* Sort Select */}
+    <div className="flex w-full items-center justify-between gap-4 text-foreground sm:justify-end">
+      <div className="flex h-10 w-full items-center rounded-lg border border-border-default bg-surface-card px-1 text-xs font-medium sm:w-auto">
         <div className="flex-1 sm:flex-none">
           <Select
             value={activeSort}
@@ -54,35 +52,39 @@ export default function SortControls({
               router.push(createQueryString({ sortBy: value, page: 1 }));
             }}
           >
-            <SelectTrigger className="h-7 px-2.5 border-none bg-transparent hover:text-emerald-600 font-semibold tracking-tight shadow-none gap-1 focus:ring-0 [&>svg]:hidden">
-              <span className="text-gray-400 font-normal">Sort:</span>
+            <SelectTrigger
+              aria-label="Sort products"
+              className="h-8 gap-1 border-none bg-transparent px-2.5 font-semibold tracking-tight text-brand-700 shadow-none hover:text-brand-800 focus:ring-0 [&>svg]:hidden"
+            >
+              <span className="font-normal text-muted-foreground">Sort:</span>
               <SelectValue />
-              <ChevronDown className="w-3 h-3 text-gray-400 ml-0.5 shrink-0" />
+              <ChevronDown
+                className="ml-0.5 h-3 w-3 shrink-0 text-muted-foreground"
+                aria-hidden="true"
+              />
             </SelectTrigger>
             <SelectContent
               align="start"
-              className="border-gray-100 rounded-xl shadow-md min-w-35"
+              className="min-w-35 rounded-xl border-border-default shadow-md"
             >
-              <SelectItem value="popular" className="text-xs">
-                Popularity
+              <SelectItem value="popular" className="text-sm">
+                Best selling
               </SelectItem>
-              <SelectItem value="latest" className="text-xs">
+              <SelectItem value="latest" className="text-sm">
                 Latest arrivals
               </SelectItem>
-              <SelectItem value="price-asc" className="text-xs">
+              <SelectItem value="price-asc" className="text-sm">
                 Price: Low to High
               </SelectItem>
-              <SelectItem value="price-desc" className="text-xs">
+              <SelectItem value="price-desc" className="text-sm">
                 Price: High to Low
               </SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        {/* Micro Divider Line */}
-        <div className="h-4 w-px bg-gray-200 shrink-0" aria-hidden="true" />
+        <div className="h-4 w-px shrink-0 bg-border-default" aria-hidden="true" />
 
-        {/* Limit Select (Just showing the number for ultimate minimalism) */}
         <div className="flex-1 sm:flex-none">
           <Select
             value={activeLimit}
@@ -90,16 +92,22 @@ export default function SortControls({
               router.push(createQueryString({ limit: value, page: 1 }));
             }}
           >
-            <SelectTrigger className="h-7 px-2.5 border-none bg-transparent hover:text-emerald-600 font-semibold tracking-tight shadow-none gap-1 focus:ring-0 [&>svg]:hidden">
+            <SelectTrigger
+              aria-label="Products per page"
+              className="h-8 gap-1 border-none bg-transparent px-2.5 font-semibold tracking-tight text-brand-700 shadow-none hover:text-brand-800 focus:ring-0 [&>svg]:hidden"
+            >
               <SelectValue />
-              <ChevronDown className="w-3 h-3 text-gray-400 ml-0.5 shrink-0" />
+              <ChevronDown
+                className="ml-0.5 h-3 w-3 shrink-0 text-muted-foreground"
+                aria-hidden="true"
+              />
             </SelectTrigger>
             <SelectContent
               align="start"
-              className="border-gray-100 rounded-xl shadow-md min-w-27.5"
+              className="min-w-27.5 rounded-xl border-border-default shadow-md"
             >
               {[12, 16, 24, 32].map((num) => (
-                <SelectItem key={num} value={String(num)} className="text-xs">
+                <SelectItem key={num} value={String(num)} className="text-sm">
                   {num} per page
                 </SelectItem>
               ))}
@@ -107,33 +115,33 @@ export default function SortControls({
           </Select>
         </div>
 
-        {/* Micro Divider Line */}
-        <div className="h-4 w-px bg-gray-200 shrink-0" aria-hidden="true" />
+        <div className="h-4 w-px shrink-0 bg-border-default" aria-hidden="true" />
 
-        {/* Layout Segment Switches */}
-        <div className="flex items-center gap-1 px-1.5 shrink-0">
+        <div className="flex shrink-0 items-center gap-1 px-1.5">
           <button
             onClick={() => router.push(createQueryString({ viewMode: "grid" }))}
-            className={`transition-all p-1 rounded-md ${
+            className={`rounded-md p-1.5 transition-all ${
               viewMode === "grid"
-                ? "bg-white border border-gray-200/50 text-emerald-600 shadow-xs"
-                : "text-gray-400 hover:text-gray-600"
+                ? "border border-border-default bg-card text-brand-700 shadow-xs"
+                : "text-muted-foreground hover:text-brand-700"
             }`}
             aria-label="Grid view"
+            aria-pressed={viewMode === "grid"}
           >
-            <Grid className="w-3.5 h-3.5 stroke-2" />
+            <Grid className="h-4 w-4 stroke-2" />
           </button>
 
           <button
             onClick={() => router.push(createQueryString({ viewMode: "list" }))}
-            className={`transition-all p-1 rounded-md ${
+            className={`rounded-md p-1.5 transition-all ${
               viewMode === "list"
-                ? "bg-white border border-gray-200/50 text-emerald-600 shadow-xs"
-                : "text-gray-400 hover:text-gray-600"
+                ? "border border-border-default bg-card text-brand-700 shadow-xs"
+                : "text-muted-foreground hover:text-brand-700"
             }`}
             aria-label="List view"
+            aria-pressed={viewMode === "list"}
           >
-            <List className="w-3.5 h-3.5 stroke-2" />
+            <List className="h-4 w-4 stroke-2" />
           </button>
         </div>
       </div>

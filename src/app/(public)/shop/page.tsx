@@ -68,11 +68,21 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     ? wishlistResponse.data.map((item: WishlistItem) => item.medicineId)
     : [];
 
+  const hasActiveFilters = !!(
+    filters.search ||
+    filters.category.length > 0 ||
+    filters.manufacturer.length > 0 ||
+    filters.minPrice !== undefined ||
+    filters.maxPrice !== undefined ||
+    filters.isFeatured
+  );
+
   return (
     <div className="mx-auto max-w-350 px-4 py-8">
       <ShopHeader
         params={params}
         medicinesCount={medicines.length}
+        totalCount={meta?.total ?? 0}
         search={filters.search}
         category={filters.category}
         manufacturer={filters.manufacturer}
@@ -84,16 +94,29 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         viewMode={filters.viewMode}
       />
 
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
         <ShopSidebar
           categories={categories}
           manufacturers={manufacturerList}
           params={params}
           filters={filters}
+          resultsCount={medicines.length}
+          activeFilterCount={
+            filters.category.length +
+            filters.manufacturer.length +
+            (filters.minPrice !== undefined || filters.maxPrice !== undefined ? 1 : 0) +
+            (filters.isFeatured ? 1 : 0) +
+            (filters.search ? 1 : 0)
+          }
         />
 
-        <main className="flex-1">
-          <ProductGrid medicines={medicines} viewMode={filters.viewMode} wishlistItems={wishlistItems} />
+        <main className="min-w-0 flex-1">
+          <ProductGrid
+            medicines={medicines}
+            viewMode={filters.viewMode}
+            wishlistItems={wishlistItems}
+            hasActiveFilters={hasActiveFilters}
+          />
 
           {meta && (
             <Suspense fallback={null}>

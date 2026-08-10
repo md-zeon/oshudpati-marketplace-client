@@ -4,7 +4,7 @@ import { addToCart } from "@/actions/cart.action";
 import { Button } from "@/components/ui/button";
 import { getLocalCart, saveLocalCart } from "@/lib/local-cart";
 import { Medicine } from "@/types";
-import { ShoppingBag } from "lucide-react";
+import { CircleX, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 
 const ProductCardAddToCart = ({
@@ -14,6 +14,8 @@ const ProductCardAddToCart = ({
   medicine: Medicine;
   isList: boolean;
 }) => {
+  const isInStock = medicine.stockQuantity > 0;
+
   const handleAddToCart = async (quantity: number) => {
     const res = await addToCart(medicine.id, quantity);
     if (res?.success && res?.mode === "database") {
@@ -29,7 +31,6 @@ const ProductCardAddToCart = ({
         (item) => item.medicineId === medicine.id,
       );
 
-      // If item already exists in cart, update quantity (ensuring it doesn't exceed stock), otherwise add new item
       if (existingItemIndex > -1) {
         currentCart[existingItemIndex].quantity = Math.min(
           currentCart[existingItemIndex].quantity + quantity,
@@ -37,7 +38,7 @@ const ProductCardAddToCart = ({
         );
       } else {
         currentCart.push({
-          id: medicine.id, // Using medicine ID directly as item index layout fallback
+          id: medicine.id,
           userId: "guest",
           medicineId: medicine.id,
           quantity,
@@ -59,15 +60,34 @@ const ProductCardAddToCart = ({
       );
     }
   };
+
+  if (!isInStock) {
+    return (
+      <Button
+        className={isList ? "w-full cursor-not-allowed" : "cursor-not-allowed"}
+        variant="outline"
+        size="lg"
+        aria-label={`${medicine.name} is out of stock`}
+        disabled
+      >
+        <CircleX className="h-4 w-4" />
+        Out of stock
+      </Button>
+    );
+  }
+
   return (
     <Button
-      className={isList ? "w-full cursor-pointer" : "cursor-pointer"}
-      variant="outline"
+      className={
+        isList
+          ? "w-full cursor-pointer bg-brand-700 hover:bg-brand-600 active:bg-brand-800"
+          : "cursor-pointer bg-brand-700 hover:bg-brand-600 active:bg-brand-800"
+      }
       size="lg"
       aria-label={`Add ${medicine.name} to cart`}
       onClick={() => handleAddToCart(1)}
     >
-      <ShoppingBag className="w-4 h-4" />
+      <ShoppingBag className="h-4 w-4" />
       Add to cart
     </Button>
   );

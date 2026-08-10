@@ -13,8 +13,8 @@ export default function FeaturedFilter({
 }: FeaturedFilterProps) {
   return (
     <div>
-      <h3 className="font-bold text-xs text-slate-900 uppercase tracking-wider mb-2.5">
-        Product Status
+      <h3 className="mb-2.5 text-xs font-bold uppercase tracking-wider text-brand-900">
+        Availability
       </h3>
 
       <Link
@@ -26,23 +26,25 @@ export default function FeaturedFilter({
             page: 1,
           },
         }}
-        className={`flex items-center justify-between text-xs p-2 rounded-lg transition-colors group ${
+        aria-pressed={isFeatured}
+        className={`flex min-h-9 items-center justify-between gap-2 rounded-lg px-2.5 text-xs transition-colors focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:outline-none ${
           isFeatured
-            ? "bg-emerald-50 text-emerald-700 font-bold"
-            : "text-slate-600 hover:bg-slate-50"
+            ? "bg-brand-50 font-bold text-brand-800"
+            : "text-muted-foreground hover:bg-brand-50/60 hover:text-brand-800"
         }`}
       >
-        <span>Featured Only</span>
+        <span>Featured products only</span>
 
-        <div
-          className={`w-3.5 h-3.5 rounded border flex items-center justify-center ${
+        <span
+          aria-hidden="true"
+          className={`flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded border ${
             isFeatured
-              ? "bg-emerald-600 border-emerald-600 text-white"
-              : "border-slate-300"
+              ? "border-brand-600 bg-brand-600 text-white"
+              : "border-border-default bg-background"
           }`}
         >
-          {isFeatured && <Check className="w-2.5 h-2.5 stroke-3" />}
-        </div>
+          {isFeatured && <Check className="h-3 w-3 stroke-3" />}
+        </span>
       </Link>
     </div>
   );

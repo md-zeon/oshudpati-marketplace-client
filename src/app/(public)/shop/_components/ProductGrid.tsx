@@ -6,22 +6,24 @@ interface ProductGridProps {
   medicines: Medicine[];
   viewMode: "grid" | "list";
   wishlistItems: WishlistItem[];
+  hasActiveFilters?: boolean;
 }
 
 export default function ProductGrid({
   medicines,
   viewMode,
   wishlistItems,
+  hasActiveFilters = false,
 }: ProductGridProps) {
   if (!medicines.length) {
-    return <EmptyState />;
+    return <EmptyState hasActiveFilters={hasActiveFilters} />;
   }
 
   return (
     <div
       className={
         viewMode === "grid"
-          ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5"
+          ? "grid grid-cols-2 gap-4 sm:gap-5 xl:grid-cols-3"
           : "space-y-3.5"
       }
     >

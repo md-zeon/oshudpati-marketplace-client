@@ -1,14 +1,15 @@
 import { Medicine } from "@/types";
-import { Star } from "lucide-react";
+import { CircleCheck, CircleX } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { WishlistButton } from "@/components/shared/wishlist/WishlistButton";
+import { StarRating } from "@/components/shared/StarRating";
+import { Badge } from "@/components/ui/badge";
 
 import {
   getPrimaryImage,
   getPrices,
   getDiscountPercentage,
-  getRating,
 } from "@/lib/utils";
 import ProductCardAddToCart from "./ProductCardAddToCart";
 
@@ -24,6 +25,7 @@ export function ProductCard({
   isWishlisted,
 }: ProductCardProps) {
   const isList = viewMode === "list";
+  const isInStock = medicine.stockQuantity > 0;
 
   const primaryImage = getPrimaryImage(medicine);
 
@@ -31,33 +33,36 @@ export function ProductCard({
 
   const discountPercentage = getDiscountPercentage(regularPrice, salePrice);
 
-  const rating = getRating(medicine);
+  const rating = Math.round(medicine.averageRating || 0);
 
   return (
     <div
-      className={`bg-white border border-slate-200/60 rounded-xl transition-all duration-200 hover:shadow-md relative flex group overflow-hidden ${
+      className={`group relative flex overflow-hidden rounded-xl border border-border-default bg-card transition-all duration-200 hover:border-brand-200 hover:shadow-md ${
         isList
-          ? "w-full flex-row p-5 gap-6 items-center"
-          : "flex-col p-4 justify-between h-full"
+          ? "w-full flex-row items-center gap-6 p-5"
+          : "flex-col justify-between p-4 h-full"
       }`}
     >
-      {/* Discount Badge */}
       {discountPercentage && discountPercentage > 0 && (
-        <span className="absolute top-3 left-3 z-10 bg-emerald-600 text-white font-extrabold text-[10px] px-2 py-0.5 rounded shadow-xs tracking-wider">
+        <Badge
+          className="absolute top-3 left-3 z-10 bg-accent-500 px-2 py-0.5 text-[10px] font-extrabold tracking-wider text-white shadow-xs"
+          aria-label={`${discountPercentage}% discount`}
+        >
           {discountPercentage}% OFF
-        </span>
+        </Badge>
       )}
 
-      {/* Wishlist Button */}
       <div className="absolute top-3 right-3 z-10">
         <WishlistButton medicineId={medicine.id} isWishlisted={isWishlisted} />
       </div>
 
-      {/* Image */}
-      <Link href={`/medicine/${medicine.slug}`}>
+      <Link
+        href={`/medicine/${medicine.slug}`}
+        className={isList ? "shrink-0" : "block"}
+      >
         <div
-          className={`bg-slate-50/60 rounded-xl flex items-center justify-center shrink-0 border border-slate-100/80 relative overflow-hidden ${
-            isList ? "w-44 h-44" : "w-full h-48 mb-4"
+          className={`relative flex items-center justify-center overflow-hidden rounded-xl border border-border-default/60 bg-surface-card ${
+            isList ? "h-44 w-44" : "mb-4 aspect-square w-full"
           }`}
         >
           <Image
@@ -65,52 +70,63 @@ export function ProductCard({
             alt={medicine.name}
             width={300}
             height={300}
-            className="w-4/5 h-4/5 object-contain transition-transform duration-300 group-hover:scale-105"
+            sizes="(max-width: 640px) 50vw, (max-width: 1280px) 33vw, 300px"
+            className="h-4/5 w-4/5 object-contain transition-transform duration-300 group-hover:scale-105"
           />
+          {!isInStock && (
+            <span className="absolute inset-0 flex items-center justify-center bg-background/55 backdrop-blur-[1px]">
+              <span className="flex items-center gap-1.5 rounded-full border border-border-default bg-card px-2.5 py-1 text-[10px] font-bold text-muted-foreground shadow-xs">
+                <CircleX className="h-3 w-3 text-danger" aria-hidden="true" />
+                Out of stock
+              </span>
+            </span>
+          )}
         </div>
       </Link>
-      {/* Content */}
 
-      <div className="flex-1 flex flex-col justify-between h-full w-full">
+      <div className="flex h-full w-full flex-1 flex-col justify-between">
         <div>
-          {/* Rating */}
-          <div className="flex items-center gap-1 mb-1.5">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className={`w-3.5 h-3.5 ${
-                  i < rating
-                    ? "fill-amber-400 text-amber-400"
-                    : "text-slate-200"
-                }`}
-              />
-            ))}
-            <span className="text-[11px] text-slate-400 font-bold ml-1">
-              {medicine.averageRating}
-            </span>
+          <div className="mb-1.5 flex items-center justify-between gap-2">
+            <StarRating
+              rating={rating}
+              reviewCount={medicine.reviewCount}
+              size="sm"
+            />
+            {isInStock ? (
+              <span className="flex items-center gap-1 text-[10px] font-semibold text-success">
+                <CircleCheck className="h-3 w-3" aria-hidden="true" />
+                In stock
+              </span>
+            ) : (
+              <span className="flex items-center gap-1 text-[10px] font-semibold text-danger">
+                <CircleX className="h-3 w-3" aria-hidden="true" />
+                Out
+              </span>
+            )}
           </div>
 
-          {/* Title */}
-          <h2 className="text-sm font-bold text-slate-900 tracking-tight leading-tight">
-            <Link href={`/medicine/${medicine.slug}`}>
-              {medicine.name}{" "}
-              {medicine.strength && (
-                <span className="text-xs font-normal text-slate-400 font-mono">
-                  ({medicine.strength})
-                </span>
-              )}
+          <h2 className="text-sm font-bold leading-tight tracking-tight text-brand-900">
+            <Link
+              href={`/medicine/${medicine.slug}`}
+              className="hover:text-brand-700"
+            >
+              {medicine.name}
             </Link>
           </h2>
 
-          {/* Generic name */}
-          <p className="text-[11px] font-bold text-emerald-600 tracking-wide mt-1 mb-2 uppercase">
+          <p className="mt-1 text-[11px] font-bold uppercase tracking-wide text-brand-700">
             {medicine.genericName}
           </p>
 
-          {/* Description */}
+          {medicine.strength && (
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {medicine.strength} · {medicine.dosageForm}
+            </p>
+          )}
+
           <p
-            className={`text-xs text-slate-500 leading-relaxed line-clamp-2 ${
-              isList ? "max-w-2xl mb-0" : "mb-4"
+            className={`mt-1.5 text-xs leading-relaxed text-muted-foreground line-clamp-2 ${
+              isList ? "max-w-2xl" : ""
             }`}
           >
             {medicine.shortDescription ||
@@ -118,35 +134,31 @@ export function ProductCard({
           </p>
         </div>
 
-        {/* Footer */}
         <div
-          className={`flex items-center justify-between border-t border-slate-100/80 pt-3 mt-auto ${
+          className={`mt-auto flex items-center justify-between border-t border-border-default/80 pt-3 ${
             isList
-              ? "w-full max-w-xs ml-auto border-t-0 pt-0 mt-0 flex-col gap-3 items-end"
-              : ""
+              ? "ml-auto w-full max-w-xs flex-col items-end gap-3 border-t-0 pt-0"
+              : "mt-3"
           }`}
         >
-          {/* Price */}
           <div>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-lg font-black text-slate-900">
+              <span className="text-lg font-black text-foreground">
                 ৳{(salePrice || regularPrice).toFixed(2)}
               </span>
-
               {salePrice && (
-                <span className="text-xs text-slate-400 line-through">
+                <span className="text-xs text-muted-foreground line-through">
                   ৳{regularPrice.toFixed(2)}
                 </span>
               )}
             </div>
 
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">
+            <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
               {medicine.dosageForm || "Tablet"} •{" "}
               {medicine.unitPresentation || "10 Strips"}
             </p>
           </div>
 
-          {/* Add to cart */}
           <ProductCardAddToCart medicine={medicine} isList={isList} />
         </div>
       </div>
