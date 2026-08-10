@@ -1,87 +1,124 @@
 @import "tailwindcss";
 
 /* ============================================================
-   OSHUDPATI DESIGN SYSTEM — SEMANTIC COLOR TOKENS
+   OSHUDPATI DESIGN SYSTEM — RESEARCH-BACKED COLOR TOKENS
    ============================================================
-   
-   BRAND COLORS (Public-facing site)
-   brand           : #059669 (emerald-600) - CTAs, primary buttons, links
-   brand-light     : #d1fae5 (emerald-100) - Light icon / badge backgrounds
-   brand-subtle    : #f0fdf4 (emerald-50)  - Very light card backgrounds
-   brand-dark      : #047857 (emerald-700) - Hover states
-   brand-accent    : #10b981 (emerald-500) - Success states
 
-   ADMIN COLORS (Admin panel only)
-   admin-bg        : #eff6ff (blue-50)
-   admin-text      : #1d4ed8 (blue-700)
-   admin-border    : #bfdbfe (blue-200)
-   admin-hover     : #dbeafe (blue-100)
+   RESEARCH SUMMARY (sources: Progress.com healthcare color
+   psychology study, ColorArchive.org healthcare palette guide,
+   Stafix pharmacy palette guide, truewellnessmarketing.com,
+   NHS Identity colour guidelines, Clarity Ventures pharmacy
+   design guide)
 
-   STATUS COLORS (Order tracking)
-   status-placed   : #3b82f6 (blue-500)
-   status-proc     : #f59e0b (amber-500)
-   status-shipped  : #8b5cf6 (violet-500)
-   status-deliv    : #10b981 (emerald-500)
-   status-cancel   : #ef4444 (red-500)
+   1. Blue/teal-greens appear in 57–62% of healthcare websites
+      above the fold — they signal trust, competence, calm.
+   2. Teal "bridges" the credibility of blue with the vitality
+      of green — the best primary for a medicine marketplace.
+   3. Pure clinical white + black reads cold/institutional; a
+      slightly warm off-white background (L:96–99%, hue 40–50°)
+      reduces eye strain and reads more human.
+   4. Warm accents (amber/orange) drive CTA engagement but must
+      be used sparingly (60-30-10 rule: ~10% of the page).
+   5. WCAG AA (4.5:1) minimum for body text; target AAA where
+      possible. Older/vision-impaired audiences = bigger type
+      (>=16px), generous line-height (1.6–1.8).
+   6. Never use colour alone to convey status — pair every
+      status colour with an icon + text label.
+   7. Green = success/healthy, Red = alert/danger conventions
+      are universal in healthcare — do not invert them.
 
-   SYSTEM COLORS
-   danger          : #dc2626 (red-500)    - Errors, critical
-   warning         : #f59e0b (amber-400)  - Star ratings
-   accent          : #f59e0b (amber-400)  - Star ratings
-   wishlist        : #f43f5e (rose-500)   - Wishlist heart
-   
-   SURFACE COLORS
-   surface         : #ffffff              - Page background
-   surface-card    : #f8fafc (slate-50)   - Card backgrounds
-   border-default  : #e2e8f0 (slate-200)  - Borders
-   
-   TEXT COLORS
-   text-primary    : #0f172a (slate-900)  - Headings
-   text-secondary  : #64748b (slate-500)  - Body text
-   text-muted      : #94a3b8 (slate-400)  - Captions
+   PALETTE
+   brand   : "Health Teal" teal-green (trust + wellness). #0c7865
+             passes WCAG AA (5.4:1) with white text on buttons.
+   trust   : Calming blue (info, trust badges, admin surfaces).
+   accent  : Warm amber (star ratings, promotions, highlights).
+   surfaces: Warm off-white page background, pure white cards.
+   status  : placed/processing/shipped/delivered/cancelled.
    ============================================================ */
 
 :root {
-  /* Brand */
+  /* ===== BRAND — "Health Teal" (primary) ===== */
+  --brand-50: #edfcf5;
+  --brand-100: #d6f7e9;
+  --brand-200: #adeeda;
+  --brand-300: #78dfc3;
+  --brand-400: #41c8a7;
+  --brand-500: #1fb090;
+  --brand-600: #129078;
+  --brand-700: #0c7865;
+  --brand-800: #0b6055;
+  --brand-900: #0a5049;
+  --brand-950: #042e2a;
+
+  /* Legacy brand aliases (backwards compatible — DO NOT change globally;
+     pages adopt the new brand scale incrementally) */
   --brand: #059669;
   --brand-light: #d1fae5;
   --brand-subtle: #f0fdf4;
   --brand-dark: #047857;
   --brand-accent: #10b981;
 
-  /* Admin */
+  /* ===== TRUST BLUE (secondary / info / admin) ===== */
+  --trust-50: #eff6ff;
+  --trust-100: #dbeafe;
+  --trust-200: #bfdbfe;
+  --trust-300: #93c5fd;
+  --trust-400: #60a5fa;
+  --trust-500: #3b82f6;
+  --trust-600: #2563eb;
+  --trust-700: #1d4ed8;
+  --trust-800: #1e40af;
+  --trust-900: #1e3a8a;
+
+  /* Admin panel surface (built on trust blue) */
   --admin-bg: #eff6ff;
   --admin-text: #1d4ed8;
   --admin-border: #bfdbfe;
   --admin-hover: #dbeafe;
 
-  /* Status */
+  /* ===== WARM AMBER (accent / ratings / promotions) ===== */
+  --accent-50: #fffbeb;
+  --accent-100: #fef3c7;
+  --accent-200: #fde68a;
+  --accent-300: #fcd34d;
+  --accent-400: #fbbf24;
+  --accent-500: #f59e0b;
+  --accent-600: #d97706;
+
+  /* Legacy accent alias (backwards compatible — star ratings, promos) */
+  --accent: #f59e0b;
+
+  /* ===== STATUS COLORS (order tracking) ===== */
   --status-placed: #3b82f6;
   --status-processing: #f59e0b;
   --status-shipped: #8b5cf6;
   --status-delivered: #10b981;
   --status-cancelled: #ef4444;
 
-  /* System */
+  /* ===== SYSTEM COLORS ===== */
   --danger: #dc2626;
   --warning: #f59e0b;
-  --accent: #f59e0b;
   --wishlist: #f43f5e;
   --success: #16a34a;
+  --info: #2563eb;
 
-  /* Surface */
+  /* ===== SURFACE COLORS =====
+     NOTE: semantic surface tokens keep their original values so the
+     palette is applied incrementally by page agents, not globally. */
   --background: #ffffff;
   --foreground: #0f172a;
   --surface: #ffffff;
   --surface-card: #f8fafc;
   --border-default: #e2e8f0;
 
-  /* Text */
+  /* ===== TEXT COLORS ===== */
   --text-primary: #0f172a;
   --text-secondary: #64748b;
   --text-muted: #94a3b8;
 
-  /* shadcn required tokens */
+  /* ===== SHADCN SEMANTIC TOKENS =====
+     Kept at original values — page agents adopt the new palette
+     tokens (brand-*, trust-*, accent-*) on the pages they improve. */
   --popover: #ffffff;
   --popover-foreground: #0f172a;
   --muted: #f1f5f9;
@@ -96,12 +133,55 @@
 }
 
 @theme inline {
-  /* Brand tokens */
+  /* Brand scale */
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+  --color-brand-950: var(--brand-950);
+
+  /* Brand aliases */
   --color-brand: var(--brand);
   --color-brand-light: var(--brand-light);
   --color-brand-subtle: var(--brand-subtle);
   --color-brand-dark: var(--brand-dark);
   --color-brand-accent: var(--brand-accent);
+
+  /* Trust blue scale */
+  --color-trust-50: var(--trust-50);
+  --color-trust-100: var(--trust-100);
+  --color-trust-200: var(--trust-200);
+  --color-trust-300: var(--trust-300);
+  --color-trust-400: var(--trust-400);
+  --color-trust-500: var(--trust-500);
+  --color-trust-600: var(--trust-600);
+  --color-trust-700: var(--trust-700);
+  --color-trust-800: var(--trust-800);
+  --color-trust-900: var(--trust-900);
+
+  /* Warm amber accent scale */
+  --color-accent-50: var(--accent-50);
+  --color-accent-100: var(--accent-100);
+  --color-accent-200: var(--accent-200);
+  --color-accent-300: var(--accent-300);
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+
+  /* Legacy accent alias */
+  --color-accent: var(--accent);
+
+  /* Admin tokens */
+  --color-admin-bg: var(--admin-bg);
+  --color-admin-text: var(--admin-text);
+  --color-admin-border: var(--admin-border);
+  --color-admin-hover: var(--admin-hover);
 
   /* Status tokens */
   --color-status-placed: var(--status-placed);
@@ -113,9 +193,9 @@
   /* System tokens */
   --color-danger: var(--danger);
   --color-warning: var(--warning);
-  --color-accent: var(--accent);
   --color-wishlist: var(--wishlist);
   --color-success: var(--success);
+  --color-info: var(--info);
 
   /* Surface tokens */
   --color-background: var(--background);
