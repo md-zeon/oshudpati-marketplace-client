@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -248,9 +249,7 @@ export default function FullCart({
                     <div className="flex items-center border border-slate-300 rounded-lg bg-white overflow-hidden shadow-sm">
                       <button
                         onClick={() => changeQuantity(item, item.quantity - 1)}
-                        disabled={
-                          item.quantity <= 1 || updatingId === item.id
-                        }
+                        disabled={item.quantity <= 1 || updatingId === item.id}
                         className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 disabled:opacity-30 disabled:hover:bg-transparent transition"
                       >
                         <Minus className="w-3.5 h-3.5" />
@@ -282,11 +281,11 @@ export default function FullCart({
                         ৳{(price * item.quantity).toFixed(2)}
                       </span>
                     </div>
-                      <button
-                        onClick={() => handleRemove(item)}
-                        disabled={updatingId === item.id}
-                        className="text-slate-400 hover:text-rose-500 border border-slate-200 hover:border-rose-100 rounded-lg p-1.5 transition bg-white hover:bg-rose-50/40 cursor-pointer"
-                      >
+                    <button
+                      onClick={() => handleRemove(item)}
+                      disabled={updatingId === item.id}
+                      className="text-slate-400 hover:text-rose-500 border border-slate-200 hover:border-rose-100 rounded-lg p-1.5 transition bg-white hover:bg-rose-50/40 cursor-pointer"
+                    >
                       <X className="w-4 h-4" />
                     </button>
                   </div>
