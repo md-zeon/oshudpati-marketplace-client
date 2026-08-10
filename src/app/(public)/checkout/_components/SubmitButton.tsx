@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, Lock } from "lucide-react";
 import useCheckout from "../_hooks/useCheckout";
 
 export const SubmitButton = ({ disabled }: { disabled: boolean }) => {
@@ -10,14 +10,18 @@ export const SubmitButton = ({ disabled }: { disabled: boolean }) => {
     <Button
       type="submit"
       disabled={submitting || disabled}
-      className="w-full mt-2 h-11 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs tracking-wider uppercase rounded-xl transition cursor-pointer shadow-sm"
+      className="mt-3 h-12 w-full rounded-xl bg-brand-700 text-sm font-bold text-white transition-colors hover:bg-brand-600 active:bg-brand-800"
     >
       {submitting ? (
-        <div className="flex items-center gap-2 justify-center">
-          <Loader2 className="w-3.5 h-3.5 animate-spin" /> Finalizing order...
-        </div>
+        <span className="flex items-center justify-center gap-2">
+          <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+          Placing your order...
+        </span>
       ) : (
-        "Confirm Order"
+        <span className="flex items-center justify-center gap-2">
+          <Lock className="size-4" aria-hidden="true" />
+          Confirm Order
+        </span>
       )}
     </Button>
   );

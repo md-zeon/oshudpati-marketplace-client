@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { toggleWishlistAction } from "@/actions/wishlist.action";
+import { cn } from "@/lib/utils";
 
 interface WishlistButtonProps {
   medicineId: string;
@@ -14,6 +15,12 @@ interface WishlistButtonProps {
   size?: "sm" | "md" | "lg";
   onToggle?: (newState: boolean) => void;
 }
+
+const sizeClasses = {
+  sm: "size-9",
+  md: "size-10",
+  lg: "size-11",
+} as const;
 
 export function WishlistButton({
   medicineId,
@@ -43,12 +50,6 @@ export function WishlistButton({
 
   // initialWishlisted is used as initial state via useState(initialWishlisted)
   // Parent should use key={medicineId} to force re-mount when prop changes
-
-  const sizeClasses = {
-    sm: "p-2",
-    md: "p-2.5",
-    lg: "p-3",
-  };
 
   const handleToggle = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -88,21 +89,31 @@ export function WishlistButton({
 
   return (
     <Button
+      type="button"
       aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+      aria-pressed={wishlisted}
       variant="ghost"
       size="icon"
       onClick={handleToggle}
       disabled={loading || !authChecked}
-      className={`${sizeClasses[size]} rounded-full bg-white/90 border border-slate-100 shadow-xs hover:bg-white transition-colors ${
+      className={cn(
+        sizeClasses[size],
+        "rounded-full border border-border-default bg-card/90 shadow-xs backdrop-blur transition-colors",
+        "focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         wishlisted
-          ? "text-rose-500 hover:text-rose-600"
-          : "text-slate-400 hover:text-rose-500"
-      } ${className}`}
+          ? "text-brand-600 hover:bg-brand-50 hover:text-brand-700"
+          : "text-muted-foreground hover:bg-brand-50 hover:text-brand-600",
+        loading && "cursor-wait opacity-60",
+        className,
+      )}
     >
       <Heart
-        className={`w-4 h-4 transition-all ${
-          wishlisted ? "fill-rose-500 scale-110" : ""
-        }`}
+        className={cn(
+          size === "lg" ? "size-5" : "size-4",
+          "transition-all",
+          wishlisted && "fill-brand-600",
+        )}
+        aria-hidden="true"
       />
     </Button>
   );

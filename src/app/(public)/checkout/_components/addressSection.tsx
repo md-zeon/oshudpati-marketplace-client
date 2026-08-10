@@ -1,11 +1,86 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { MapPin, NotepadText, CreditCard } from "lucide-react";
+import {
+  MapPin,
+  NotepadText,
+  CreditCard,
+  AlertCircle,
+  ShieldCheck,
+  Banknote,
+  Phone,
+} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Address } from "@/types";
 import useCheckout from "../_hooks/useCheckout";
+import { cn } from "@/lib/utils";
+
+function AddressField({
+  name,
+  label,
+  required = true,
+  error,
+  className,
+  ...inputProps
+}: {
+  name: string;
+  label: string;
+  required?: boolean;
+  error?: string;
+  className?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  type?: string;
+  inputMode?: "text" | "tel" | "numeric";
+  autoComplete?: string;
+}) {
+  const id = `custom-${name}`;
+
+  return (
+    <div className={cn("space-y-1.5", className)} data-checkout-field={name}>
+      <label
+        htmlFor={id}
+        className="text-xs font-bold text-foreground"
+      >
+        {label}{" "}
+        {required ? (
+          <span className="text-danger" aria-hidden="true">
+            *
+          </span>
+        ) : (
+          <span className="font-medium normal-case text-muted-foreground">
+            (optional)
+          </span>
+        )}
+      </label>
+      <Input
+        id={id}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? `${id}-error` : undefined}
+        className={cn(
+          "h-11 bg-white text-sm",
+          error && "border-danger/60 focus-visible:border-danger focus-visible:ring-danger/30",
+          className,
+        )}
+        {...inputProps}
+      />
+      {error && (
+        <p
+          id={`${id}-error`}
+          className="flex items-start gap-1 text-xs font-medium text-danger"
+        >
+          <AlertCircle className="mt-px size-3.5 shrink-0" aria-hidden="true" />
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export function AddressSection({
   savedAddresses,
@@ -21,6 +96,8 @@ export function AddressSection({
     setCustomerNote,
     customAddress,
     setCustomAddress,
+    errors,
+    setErrors,
   } = useCheckout();
 
   useEffect(() => {
@@ -37,234 +114,286 @@ export function AddressSection({
     setIsCustomAddress,
   ]);
 
+  const updateCustomField = (
+    field: keyof typeof customAddress,
+    value: string,
+  ) => {
+    setCustomAddress((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
   return (
-    <div className="space-y-6">
-      {/* 1. Delivery Address Selection Option block */}
-      <Card className="bg-white p-6">
-        <div className="flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
-          <MapPin className="w-4 h-4 text-emerald-600" />
-          <h3 className="font-bold text-sm text-slate-800">
-            Delivery Address Options
+    <div className="w-full space-y-5">
+      {/* ============ 1. DELIVERY ADDRESS ============ */}
+      <Card className="rounded-2xl border border-border-default bg-card p-5 sm:p-6">
+        <div className="mb-5 flex items-center gap-3 border-b border-border-default pb-3">
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-black text-white">
+            1
+          </span>
+          <MapPin className="size-4 text-brand-600" aria-hidden="true" />
+          <h3 className="text-base font-bold text-brand-900">
+            Delivery Address
           </h3>
         </div>
 
-        {savedAddresses.length > 0 && (
-          <div className="mb-4">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
-              Saved Addresses
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {savedAddresses.map((addr) => (
+        {savedAddresses.length > 0 ? (
+          <RadioGroup
+            value={selectedAddressId}
+            onValueChange={(id) => {
+              setIsCustomAddress(false);
+              setSelectedAddressId(id);
+              if (errors.address) {
+                setErrors((prev) => ({ ...prev, address: "" }));
+              }
+            }}
+            className="grid grid-cols-1 gap-3 md:grid-cols-2"
+            aria-label="Choose a saved delivery address"
+          >
+            {savedAddresses.map((addr) => {
+              const selected = !isCustomAddress && selectedAddressId === addr.id;
+              return (
                 <div
                   key={addr.id}
-                  onClick={() => {
-                    setIsCustomAddress(false);
-                    setSelectedAddressId(addr.id);
-                  }}
-                  className={`p-4 border rounded-xl cursor-pointer text-left transition ${
-                    !isCustomAddress && selectedAddressId === addr.id
-                      ? "border-emerald-600 bg-emerald-50/10 ring-1 ring-emerald-600"
-                      : "border-slate-200 hover:border-slate-300"
-                  }`}
+                  data-checkout-field="address"
+                  className={cn(
+                    "flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition-all focus-within:ring-2 focus-within:ring-brand-600",
+                    selected
+                      ? "border-brand-600 bg-brand-50 ring-1 ring-brand-600"
+                      : "border-border-default hover:border-brand-300 hover:bg-surface-card",
+                  )}
                 >
-                  <p className="font-bold text-xs text-slate-900">
-                    {addr.fullName}
-                  </p>
-                  <p className="text-slate-500 text-[11px] font-medium mt-0.5">
-                    {addr.phoneNumber}
-                  </p>
-                  <p className="text-slate-400 text-[11px] mt-1 line-clamp-2">
-                    {addr.streetAddress}, {addr.area}, {addr.district}
-                  </p>
+                  <RadioGroupItem
+                    value={addr.id}
+                    id={`address-${addr.id}`}
+                    className="mt-0.5"
+                    aria-label={`Deliver to ${addr.fullName}, ${addr.streetAddress}`}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-bold text-foreground">
+                      {addr.fullName}
+                    </p>
+                    <p className="mt-0.5 text-xs font-medium text-muted-foreground">
+                      {addr.phoneNumber}
+                    </p>
+                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                      {addr.streetAddress}, {addr.area}, {addr.district}
+                    </p>
+                  </div>
+                  {addr.isDefault && (
+                    <span className="shrink-0 rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-800">
+                      Default
+                    </span>
+                  )}
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
-        {savedAddresses.length === 0 && (
-          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded text-yellow-800 text-sm">
-            No saved addresses found. Please enter a custom address below.
+              );
+            })}
+          </RadioGroup>
+        ) : (
+          <div className="flex items-start gap-2 rounded-xl border border-accent-200 bg-accent-50 p-4 text-sm font-medium text-accent-600">
+            <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+            No saved addresses found. Please enter a delivery address below.
           </div>
         )}
 
-        <div
-          onClick={() => setIsCustomAddress(!isCustomAddress)}
-          className={`p-4 border rounded-xl cursor-pointer transition flex items-center gap-3 mt-4 ${
+        {errors.address && (
+          <p className="mt-3 flex items-start gap-1 text-xs font-medium text-danger" role="alert">
+            <AlertCircle className="mt-px size-3.5 shrink-0" aria-hidden="true" />
+            {errors.address}
+          </p>
+        )}
+
+        {/* Ship to a different location */}
+        <label
+          htmlFor="use-custom-address"
+          className={cn(
+            "mt-4 flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-all focus-within:ring-2 focus-within:ring-brand-600",
             isCustomAddress
-              ? "border-emerald-600 bg-emerald-50/10"
-              : "border-slate-200 hover:bg-slate-50/50"
-          }`}
+              ? "border-brand-600 bg-brand-50 ring-1 ring-brand-600"
+              : "border-border-default hover:bg-surface-card",
+          )}
         >
-          <input
-            type="checkbox"
+          <Checkbox
+            id="use-custom-address"
             checked={isCustomAddress}
-            readOnly
-            className="rounded text-emerald-600 pointer-events-none focus:ring-0"
+            onCheckedChange={(checked) => {
+              setIsCustomAddress(Boolean(checked));
+              if (checked && errors.address) {
+                setErrors((prev) => ({ ...prev, address: "" }));
+              }
+            }}
+            className="size-5 data-checked:bg-brand-700 data-checked:border-brand-700"
           />
-          <div className="text-xs">
-            <p className="font-bold text-slate-800">
-              Ship to a different location address
-            </p>
-            <p className="text-slate-400 text-[10px]">
-              Use a custom temporary destination snapshot for this order
-            </p>
-          </div>
-        </div>
+          <span className="text-sm">
+            <span className="font-bold text-foreground">
+              Ship to a different location
+            </span>
+            <span className="mt-0.5 block text-xs text-muted-foreground">
+              Enter a temporary delivery address for this order only
+            </span>
+          </span>
+        </label>
 
         {isCustomAddress && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 p-4 bg-slate-50/30 rounded-xl">
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-500">
-                Full Name *
-              </label>
-              <Input
-                value={customAddress.fullName}
-                onChange={(e) =>
-                  setCustomAddress({
-                    ...customAddress,
-                    fullName: e.target.value,
-                  })
-                }
-                placeholder="Receiver's name"
-                className="bg-white text-xs h-9"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-500">
-                Phone Number *
-              </label>
-              <Input
-                value={customAddress.phoneNumber}
-                onChange={(e) =>
-                  setCustomAddress({
-                    ...customAddress,
-                    phoneNumber: e.target.value,
-                  })
-                }
-                placeholder="Active contact no."
-                className="bg-white text-xs h-9"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-500">
-                Division *
-              </label>
-              <Input
-                value={customAddress.division}
-                onChange={(e) =>
-                  setCustomAddress({
-                    ...customAddress,
-                    division: e.target.value,
-                  })
-                }
-                placeholder="e.g. Dhaka"
-                className="bg-white text-xs h-9"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-500">
-                District *
-              </label>
-              <Input
-                value={customAddress.district}
-                onChange={(e) =>
-                  setCustomAddress({
-                    ...customAddress,
-                    district: e.target.value,
-                  })
-                }
-                placeholder="e.g. Gazipur"
-                className="bg-white text-xs h-9"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-500">
-                Area / Thana *
-              </label>
-              <Input
-                value={customAddress.area}
-                onChange={(e) =>
-                  setCustomAddress({ ...customAddress, area: e.target.value })
-                }
-                placeholder="e.g. Tongi"
-                className="bg-white text-xs h-9"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold text-slate-500">
-                Postal Code
-              </label>
-              <Input
-                value={customAddress.postalCode}
-                onChange={(e) =>
-                  setCustomAddress({
-                    ...customAddress,
-                    postalCode: e.target.value,
-                  })
-                }
-                placeholder="e.g. 1710"
-                className="bg-white text-xs h-9"
-              />
-            </div>
-            <div className="sm:col-span-2 space-y-1">
-              <label className="text-[11px] font-bold text-slate-500">
-                Street Address Details *
-              </label>
-              <Input
-                value={customAddress.streetAddress}
-                onChange={(e) =>
-                  setCustomAddress({
-                    ...customAddress,
-                    streetAddress: e.target.value,
-                  })
-                }
-                placeholder="House, Road, Apartment info"
-                className="bg-white text-xs h-9"
-              />
-            </div>
+          <div className="mt-4 grid grid-cols-1 gap-3 rounded-xl border border-border-default bg-surface-card/60 p-4 sm:grid-cols-2">
+            <AddressField
+              name="fullName"
+              label="Full Name"
+              value={customAddress.fullName}
+              onChange={(e) => updateCustomField("fullName", e.target.value)}
+              placeholder="Receiver's name"
+              autoComplete="name"
+              error={errors.fullName}
+            />
+            <AddressField
+              name="phoneNumber"
+              label="Phone Number"
+              value={customAddress.phoneNumber}
+              onChange={(e) =>
+                updateCustomField("phoneNumber", e.target.value)
+              }
+              placeholder="e.g. 01712345678"
+              inputMode="tel"
+              autoComplete="tel"
+              error={errors.phoneNumber}
+            />
+            <p className="-mt-1 flex items-center gap-1 text-[11px] font-medium text-muted-foreground sm:col-span-2">
+              <Phone className="size-3" aria-hidden="true" />
+              We&apos;ll call this number to confirm your delivery.
+            </p>
+            <AddressField
+              name="division"
+              label="Division"
+              value={customAddress.division}
+              onChange={(e) => updateCustomField("division", e.target.value)}
+              placeholder="e.g. Dhaka"
+              autoComplete="address-level1"
+              error={errors.division}
+            />
+            <AddressField
+              name="district"
+              label="District"
+              value={customAddress.district}
+              onChange={(e) => updateCustomField("district", e.target.value)}
+              placeholder="e.g. Gazipur"
+              autoComplete="address-level2"
+              error={errors.district}
+            />
+            <AddressField
+              name="area"
+              label="Area / Thana"
+              value={customAddress.area}
+              onChange={(e) => updateCustomField("area", e.target.value)}
+              placeholder="e.g. Tongi"
+              autoComplete="address-level3"
+              error={errors.area}
+            />
+            <AddressField
+              name="postalCode"
+              label="Postal Code"
+              required={false}
+              value={customAddress.postalCode ?? ""}
+              onChange={(e) => updateCustomField("postalCode", e.target.value)}
+              placeholder="e.g. 1710"
+              inputMode="numeric"
+              autoComplete="postal-code"
+            />
+            <AddressField
+              name="streetAddress"
+              label="Street Address Details"
+              value={customAddress.streetAddress}
+              onChange={(e) =>
+                updateCustomField("streetAddress", e.target.value)
+              }
+              placeholder="House, road, apartment info"
+              autoComplete="street-address"
+              error={errors.streetAddress}
+              className="sm:col-span-2"
+            />
           </div>
         )}
       </Card>
 
-      {/* Special Instructions Notes Card */}
-      <Card className="rounded-xl bg-white p-6">
-        <div className="flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
-          <NotepadText className="w-4 h-4 text-emerald-600" />
-          <h3 className="font-bold text-sm text-slate-800">
-            2. Special Dispatch Notes
+      {/* ============ 2. DELIVERY NOTES ============ */}
+      <Card className="rounded-2xl border border-border-default bg-card p-5 sm:p-6">
+        <div className="mb-4 flex items-center gap-3 border-b border-border-default pb-3">
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-black text-white">
+            2
+          </span>
+          <NotepadText className="size-4 text-brand-600" aria-hidden="true" />
+          <h3 className="text-base font-bold text-brand-900">
+            Delivery Notes
           </h3>
+          <span className="ml-auto rounded-full bg-surface-card px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+            Optional
+          </span>
         </div>
-        <div className="space-y-1">
-          <label className="text-[11px] font-bold text-slate-500">
-            Instructions for Delivery Personnel
+        <div className="space-y-1.5">
+          <label
+            htmlFor="customer-note"
+            className="text-xs font-bold text-foreground"
+          >
+            Instructions for the delivery personnel
           </label>
-          <Input
-            placeholder="e.g., Call before arrival, drop with guard house, etc."
+          <Textarea
+            id="customer-note"
+            placeholder="e.g. Call before arrival, drop with the guard, leave at door..."
             value={customerNote}
             onChange={(e) => setCustomerNote(e.target.value)}
-            className="text-xs h-10"
+            className="min-h-20 bg-white text-sm"
+            rows={3}
           />
+          <p className="text-[11px] font-medium text-muted-foreground">
+            Anything we should know before we deliver? (optional)
+          </p>
         </div>
       </Card>
 
-      {/* Static Payment Method Showcase */}
-      <Card className="rounded-xl bg-white p-6">
-        <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-          <CreditCard className="w-4 h-4 text-emerald-600" />
-          <h3 className="font-bold text-sm text-slate-800">Payment Method</h3>
+      {/* ============ 3. PAYMENT METHOD ============ */}
+      <Card className="rounded-2xl border border-border-default bg-card p-5 sm:p-6">
+        <div className="mb-4 flex items-center gap-3 border-b border-border-default pb-3">
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-700 text-xs font-black text-white">
+            3
+          </span>
+          <CreditCard className="size-4 text-brand-600" aria-hidden="true" />
+          <h3 className="text-base font-bold text-brand-900">
+            Payment Method
+          </h3>
         </div>
-        <div className="bg-emerald-50/20 p-4 rounded-xl flex items-center gap-3">
-          <div className="bg-emerald-600 text-white font-black text-[9px] px-2 py-1 rounded tracking-wider uppercase">
-            COD
+
+        <RadioGroup value="cod" className="gap-2" aria-label="Payment method">
+          <div
+            className={cn(
+              "flex cursor-pointer items-start gap-3 rounded-xl border border-brand-200 bg-brand-50 p-4 transition-all",
+            )}
+          >
+            <RadioGroupItem value="cod" id="payment-cod" className="mt-0.5" />
+            <div className="flex-1">
+              <p className="text-sm font-bold text-foreground">
+                Cash on Delivery (COD)
+              </p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Verify the package contents first, then pay the courier in
+                cash. No advance payment required.
+              </p>
+            </div>
+            <span className="shrink-0 rounded-full bg-brand-100 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-brand-800">
+              Recommended
+            </span>
           </div>
-          <div className="text-xs">
-            <p className="font-bold text-slate-800">Cash On Delivery</p>
-            <p className="text-slate-400 text-[10px]">
-              Verify package components first, then issue cash locally to
-              courier agents.
-            </p>
-          </div>
-        </div>
+        </RadioGroup>
+
+        <ul className="mt-4 flex flex-col gap-2 text-xs font-medium text-muted-foreground">
+          <li className="flex items-center gap-2">
+            <ShieldCheck className="size-4 shrink-0 text-brand-600" aria-hidden="true" />
+            Secure checkout — your payment details are never stored
+          </li>
+          <li className="flex items-center gap-2">
+            <Banknote className="size-4 shrink-0 text-brand-600" aria-hidden="true" />
+            Keep exact change ready for the delivery agent
+          </li>
+        </ul>
       </Card>
     </div>
   );

@@ -1,29 +1,62 @@
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { PackageOpen, ShoppingBag, Tags } from "lucide-react";
 import Link from "next/link";
 
 const EmptyCart = () => {
   return (
-    <div className="flex flex-col items-center justify-center text-center py-12">
-      <div className="relative w-40 h-40 mb-6 flex items-center justify-center select-none">
-        <ShoppingCart className="w-20 h-20 text-slate-300" />
-        <span className="absolute top-3 right-3 text-5xl text-amber-400 font-black font-serif bottom-16 animate-pulse">
-          ?
-        </span>
-      </div>
+    <div className="flex flex-col items-center justify-center py-12 lg:py-20">
+      <Empty className="border-none py-0">
+        <EmptyMedia className="size-24 rounded-3xl bg-brand-50">
+          <PackageOpen
+            className="size-12 text-brand-400"
+            aria-hidden="true"
+          />
+        </EmptyMedia>
 
-      <div className="w-full max-w-4xl border border-gray-200 bg-white py-4 px-6 rounded text-center mb-8">
-        <p className="text-sm text-gray-700 font-medium tracking-wide">
-          Your cart is currently empty.
-        </p>
-      </div>
+        <EmptyHeader className="gap-2">
+          <EmptyTitle className="text-xl font-bold text-brand-900">
+            Your cart is currently empty
+          </EmptyTitle>
+          <EmptyDescription className="max-w-md text-base">
+            Browse our trusted pharmacy for genuine medicines and wellness
+            products. Free delivery on orders over ৳300 anywhere in
+            Bangladesh.
+          </EmptyDescription>
+        </EmptyHeader>
 
-      <Button
-        asChild
-        className="bg-[#121824] hover:bg-[#1f293d] text-white text-xs font-bold px-7 py-5 tracking-wide rounded-lg transition-colors duration-150"
-      >
-        <Link href="/shop">Return to shop</Link>
-      </Button>
+        <EmptyContent className="mt-4 flex-col gap-3">
+          <Button
+            asChild
+            size="lg"
+            className="h-12 w-full bg-brand-700 px-8 text-base font-bold text-white hover:bg-brand-600 active:bg-brand-800 sm:w-auto"
+          >
+            <Link href="/shop">
+              <ShoppingBag className="size-5" aria-hidden="true" />
+              Start Shopping
+            </Link>
+          </Button>
+
+          <Button
+            asChild
+            variant="ghost"
+            size="lg"
+            className="h-11 w-full text-base font-semibold text-brand-700 hover:bg-brand-50 hover:text-brand-800 sm:w-auto"
+          >
+            <Link href="/categories">
+              <Tags className="size-4" aria-hidden="true" />
+              Browse Categories
+            </Link>
+          </Button>
+        </EmptyContent>
+      </Empty>
     </div>
   );
 };

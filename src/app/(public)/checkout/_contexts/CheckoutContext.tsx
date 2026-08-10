@@ -15,6 +15,8 @@ interface CheckoutContextType {
     React.SetStateAction<ShippingAddressSnapshot>
   >;
   submitting: boolean;
+  errors: Record<string, string>;
+  setErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }
 
 const CheckoutContext = createContext<CheckoutContextType | undefined>(
