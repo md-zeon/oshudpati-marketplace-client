@@ -1,18 +1,29 @@
 import { ShopService } from "@/services/shop.service";
 import { Store } from "lucide-react";
 import ShopForm from "./_components/ShopForm";
+import { SellerPageHeader } from "../_components/SellerPageHeader";
+
+export const metadata = {
+  title: "My Shop",
+  description: "Manage your shop",
+};
 
 export default async function SellerShopPage() {
   const { success, data: shop } = await ShopService.getMyShop();
   return (
-    <div className="max-w-xl">
-      <div className="flex items-center gap-3 mb-6">
-        <Store className="w-5 h-5 text-emerald-600" />
-        <h1 className="text-xl font-bold text-slate-900">
-          {success ? "My Shop" : "Create Your Shop"}
-        </h1>
+    <div className="mx-auto max-w-2xl space-y-6">
+      <SellerPageHeader
+        title={success ? "My Shop" : "Create Your Shop"}
+        subtitle={
+          success
+            ? "Keep your shop name, logo and description up to date"
+            : "Set up your shop to start selling on Oshudpati"
+        }
+        icon={<Store className="size-5" aria-hidden />}
+      />
+      <div className="rounded-xl border border-border-default bg-card p-4 sm:p-6">
+        <ShopForm initialShop={success ? shop : null} />
       </div>
-      <ShopForm initialShop={success ? shop : null} />
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import { userService } from "@/services/user.service";
 import { Package } from "lucide-react";
-import { PageSection } from "@/components/shared/PageSection";
 import { OrdersView } from "./_components/OrdersView";
 import { OrderService } from "@/services/order.service";
+import { SellerPageHeader } from "../_components/SellerPageHeader";
 
 export const metadata = {
   title: "Orders",
@@ -82,20 +82,16 @@ const SellerOrders = async ({
   const meta: PaginationMeta | null = res?.meta || null;
 
   return (
-    <div>
-      <PageSection>
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 rounded-xl bg-emerald-50">
-            <Package className="w-5 h-5 text-emerald-600" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-slate-900">Orders</h1>
-            <p className="text-sm text-slate-500">
-              {meta ? meta.total : orders.length} total orders
-            </p>
-          </div>
-        </div>
-      </PageSection>
+    <div className="space-y-6">
+      <SellerPageHeader
+        title="Orders"
+        subtitle={
+          meta
+            ? `${meta.total} ${meta.total === 1 ? "order" : "orders"} to manage`
+            : "Orders placed from your shop"
+        }
+        icon={<Package className="size-5" aria-hidden />}
+      />
 
       <OrdersView orders={orders} meta={meta} />
     </div>

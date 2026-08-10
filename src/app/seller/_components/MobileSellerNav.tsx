@@ -10,6 +10,7 @@ import {
   User,
   LucideIcon,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const iconMap: Record<string, LucideIcon> = {
   dashboard: LayoutDashboard,
@@ -33,8 +34,11 @@ export function MobileSellerNav({ sidebarLinks }: MobileSellerNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 z-40 pb-safe">
-      <div className="flex justify-around py-2">
+    <nav
+      aria-label="Seller navigation"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/90 backdrop-blur-md border-t border-border-default pb-safe"
+    >
+      <div className="flex justify-around px-2 py-1">
         {sidebarLinks.map((link) => {
           const Icon = iconMap[link.iconName] || LayoutDashboard;
           const isActive = pathname === link.href;
@@ -43,17 +47,22 @@ export function MobileSellerNav({ sidebarLinks }: MobileSellerNavProps) {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1 text-[10px] font-medium transition-colors relative ${
+              aria-current={isActive ? "page" : undefined}
+              className={cn(
+                "relative flex min-h-11 flex-col items-center justify-center gap-1 rounded-lg px-3 text-[11px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600",
                 isActive
-                  ? "text-emerald-600"
-                  : "text-slate-500 hover:text-slate-700"
-              }`}
+                  ? "text-brand-700"
+                  : "text-muted-foreground hover:text-brand-900",
+              )}
             >
               {isActive && (
-                <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-emerald-500 rounded-full" />
+                <span
+                  className="absolute -top-1 left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-brand-500"
+                  aria-hidden
+                />
               )}
-              <Icon className="w-5 h-5" />
-              {link.label}
+              <Icon className="size-5" aria-hidden />
+              <span className="leading-none">{link.label}</span>
             </Link>
           );
         })}

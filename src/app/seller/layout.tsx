@@ -37,94 +37,87 @@ const SellerLayout = async ({ children }: { children: React.ReactNode }) => {
       .toUpperCase()
       .slice(0, 2) || "U";
 
+  const sidebar = (
+    <>
+      <nav aria-label="Seller" className="flex-1 space-y-1 p-3">
+        {sidebarLinks.map((link) => (
+          <SellerSidebar key={link.href} {...link} />
+        ))}
+      </nav>
+      <div className="space-y-1 border-t border-border-default p-3">
+        <Link
+          href="/"
+          className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-brand-50/60 hover:text-brand-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+        >
+          <Store className="size-4" aria-hidden />
+          Back to Store
+        </Link>
+        <div className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 cursor-pointer">
+          <Signout />
+        </div>
+      </div>
+    </>
+  );
+
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40">
-        <div className="max-w-360 mx-auto px-4 h-16 flex items-center justify-between">
+    <div className="min-h-screen bg-background">
+      <header className="sticky top-0 z-40 border-b border-border-default bg-background/80 backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-360 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-3">
             <Sheet>
               <SheetTrigger asChild>
-                <button className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors">
-                  <Menu className="w-5 h-5 text-slate-600" />
+                <button
+                  aria-label="Open seller menu"
+                  className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-brand-50 hover:text-brand-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 md:hidden"
+                >
+                  <Menu className="size-5" aria-hidden />
                 </button>
               </SheetTrigger>
               <SheetContent side="left" className="w-72 p-0">
                 <SheetTitle className="sr-only">Seller Menu</SheetTitle>
-                <div className="flex flex-col h-full">
-                  <div className="p-4 border-b border-slate-100 bg-linear-to-r from-emerald-50 to-teal-50">
+                <div className="flex h-full flex-col">
+                  <div className="border-b border-border-default bg-gradient-to-r from-brand-50 to-trust-50 p-4">
                     <div className="flex items-center gap-3">
-                      <Avatar className="w-10 h-10 border-2 border-emerald-200">
+                      <Avatar className="h-10 w-10 border-2 border-brand-200">
                         <AvatarImage src={user.image || ""} alt={user.name} />
-                        <AvatarFallback className="bg-emerald-100 text-emerald-700 text-sm font-bold">
+                        <AvatarFallback className="bg-brand-100 text-brand-900 text-sm font-bold">
                           {initials}
                         </AvatarFallback>
                       </Avatar>
-                      <div>
-                        <p className="font-bold text-slate-900 text-sm">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-bold text-brand-900">
                           {user.name}
                         </p>
-                        <p className="text-[11px] text-slate-500">
+                        <p className="truncate text-[11px] text-muted-foreground">
                           {user.email}
                         </p>
                       </div>
                     </div>
                   </div>
-                  <nav className="flex-1 p-3 space-y-1">
-                    {sidebarLinks.map((link) => (
-                      <SellerSidebar key={link.href} {...link} />
-                    ))}
-                  </nav>
-                  <div className="p-3 border-t border-slate-100 space-y-1">
-                    <Link
-                      href="/"
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-500 hover:bg-slate-50 transition-colors"
-                    >
-                      <Store className="w-4 h-4" />
-                      Back to Store
-                    </Link>
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
-                      <Signout />
-                    </div>
-                  </div>
+                  {sidebar}
                 </div>
               </SheetContent>
             </Sheet>
             <Logo />
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+            <span className="rounded-full border border-brand-100 bg-brand-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-brand-700">
               Seller
             </span>
-            <Avatar className="w-8 h-8 border-2 border-emerald-100">
+            <Avatar className="h-8 w-8 border-2 border-brand-100">
               <AvatarImage src={user.image || ""} alt={user.name} />
-              <AvatarFallback className="bg-emerald-50 text-emerald-700 text-xs font-bold">
+              <AvatarFallback className="bg-brand-50 text-brand-800 text-xs font-bold">
                 {initials}
               </AvatarFallback>
             </Avatar>
           </div>
         </div>
       </header>
-      <div className="max-w-360 mx-auto flex">
-        <aside className="hidden md:flex flex-col w-64 bg-white/80 backdrop-blur-md border-r border-slate-200 min-h-[calc(100vh-4rem)] p-4 sticky top-16">
-          <nav className="space-y-1 flex-1">
-            {sidebarLinks.map((link) => (
-              <SellerSidebar key={link.href} {...link} />
-            ))}
-          </nav>
-          <div className="pt-4 border-t border-slate-100 space-y-1">
-            <Link
-              href="/"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-500 hover:bg-slate-50 transition-colors"
-            >
-              <Store className="w-4 h-4" />
-              Back to Store
-            </Link>
-            <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
-              <Signout />
-            </div>
-          </div>
+      <div className="mx-auto flex max-w-360">
+        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 flex-col border-r border-border-default bg-background/80 py-4 backdrop-blur-md md:flex">
+          {sidebar}
         </aside>
-        <main className="flex-1 p-4 md:p-6 pb-24 md:pb-6">{children}</main>
+        <main className="flex-1 p-4 pb-24 md:p-6 md:pb-6">{children}</main>
       </div>
       <MobileSellerNav sidebarLinks={sidebarLinks} />
     </div>

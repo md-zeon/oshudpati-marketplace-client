@@ -10,6 +10,7 @@ import {
   User,
   LucideIcon,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const iconMap: Record<string, LucideIcon> = {
   dashboard: LayoutDashboard,
@@ -33,13 +34,21 @@ export function SellerSidebar({ href, label, iconName }: SellerSidebarProps) {
   return (
     <Link
       href={href}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+      aria-current={isActive ? "page" : undefined}
+      className={cn(
+        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600",
         isActive
-          ? "bg-emerald-50 text-emerald-700 font-semibold shadow-sm border border-emerald-100"
-          : "text-slate-600 hover:bg-slate-50 hover:text-slate-800"
-      }`}
+          ? "bg-brand-50 text-brand-900 font-semibold shadow-sm ring-1 ring-brand-100"
+          : "text-muted-foreground hover:bg-brand-50/60 hover:text-brand-900",
+      )}
     >
-      <Icon className={`w-4 h-4 ${isActive ? "text-emerald-600" : ""}`} />
+      <Icon
+        className={cn(
+          "size-4 shrink-0",
+          isActive ? "text-brand-700" : "text-muted-foreground",
+        )}
+        aria-hidden
+      />
       {label}
     </Link>
   );

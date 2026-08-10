@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 import { userService } from "@/services/user.service";
 import { getSellerMedicines } from "@/actions/medicine.action";
-import { Pill, Plus, Package } from "lucide-react";
+import { Pill, Plus } from "lucide-react";
 import Link from "next/link";
-import { PageSection } from "@/components/shared/PageSection";
+import { Button } from "@/components/ui/button";
+import { SellerPageHeader } from "../_components/SellerPageHeader";
 import { MedicinesTable } from "./_components/MedicinesTable";
 
 export const metadata = {
@@ -57,46 +58,48 @@ const SellerMedicines = async ({
   const meta: PaginationMeta | null = res?.meta || null;
 
   return (
-    <div>
-      {/* Header */}
-      <PageSection>
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-emerald-50">
-              <Pill className="w-5 h-5 text-emerald-600" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-slate-900">My Medicines</h1>
-              <p className="text-sm text-slate-500">
-                {meta ? meta.total : medicines.length} medicines
-              </p>
-            </div>
-          </div>
-          <Link
-            href="/seller/medicines/new"
-            className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
+    <div className="space-y-6">
+      <SellerPageHeader
+        title="My Medicines"
+        subtitle={
+          meta
+            ? `${meta.total} ${meta.total === 1 ? "medicine" : "medicines"} in your catalogue`
+            : `${medicines.length} medicines`
+        }
+        icon={<Pill className="size-5" aria-hidden />}
+        action={
+          <Button
+            asChild
+            className="w-full bg-brand-700 text-white hover:bg-brand-600 active:bg-brand-800 sm:w-auto"
           >
-            <Plus className="w-4 h-4" /> Add Medicine
-          </Link>
-        </div>
-      </PageSection>
-
-      {/* Empty State */}
-      {medicines.length === 0 && !search ? (
-        <PageSection>
-          <div className="text-center py-20">
-            <Package className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-            <p className="text-sm font-medium text-slate-500">
-              No medicines yet
-            </p>
-            <Link
-              href="/seller/medicines/new"
-              className="inline-block mt-3 text-sm font-semibold text-emerald-600 hover:text-emerald-700"
-            >
-              Add your first medicine
+            <Link href="/seller/medicines/new">
+              <Plus className="size-4" aria-hidden /> Add Medicine
             </Link>
+          </Button>
+        }
+      />
+
+      {medicines.length === 0 && !search ? (
+        <div className="rounded-xl border border-dashed border-border-default bg-card p-8 text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-50">
+            <Pill className="size-7 text-brand-600" aria-hidden />
           </div>
-        </PageSection>
+          <h2 className="mt-4 text-base font-semibold text-brand-900">
+            No medicines yet
+          </h2>
+          <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
+            Add your first medicine to start selling on Oshudpati. Medicines
+            with accurate names, prices and images sell better.
+          </p>
+          <Button
+            asChild
+            className="mt-5 bg-brand-700 text-white hover:bg-brand-600 active:bg-brand-800"
+          >
+            <Link href="/seller/medicines/new">
+              <Plus className="size-4" aria-hidden /> Add your first medicine
+            </Link>
+          </Button>
+        </div>
       ) : (
         <MedicinesTable medicines={medicines} meta={meta} />
       )}

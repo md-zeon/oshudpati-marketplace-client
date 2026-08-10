@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageUpload } from "@/components/shared/ImageUpload";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Store } from "lucide-react";
 import { Shop } from "@/types/shop.type";
 import { createShop, updateShop } from "@/actions/shop.action";
 
@@ -70,12 +70,21 @@ const ShopForm = ({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white rounded-xl border border-slate-200 p-6 space-y-5"
-    >
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="flex items-start gap-3 border-b border-border-default pb-4">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
+          <Store className="size-4" aria-hidden />
+        </div>
+        <div>
+          <h2 className="text-sm font-semibold text-brand-900">Shop identity</h2>
+          <p className="text-xs text-muted-foreground">
+            A clear logo and name help customers recognise your shop.
+          </p>
+        </div>
+      </div>
+
       <div>
-        <Label className="text-xs font-bold text-slate-700 mb-3 block">
+        <Label className="mb-3 block text-sm font-semibold text-foreground">
           Shop Logo
         </Label>
         <ImageUpload
@@ -85,8 +94,11 @@ const ShopForm = ({
         />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="name" className="text-xs font-bold text-slate-700">
-          Shop Name *
+        <Label htmlFor="name" className="text-sm font-semibold text-foreground">
+          Shop Name{" "}
+          <span className="text-danger" aria-hidden>
+            *
+          </span>
         </Label>
         <Input
           id="name"
@@ -94,11 +106,14 @@ const ShopForm = ({
           onChange={(e) => setName(e.target.value)}
           placeholder="My Awesome Shop"
           required
-          className="rounded-lg"
+          className="focus-visible:ring-brand-600/40 focus-visible:border-brand-600"
         />
+        <p className="text-xs text-muted-foreground">
+          The name customers see across the marketplace.
+        </p>
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="desc" className="text-xs font-bold text-slate-700">
+        <Label htmlFor="desc" className="text-sm font-semibold text-foreground">
           Description
         </Label>
         <Textarea
@@ -106,24 +121,30 @@ const ShopForm = ({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Tell customers about your shop"
-          className="rounded-lg min-h-24"
+          className="min-h-28 focus-visible:ring-brand-600/40 focus-visible:border-brand-600"
         />
+        <p className="text-xs text-muted-foreground">
+          A short summary of what your shop offers.
+        </p>
       </div>
-      <Button
-        type="submit"
-        disabled={saving}
-        className="bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
-      >
-        {saving ? (
-          <>
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...
-          </>
-        ) : shop ? (
-          "Update Shop"
-        ) : (
-          "Create Shop"
-        )}
-      </Button>
+
+      <div className="flex flex-col-reverse gap-3 border-t border-border-default pt-5 sm:flex-row sm:items-center sm:justify-end">
+        <Button
+          type="submit"
+          disabled={saving}
+          className="cursor-pointer bg-brand-700 text-white hover:bg-brand-600 active:bg-brand-800 sm:w-auto"
+        >
+          {saving ? (
+            <>
+              <Loader2 className="size-4 animate-spin" aria-hidden /> Saving...
+            </>
+          ) : shop ? (
+            "Update Shop"
+          ) : (
+            "Create Shop"
+          )}
+        </Button>
+      </div>
     </form>
   );
 };
