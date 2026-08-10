@@ -17,10 +17,10 @@ export default function PrivacyPolicyPage() {
       <div className="max-w-4xl mx-auto space-y-12">
         {/* Header */}
         <PageSection className="space-y-4">
-          <p className="text-sm font-semibold tracking-wider text-primary uppercase">
+          <p className="text-sm font-semibold tracking-wider text-brand-700 uppercase">
             Data Protection & Privacy
           </p>
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+          <h1 className="text-4xl font-extrabold tracking-tight text-brand-900 lg:text-5xl">
             Privacy Policy
           </h1>
           <p className="text-muted-foreground">Last updated: June 21, 2026</p>
@@ -36,7 +36,7 @@ export default function PrivacyPolicyPage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Database className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Database className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   1. Information We Collect
@@ -46,7 +46,7 @@ export default function PrivacyPolicyPage() {
                   our Platform:
                 </p>
                 <div className="mt-4 space-y-4">
-                  <div className="p-4 rounded-lg bg-muted/30 border">
+                  <div className="rounded-lg border border-brand-100 bg-brand-50/40 p-4">
                     <h3 className="text-sm font-semibold text-foreground">
                       Personal Information
                     </h3>
@@ -56,7 +56,7 @@ export default function PrivacyPolicyPage() {
                       checkout.
                     </p>
                   </div>
-                  <div className="p-4 rounded-lg bg-muted/30 border">
+                  <div className="rounded-lg border border-brand-100 bg-brand-50/40 p-4">
                     <h3 className="text-sm font-semibold text-foreground">
                       Health & Prescription Information
                     </h3>
@@ -65,7 +65,7 @@ export default function PrivacyPolicyPage() {
                       and health-related data necessary for order fulfillment.
                     </p>
                   </div>
-                  <div className="p-4 rounded-lg bg-muted/30 border">
+                  <div className="rounded-lg border border-brand-100 bg-brand-50/40 p-4">
                     <h3 className="text-sm font-semibold text-foreground">
                       Payment Information
                     </h3>
@@ -76,7 +76,7 @@ export default function PrivacyPolicyPage() {
                       our servers.
                     </p>
                   </div>
-                  <div className="p-4 rounded-lg bg-muted/30 border">
+                  <div className="rounded-lg border border-brand-100 bg-brand-50/40 p-4">
                     <h3 className="text-sm font-semibold text-foreground">
                       Usage & Device Information
                     </h3>
@@ -95,7 +95,7 @@ export default function PrivacyPolicyPage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Eye className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Eye className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   2. How We Use Your Information
@@ -141,7 +141,7 @@ export default function PrivacyPolicyPage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Share2 className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Share2 className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   3. Information Sharing & Disclosure
@@ -186,7 +186,7 @@ export default function PrivacyPolicyPage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Lock className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Lock className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   4. Data Security
@@ -213,7 +213,7 @@ export default function PrivacyPolicyPage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Database className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Database className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   5. Data Retention
@@ -235,7 +235,7 @@ export default function PrivacyPolicyPage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <UserCheck className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <UserCheck className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   6. Your Rights
@@ -283,7 +283,7 @@ export default function PrivacyPolicyPage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Cookie className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Cookie className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   7. Cookies & Tracking Technologies
@@ -308,7 +308,7 @@ export default function PrivacyPolicyPage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Share2 className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Share2 className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   8. Third-Party Services
@@ -335,7 +335,7 @@ export default function PrivacyPolicyPage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Shield className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Shield className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   9. Children&rsquo;s Privacy
@@ -356,7 +356,7 @@ export default function PrivacyPolicyPage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Eye className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Eye className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   10. Changes to This Privacy Policy
@@ -378,7 +378,7 @@ export default function PrivacyPolicyPage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Mail className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Mail className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   11. Contact Information
@@ -388,7 +388,7 @@ export default function PrivacyPolicyPage() {
                   this Privacy Policy or our data practices, please contact us
                   at:
                 </p>
-                <div className="mt-4 p-4 rounded-lg bg-muted/30 border text-sm space-y-1">
+                <div className="mt-4 rounded-lg border border-brand-100 bg-brand-50/40 p-4 text-sm space-y-1">
                   <p className="font-medium text-foreground">
                     Oshudpati Marketplace
                   </p>

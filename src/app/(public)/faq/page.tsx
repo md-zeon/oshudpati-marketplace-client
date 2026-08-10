@@ -1,18 +1,13 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
 import { PageSection } from "@/components/shared/PageSection";
+import { FaqContent, type FaqCategory } from "./_components/FaqContent";
 
 export const metadata = {
   title: "Frequently Asked Questions",
   description: "Find answers to common questions about Oshudpati Marketplace",
 };
 
-const faqs = [
+const faqs: FaqCategory[] = [
   {
     category: "Orders & Delivery",
     items: [
@@ -110,47 +105,30 @@ const faqs = [
 
 const FaqPage = () => {
   return (
-    <div className="py-8 max-w-4xl mx-auto">
-      <PageSection>
-        <div className="flex items-center gap-3 mb-8">
-          <div className="p-2 rounded-xl bg-emerald-50">
-            <HelpCircle className="w-5 h-5 text-emerald-600" />
+    <div className="min-h-screen bg-background px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-3xl space-y-12">
+        <PageSection className="space-y-4 text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50">
+            <HelpCircle className="h-7 w-7 text-brand-700" aria-hidden />
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">
+          <div className="space-y-3">
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand-700">
+              Help Centre
+            </p>
+            <h1 className="text-4xl font-extrabold tracking-tight text-brand-900 lg:text-5xl">
               Frequently Asked Questions
             </h1>
-            <p className="text-sm text-slate-500">
-              Everything you need to know about Oshudpati Marketplace
+            <p className="mx-auto max-w-xl text-lg text-muted-foreground">
+              Quick answers to the questions we hear most — about orders,
+              delivery, payments, and selling on Oshudpati. Can&apos;t find
+              what you need? Reach out and we&apos;ll help personally.
             </p>
           </div>
-        </div>
-      </PageSection>
+        </PageSection>
 
-      <div className="space-y-8">
-        {faqs.map((section, idx) => (
-          <PageSection key={section.category} delay={idx * 0.08}>
-            <h2 className="text-lg font-bold text-slate-900 mb-3">
-              {section.category}
-            </h2>
-            <Accordion
-              type="single"
-              collapsible
-              className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100"
-            >
-              {section.items.map((faq, i) => (
-                <AccordionItem key={i} value={`${section.category}-${i}`}>
-                  <AccordionTrigger className="px-5 py-4 text-sm font-semibold text-slate-800 hover:text-emerald-700 hover:no-underline">
-                    {faq.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="px-5 pb-4 text-sm text-slate-600 leading-relaxed">
-                    {faq.a}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </PageSection>
-        ))}
+        <PageSection delay={0.05}>
+          <FaqContent faqs={faqs} />
+        </PageSection>
       </div>
     </div>
   );

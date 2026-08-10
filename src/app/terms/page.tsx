@@ -15,10 +15,10 @@ export default function TermsOfServicePage() {
       <div className="max-w-4xl mx-auto space-y-12">
         {/* Header */}
         <PageSection className="space-y-4">
-          <p className="text-sm font-semibold tracking-wider text-primary uppercase">
+          <p className="text-sm font-semibold tracking-wider text-brand-700 uppercase">
             Legal Agreement
           </p>
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+          <h1 className="text-4xl font-extrabold tracking-tight text-brand-900 lg:text-5xl">
             Terms of Service
           </h1>
           <p className="text-muted-foreground">Last updated: June 21, 2026</p>
@@ -33,7 +33,7 @@ export default function TermsOfServicePage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <FileText className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <FileText className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   1. Acceptance of Terms
@@ -54,7 +54,7 @@ export default function TermsOfServicePage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Shield className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Shield className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   2. Platform Description
@@ -77,7 +77,7 @@ export default function TermsOfServicePage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Scale className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Scale className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   3. Eligibility & Account Registration
@@ -117,7 +117,7 @@ export default function TermsOfServicePage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <AlertTriangle className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <AlertTriangle className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   4. Vendor & Seller Terms
@@ -162,7 +162,7 @@ export default function TermsOfServicePage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <FileText className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <FileText className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   5. Orders, Payments & Delivery
@@ -261,7 +261,7 @@ export default function TermsOfServicePage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Scale className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Scale className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   8. Governing Law & Disputes
@@ -282,7 +282,7 @@ export default function TermsOfServicePage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <FileText className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <FileText className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   9. Changes to These Terms
@@ -304,7 +304,7 @@ export default function TermsOfServicePage() {
         <Card className="border-muted/60 shadow-sm">
           <CardContent className="p-6 sm:p-8 space-y-4">
             <div className="flex items-start gap-3">
-              <Mail className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+              <Mail className="w-6 h-6 text-brand-700 shrink-0 mt-0.5" />
               <div>
                 <h2 className="text-xl font-bold text-foreground">
                   10. Contact Information
@@ -313,7 +313,7 @@ export default function TermsOfServicePage() {
                   If you have any questions about these Terms, please contact us
                   at:
                 </p>
-                <div className="mt-4 p-4 rounded-lg bg-muted/30 border text-sm space-y-1">
+                <div className="mt-4 rounded-lg border border-brand-100 bg-brand-50/40 p-4 text-sm space-y-1">
                   <p className="font-medium text-foreground">
                     Oshudpati Marketplace
                   </p>

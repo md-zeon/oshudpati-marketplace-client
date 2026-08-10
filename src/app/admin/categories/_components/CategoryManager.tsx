@@ -9,7 +9,7 @@ import {
   recoverCategoryAction,
 } from "@/actions/admin.action";
 import { ImageUpload } from "@/components/shared/ImageUpload";
-import { Grid3X3, Plus, Trash2, Loader2 } from "lucide-react";
+import { Grid3X3, Plus, Trash2, Loader2, ArchiveRestore } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,6 +33,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Empty, EmptyTitle, EmptyDescription } from "@/components/ui/empty";
 import { toast } from "sonner";
 import { PageSection } from "@/components/shared/PageSection";
 import { useRouter } from "next/navigation";
@@ -59,8 +60,24 @@ export function CategoryManager({
 }: CategoryManagerProps) {
   const router = useRouter();
   const categories = initialCategories;
-
   const trashCategories = initialTrashCategories;
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<Category | null>(null);
+  const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+
+  // Safety net: ensure Radix never leaves the body scroll-locked.
+  useEffect(() => {
+    if (!dialogOpen) {
+      document.body.style.overflow = "";
+      document.body.style.pointerEvents = "";
+    }
+  }, [dialogOpen]);
 
   const resetForm = () => {
     setName("");
@@ -70,46 +87,21 @@ export function CategoryManager({
 
   const closeDialog = () => {
     setDialogOpen(false);
-
     setEditingCategory(null);
-
     resetForm();
   };
 
   const handleDialogChange = (open: boolean) => {
     setDialogOpen(open);
-
     if (!open) {
       setEditingCategory(null);
-
       resetForm();
     }
   };
 
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  // When the dialog closes with modal={false}, Radix may leave overflow:hidden
-  // on the body, preventing page scroll. This cleans it up explicitly.
-  useEffect(() => {
-    if (!dialogOpen) {
-      document.body.style.overflow = "";
-      document.body.style.pointerEvents = "";
-    }
-  }, [dialogOpen]);
-
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [saving, setSaving] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState<Category | null>(null);
-  const [alertDialogOpen, setAlertDialogOpen] = useState(false);
-
   const openCreate = () => {
     setEditingCategory(null);
-
     resetForm();
-
     setDialogOpen(true);
   };
 
@@ -124,12 +116,10 @@ export function CategoryManager({
   const handleSave = async () => {
     if (!name.trim()) {
       toast.error("Category name is required");
-
       return;
     }
 
     setSaving(true);
-
     const tid = toast.loading(editingCategory ? "Updating..." : "Creating...");
 
     try {
@@ -155,9 +145,7 @@ export function CategoryManager({
           editingCategory ? "Category updated!" : "Category created!",
           { id: tid },
         );
-
         closeDialog();
-
         router.refresh();
       } else {
         toast.error(res?.message || "Failed to save", { id: tid });
@@ -168,6 +156,7 @@ export function CategoryManager({
       setSaving(false);
     }
   };
+
   const handleDeleteClick = (cat: Category) => {
     setDeleteTarget(cat);
     setAlertDialogOpen(true);
@@ -183,11 +172,8 @@ export function CategoryManager({
 
       if (res?.success) {
         toast.success("Category moved to trash", { id: tid });
-
         setAlertDialogOpen(false);
-
         setDeleteTarget(null);
-
         router.refresh();
       } else {
         toast.error(res?.message || "Failed to delete", { id: tid });
@@ -205,7 +191,6 @@ export function CategoryManager({
 
       if (res?.success) {
         toast.success("Category restored!", { id: tid });
-
         router.refresh();
       } else {
         toast.error(res?.message || "Failed to restore", { id: tid });
@@ -214,17 +199,18 @@ export function CategoryManager({
       toast.error("Something went wrong", { id: tid });
     }
   };
+
   return (
-    <div>
+    <div className="space-y-6">
       <PageSection>
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-blue-50">
-              <Grid3X3 className="w-5 h-5 text-blue-600" />
+            <div className="rounded-xl bg-trust-50 p-2.5">
+              <Grid3X3 className="h-5 w-5 text-trust-600" aria-hidden />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900">Categories</h1>
-              <p className="text-sm text-slate-500">
+              <h1 className="text-xl font-bold text-trust-900">Categories</h1>
+              <p className="text-sm text-muted-foreground">
                 {categories.length} active
                 {trashCategories.length > 0 &&
                   ` · ${trashCategories.length} in trash`}
@@ -233,19 +219,19 @@ export function CategoryManager({
           </div>
           <Button
             onClick={openCreate}
-            className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
+            className="cursor-pointer bg-trust-700 text-white hover:bg-trust-600"
           >
-            <Plus className="w-4 h-4 mr-1" /> Add Category
+            <Plus className="mr-1 h-4 w-4" aria-hidden /> Add Category
           </Button>
         </div>
       </PageSection>
 
-      <PageSection>
-        <Tabs defaultValue="active" className="w-full flex flex-col">
+      <PageSection delay={0.05}>
+        <Tabs defaultValue="active" className="flex w-full flex-col">
           <TabsList className="mb-6">
             <TabsTrigger value="active" className="text-sm">
               Active
-              <Badge className="ml-1.5 text-[10px] bg-blue-600 px-1.5 py-0">
+              <Badge className="ml-1.5 bg-trust-600 px-1.5 py-0 text-[10px] text-white">
                 {categories.length}
               </Badge>
             </TabsTrigger>
@@ -254,7 +240,7 @@ export function CategoryManager({
               {trashCategories.length > 0 && (
                 <Badge
                   variant="secondary"
-                  className="ml-1.5 text-[10px] px-1.5 py-0"
+                  className="ml-1.5 px-1.5 py-0 text-[10px]"
                 >
                   {trashCategories.length}
                 </Badge>
@@ -264,14 +250,22 @@ export function CategoryManager({
 
           <TabsContent value="active">
             {categories.length === 0 ? (
-              <div className="text-center py-20">
-                <Grid3X3 className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                <p className="text-sm font-medium text-slate-500">
-                  No categories yet
-                </p>
-              </div>
+              <Empty className="py-16">
+                <Grid3X3 className="h-10 w-10 text-trust-300" aria-hidden />
+                <EmptyTitle>No categories yet</EmptyTitle>
+                <EmptyDescription>
+                  Create your first category so sellers can organise their
+                  medicines.
+                </EmptyDescription>
+                <Button
+                  onClick={openCreate}
+                  className="cursor-pointer bg-trust-700 text-white hover:bg-trust-600"
+                >
+                  <Plus className="mr-1 h-4 w-4" aria-hidden /> Add Category
+                </Button>
+              </Empty>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger-children">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
                 {categories.map((cat) => (
                   <CategoryCard
                     key={cat.id}
@@ -289,14 +283,18 @@ export function CategoryManager({
 
           <TabsContent value="trash">
             {trashCategories.length === 0 ? (
-              <div className="text-center py-20">
-                <Trash2 className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                <p className="text-sm font-medium text-slate-500">
-                  Trash is empty
-                </p>
-              </div>
+              <Empty className="py-16">
+                <ArchiveRestore
+                  className="h-10 w-10 text-trust-300"
+                  aria-hidden
+                />
+                <EmptyTitle>Trash is empty</EmptyTitle>
+                <EmptyDescription>
+                  Deleted categories will appear here so you can restore them.
+                </EmptyDescription>
+              </Empty>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger-children">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
                 {trashCategories.map((cat) => (
                   <CategoryCard
                     key={cat.id}
@@ -315,11 +313,8 @@ export function CategoryManager({
       </PageSection>
 
       {/* Create/Edit Dialog */}
-      <Dialog modal={false} open={dialogOpen} onOpenChange={handleDialogChange}>
-        <DialogContent
-          className="sm:max-w-md rounded-2xl"
-          onInteractOutside={(e) => e.preventDefault()}
-        >
+      <Dialog open={dialogOpen} onOpenChange={handleDialogChange}>
+        <DialogContent className="max-w-md rounded-2xl">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold">
               {editingCategory ? "Edit Category" : "Add Category"}
@@ -335,6 +330,7 @@ export function CategoryManager({
                 onChange={(e) => setName(e.target.value)}
                 className="rounded-lg"
                 placeholder="Category name"
+                required
               />
             </div>
             <div className="space-y-1.5">
@@ -344,7 +340,7 @@ export function CategoryManager({
               <Textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="rounded-lg min-h-20"
+                className="min-h-20 rounded-lg"
                 placeholder="Optional description"
               />
             </div>
@@ -378,11 +374,11 @@ export function CategoryManager({
             <Button
               onClick={handleSave}
               disabled={saving}
-              className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
+              className="cursor-pointer bg-trust-700 text-white hover:bg-trust-600"
             >
               {saving ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
                 </>
               ) : editingCategory ? (
                 "Update"
@@ -396,17 +392,17 @@ export function CategoryManager({
 
       {/* Delete Confirmation AlertDialog */}
       <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
-        <AlertDialogContent className="rounded-2xl max-w-sm">
+        <AlertDialogContent className="max-w-sm rounded-2xl">
           <AlertDialogHeader>
-            <div className="mx-auto sm:mx-0 mb-2 inline-flex size-10 items-center justify-center rounded-full bg-red-50">
-              <Trash2 className="w-5 h-5 text-red-500" />
+            <div className="mx-auto mb-2 inline-flex size-10 items-center justify-center rounded-full bg-red-50 sm:mx-0">
+              <Trash2 className="h-5 w-5 text-red-500" aria-hidden />
             </div>
             <AlertDialogTitle className="text-lg font-bold">
               Delete Category
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-sm text-slate-500">
+            <AlertDialogDescription className="text-sm text-muted-foreground">
               Are you sure you want to delete{" "}
-              <span className="font-semibold text-slate-700">
+              <span className="font-semibold text-foreground">
                 {deleteTarget?.name}
               </span>
               ? It will be moved to trash and can be restored later.
@@ -421,7 +417,7 @@ export function CategoryManager({
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteConfirm}
-              className="bg-red-600 hover:bg-red-700 text-white cursor-pointer rounded-lg"
+              className="cursor-pointer rounded-lg bg-red-600 text-white hover:bg-red-700"
             >
               Delete
             </AlertDialogAction>

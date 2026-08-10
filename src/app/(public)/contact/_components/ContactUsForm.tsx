@@ -20,7 +20,10 @@ const ContactSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   email: z.string().email("Please enter a valid email address"),
   subject: z.string().min(5, "Subject must be at least 5 characters"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  message: z
+    .string()
+    .min(10, "Message must be at least 10 characters")
+    .max(1000, "Message must be at most 1000 characters"),
 });
 
 export default function ContactUsForm(
@@ -79,14 +82,16 @@ export default function ContactUsForm(
                 return (
                   <Field data-invalid={isInvalid} className="space-y-1.5">
                     <FieldLabel className="text-sm font-medium">
-                      Name
+                      Name <span className="text-destructive">*</span>
                     </FieldLabel>
                     <Input
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="John Doe"
-                      className="h-11 transition-all focus-visible:ring-1"
+                      autoComplete="name"
+                      aria-required="true"
+                      className="h-11 rounded-lg transition-all focus-visible:ring-2 focus-visible:ring-brand-600"
                     />
                     {isInvalid && (
                       <FieldError
@@ -108,7 +113,7 @@ export default function ContactUsForm(
                 return (
                   <Field data-invalid={isInvalid} className="space-y-1.5">
                     <FieldLabel className="text-sm font-medium">
-                      Email Address
+                      Email Address <span className="text-destructive">*</span>
                     </FieldLabel>
                     <Input
                       type="email"
@@ -116,7 +121,9 @@ export default function ContactUsForm(
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="you@company.com"
-                      className="h-11 transition-all focus-visible:ring-1"
+                      autoComplete="email"
+                      aria-required="true"
+                      className="h-11 rounded-lg transition-all focus-visible:ring-2 focus-visible:ring-brand-600"
                     />
                     {isInvalid && (
                       <FieldError
@@ -138,14 +145,15 @@ export default function ContactUsForm(
                 return (
                   <Field data-invalid={isInvalid} className="space-y-1.5">
                     <FieldLabel className="text-sm font-medium">
-                      Subject
+                      Subject <span className="text-destructive">*</span>
                     </FieldLabel>
                     <Input
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="How can we help you?"
-                      className="h-11 transition-all focus-visible:ring-1"
+                      aria-required="true"
+                      className="h-11 rounded-lg transition-all focus-visible:ring-2 focus-visible:ring-brand-600"
                     />
                     {isInvalid && (
                       <FieldError
@@ -167,21 +175,31 @@ export default function ContactUsForm(
                 return (
                   <Field data-invalid={isInvalid} className="space-y-1.5">
                     <FieldLabel className="text-sm font-medium">
-                      Message
+                      Message <span className="text-destructive">*</span>
                     </FieldLabel>
                     <Textarea
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Please details your request or question here..."
-                      className="min-h-35 resize-y transition-all focus-visible:ring-1"
+                      aria-required="true"
+                      className="min-h-[140px] resize-y rounded-lg transition-all focus-visible:ring-2 focus-visible:ring-brand-600"
                     />
-                    {isInvalid && (
-                      <FieldError
-                        className="text-xs font-medium text-destructive animate-in fade-in-50"
-                        errors={field.state.meta.errors}
-                      />
-                    )}
+                    <div className="flex items-center justify-between">
+                      {isInvalid ? (
+                        <FieldError
+                          className="text-xs font-medium text-destructive animate-in fade-in-50"
+                          errors={field.state.meta.errors}
+                        />
+                      ) : (
+                        <span className="text-xs text-muted-foreground">
+                          Min. 10 characters
+                        </span>
+                      )}
+                      <span className="ml-auto text-xs tabular-nums text-muted-foreground">
+                        {field.state.value.length}/1000
+                      </span>
+                    </div>
                   </Field>
                 );
               }}
@@ -194,7 +212,7 @@ export default function ContactUsForm(
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-11 text-sm font-medium transition-colors"
+                    className="h-11 w-full rounded-lg bg-brand-700 text-sm font-medium text-white transition-colors hover:bg-brand-600"
                   >
                     {isSubmitting ? (
                       <>

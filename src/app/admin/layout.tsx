@@ -39,47 +39,54 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
       .slice(0, 2) || "A";
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40">
-        <div className="max-w-360 mx-auto px-4 h-16 flex items-center justify-between">
+    <div className="min-h-screen bg-admin-bg">
+      <header className="sticky top-0 z-40 border-b border-admin-border bg-white/80 backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-360 items-center justify-between px-4">
           <div className="flex items-center gap-3">
             <Sheet>
               <SheetTrigger asChild>
-                <button className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors">
-                  <Menu className="w-5 h-5 text-slate-600" />
+                <button
+                  aria-label="Open admin menu"
+                  className="rounded-lg p-2 transition-colors outline-none hover:bg-admin-hover focus-visible:ring-2 focus-visible:ring-trust-600 md:hidden"
+                >
+                  <Menu className="h-5 w-5 text-admin-text" />
                 </button>
               </SheetTrigger>
               <SheetContent side="left" className="w-72 p-0">
                 <SheetTitle className="sr-only">Admin Menu</SheetTitle>
-                <div className="flex flex-col h-full">
-                  <div className="p-4 border-b border-slate-100 bg-linear-to-r from-blue-50 to-indigo-50">
+                <div className="flex h-full flex-col">
+                  <div className="border-b border-trust-200 bg-gradient-to-r from-trust-50 to-trust-100 p-4">
                     <div className="flex items-center gap-3">
-                      <Avatar className="w-10 h-10 border-2 border-blue-200">
+                      <Avatar className="h-10 w-10 border-2 border-trust-200">
                         <AvatarImage src={user.image || ""} alt={user.name} />
-                        <AvatarFallback className="bg-blue-100 text-blue-700 text-sm font-bold">
+                        <AvatarFallback className="bg-trust-100 text-trust-700 text-sm font-bold">
                           {initials}
                         </AvatarFallback>
                       </Avatar>
-                      <div>
-                        <p className="font-bold text-sm">{user.name}</p>
-                        <p className="text-[11px] text-slate-500">Admin</p>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-bold text-trust-900">
+                          {user.name}
+                        </p>
+                        <p className="text-[11px] text-admin-text/70">
+                          Admin
+                        </p>
                       </div>
                     </div>
                   </div>
-                  <nav className="flex-1 p-3 space-y-1">
+                  <nav className="flex-1 space-y-1 p-3">
                     {sidebarLinks.map((link) => (
                       <AdminSidebar key={link.href} {...link} />
                     ))}
                   </nav>
-                  <div className="p-3 border-t border-slate-100 space-y-1">
+                  <div className="space-y-1 border-t border-admin-border p-3">
                     <Link
                       href="/"
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-500 hover:bg-slate-50 transition-colors"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-admin-text/70 transition-colors outline-none hover:bg-trust-50 hover:text-trust-700 focus-visible:ring-2 focus-visible:ring-trust-600"
                     >
-                      <Store className="w-4 h-4" />
+                      <Store className="h-4 w-4" aria-hidden />
                       Back to Store
                     </Link>
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
+                    <div className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 transition-colors outline-none hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-red-500">
                       <Signout />
                     </div>
                   </div>
@@ -89,39 +96,39 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
             <Logo color="blue" />
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">
+            <span className="rounded-full border border-trust-200 bg-trust-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-trust-700">
               Admin
             </span>
-            <Avatar className="w-8 h-8 border-2 border-blue-100">
+            <Avatar className="h-8 w-8 border-2 border-trust-200">
               <AvatarImage src={user.image || ""} alt={user.name} />
-              <AvatarFallback className="bg-blue-50 text-blue-700 text-xs font-bold">
+              <AvatarFallback className="bg-trust-100 text-xs font-bold text-trust-700">
                 {initials}
               </AvatarFallback>
             </Avatar>
           </div>
         </div>
       </header>
-      <div className="max-w-360 mx-auto flex">
-        <aside className="hidden md:flex flex-col w-64 bg-white/80 backdrop-blur-md border-r border-slate-200 min-h-[calc(100vh-4rem)] p-4 sticky top-16">
-          <nav className="space-y-1 flex-1">
+      <div className="mx-auto flex max-w-360">
+        <aside className="sticky top-16 hidden w-64 flex-col border-r border-admin-border bg-white/80 p-4 backdrop-blur-md md:flex min-h-[calc(100vh-4rem)]">
+          <nav className="flex-1 space-y-1">
             {sidebarLinks.map((link) => (
               <AdminSidebar key={link.href} {...link} />
             ))}
           </nav>
-          <div className="pt-4 border-t border-slate-100 space-y-1">
+          <div className="space-y-1 border-t border-admin-border pt-4">
             <Link
               href="/"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-500 hover:bg-slate-50 transition-colors"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-admin-text/70 transition-colors outline-none hover:bg-trust-50 hover:text-trust-700 focus-visible:ring-2 focus-visible:ring-trust-600"
             >
-              <Store className="w-4 h-4" />
+              <Store className="h-4 w-4" aria-hidden />
               Back to Store
             </Link>
-            <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
+            <div className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 transition-colors outline-none hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-red-500">
               <Signout />
             </div>
           </div>
         </aside>
-        <main className="flex-1 p-4 md:p-6 pb-24 md:pb-6">{children}</main>
+        <main className="flex-1 p-4 pb-24 md:p-6 md:pb-6">{children}</main>
       </div>
       <MobileAdminNav sidebarLinks={sidebarLinks} />
     </div>
