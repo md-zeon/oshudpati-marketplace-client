@@ -85,12 +85,16 @@ export async function proxy(req: NextRequest) {
     "/terms",
     "/email-verified",
     "/verify-email",
+    "/cart",
+    "/wishlist",
+    "/blog",
   ];
 
   const isPublicPath =
     publicPaths.includes(pathname) ||
     pathname.startsWith("/medicine/") ||
     pathname.startsWith("/order-tracking") ||
+    pathname.startsWith("/categories") ||
     pathname.startsWith("/api/auth/");
 
   if (isPublicPath) {
