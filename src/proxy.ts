@@ -72,32 +72,42 @@ export async function proxy(req: NextRequest) {
     return new NextResponse("Access Denied", { status: 403 });
   }
 
-  let isAuthenticated = false;
-  let userRole = Roles.CUSTOMER;
+  const publicPaths = [
+    "/",
+    "/shop",
+    "/signin",
+    "/signup",
+    "/auth-callback",
+    "/contact",
+    "/about",
+    "/faq",
+    "/privacy",
+    "/terms",
+    "/email-verified",
+    "/verify-email",
+  ];
 
-  if (pathname === "/auth-callback") {
+  const isPublicPath =
+    publicPaths.includes(pathname) ||
+    pathname.startsWith("/medicine/") ||
+    pathname.startsWith("/order-tracking") ||
+    pathname.startsWith("/api/auth/");
+
+  if (isPublicPath) {
     return NextResponse.next();
   }
 
   const session = await userService.getSession();
 
-  if (session?.success) {
-    isAuthenticated = true;
-    userRole = session.data.user.role;
-  } else {
-    console.error("Failed to fetch session:", session);
-  }
-
-  if (!isAuthenticated) {
+  if (!session?.success) {
     return NextResponse.redirect(
       new URL(`/signin?redirect=${encodeURIComponent(pathname)}`, req.url),
     );
   }
 
-  if (
-    (isAuthenticated && pathname === "/signin") ||
-    (isAuthenticated && pathname === "/signup")
-  ) {
+  const userRole = session.data.user.role;
+
+  if (pathname === "/signin" || pathname === "/signup") {
     if (userRole === Roles.ADMIN) {
       return NextResponse.redirect(new URL("/admin/dashboard", req.url));
     } else if (userRole === Roles.SELLER) {
