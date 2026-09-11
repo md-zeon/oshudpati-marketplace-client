@@ -2,8 +2,76 @@ import { NextRequest, NextResponse } from "next/server";
 import { Roles } from "./constants/roles";
 import { userService } from "./services/user.service";
 
+const botPatterns = [
+  "Bytespider",
+  "GPTBot",
+  "ChatGPT-User",
+  "CCBot",
+  "anthropic-ai",
+  "ClaudeBot",
+  "Amazonbot",
+  "Applebot-Extended",
+  "FacebookBot",
+  "Meta-ExternalAgent",
+  "DataForSeoBot",
+  "Scrapy",
+  "Semrush",
+  "Ahrefs",
+  "MJ12bot",
+  "DotBot",
+  "SeekportBot",
+  "Sogou",
+  "Exabot",
+  "Nutch",
+  "Baiduspider",
+  "YandexBot",
+  "bingbot",
+  "MicrosoftPreview",
+  "msnbot",
+  "MicrosoftBingPreview",
+  "MicrosoftBingbot",
+  "Bingbot",
+  "BingPreview",
+];
+
+const suspiciousPatterns = [
+  "\\.php",
+  "\\.asp",
+  "\\.cgi",
+  "\\.pl",
+  "\\.py",
+  "wp-admin",
+  "wp-login",
+  "xmlrpc",
+  "wp-content",
+  "wp-includes",
+  "phpmyadmin",
+];
+
+function isBot(userAgent: string): boolean {
+  const lowerUA = userAgent.toLowerCase();
+  return botPatterns.some((bot) => lowerUA.includes(bot.toLowerCase()));
+}
+
+function isSuspicious(path: string): boolean {
+  const lowerPath = path.toLowerCase();
+  return suspiciousPatterns.some((pattern) =>
+    new RegExp(pattern, "i").test(lowerPath)
+  );
+}
+
 export async function proxy(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
+  const userAgent = req.headers.get("user-agent") || "";
+
+  if (isBot(userAgent)) {
+    return new NextResponse("Access Denied", { status: 403 });
+  }
+
+  if (isSuspicious(pathname)) {
+    return new NextResponse("Access Denied", { status: 403 });
+  }
+
   let isAuthenticated = false;
   let userRole = Roles.CUSTOMER;
 
@@ -30,7 +98,6 @@ export async function proxy(req: NextRequest) {
     (isAuthenticated && pathname === "/signin") ||
     (isAuthenticated && pathname === "/signup")
   ) {
-    // Redirect to the appropriate dashboard based on user role
     if (userRole === Roles.ADMIN) {
       return NextResponse.redirect(new URL("/admin/dashboard", req.url));
     } else if (userRole === Roles.SELLER) {
@@ -48,8 +115,6 @@ export async function proxy(req: NextRequest) {
     }
   }
 
-  // Role-based redirection
-  // Admins should not access seller or customer routes, Sellers should not access admin or customer routes, and Customers should not access admin or seller routes.
   if (
     userRole === Roles.ADMIN &&
     (pathname.startsWith("/seller") || pathname.startsWith("/dashboard"))
@@ -72,9 +137,6 @@ export async function proxy(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/admin/:path*",
-    "/seller/:path*",
-    "/auth-callback",
+    "/((?!_next/static|_next/image|favicon.ico|public/).*)",
   ],
 };
