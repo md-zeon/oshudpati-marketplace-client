@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://oshudpati-marketplace-client.vercel.app/" target="_blank">
+  <a href="https://oshudpati-marketplace.netlify.app/" target="_blank">
     <img src="https://img.shields.io/badge/Live_Demo-oshudpati--marketplace--client.vercel.app-0f766e?style=flat-square&logo=vercel&logoColor=white" alt="Live Demo">
   </a>
   <img src="https://img.shields.io/github/license/md-zeon/oshudpati-marketplace-client?style=flat-square&color=0f766e" alt="License">
@@ -25,7 +25,7 @@ This repository contains the **frontend client** built with Next.js 16 (App Rout
 
 ## 🚀 Live Demo
 
-**→ [https://oshudpati-marketplace-client.vercel.app/](https://oshudpati-marketplace-client.vercel.app/)**
+**→ [https://oshudpati-marketplace.netlify.app/](https://oshudpati-marketplace.netlify.app/)**
 
 ---
 
