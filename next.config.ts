@@ -56,20 +56,6 @@ const nextConfig: NextConfig = {
         source: "/(.*)",
         headers: securityHeaders,
       },
-      {
-        source: "/api/:path*",
-        headers: [
-          ...securityHeaders,
-          {
-            key: "X-RateLimit-Limit",
-            value: "100",
-          },
-          {
-            key: "X-RateLimit-Window",
-            value: "60",
-          },
-        ],
-      },
     ];
   },
   async rewrites() {
