@@ -1,6 +1,8 @@
 [build]
   command = "pnpm run build"
-  publish = ".next"
 
 [build.environment]
-  SECRETS_SCAN_OMIT_KEYS = "API_URL,AUTH_URL,NEXT_PUBLIC_BACKEND_URL,NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,NEXT_PUBLIC_FRONTEND_URL"
+  SECRETS_SCAN_OMIT_PATHS = ".next/**,.netlify/**"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
